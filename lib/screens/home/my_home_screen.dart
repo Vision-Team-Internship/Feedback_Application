@@ -28,9 +28,10 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color(0xffFFFFFF),
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         elevation: 0.0,
         title: Padding(
-          padding: const EdgeInsets.only(left: 5.0),
+          padding: const EdgeInsets.only(left: 10.0),
           child: RichText(
             text: TextSpan(
               text: "Privacy ",
@@ -54,10 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Stack(
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     // ignore: avoid_print
                     print("Notification");
@@ -120,17 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
                 child: const ChartFlutter(),
-                // child: SfCartesianChart(
-                //   series: <CircularSeries>[
-                //     PieSeries<CounterData, String>(
-                //       xValueMapper: (CounterData data, _) => data.title,
-                //       yValueMapper: (CounterData data, _) => data.count,
-                //       dataLabelSettings: const DataLabelSettings(
-                //         isVisible: true,
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ),
               const SizedBox(height: 50),
               FListTile(

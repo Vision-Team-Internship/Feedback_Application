@@ -1,6 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:ui';
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
@@ -379,14 +376,21 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 children: [
                   ButtonLogin(
                     title: "Approve".toUpperCase(),
+
                     onTap: () {},
                     borderColor: Color(0xFF0080FF),
+                    
+          
+
                   ),
                   SizedBox(width: 15),
                   ButtonLogin(
                     title: "Reject".toUpperCase(),
+
                     onTap: () {},
                     borderColor: Color(0xffFF0000),
+
+                 
                   ),
                 ],
               ),

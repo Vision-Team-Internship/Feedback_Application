@@ -6,11 +6,14 @@ class ButtonLogin extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final Color borderColor;
+
+
   const ButtonLogin({
     Key? key,
     required this.title,
     required this.onTap,
     required this.borderColor,
+
   }) : super(key: key);
 
   @override
@@ -24,13 +27,14 @@ class ButtonLogin extends StatelessWidget {
         ),
       ),
       style: ButtonStyle(
+
         side: MaterialStateProperty.all(
           BorderSide(
             width: 1,
             color: borderColor,
           ),
         ),
-        foregroundColor: MaterialStateProperty.all(Colors.purple),
+
         padding: MaterialStateProperty.all(
           const EdgeInsets.symmetric(
             vertical: 14,

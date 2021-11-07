@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+
 
 import 'dart:ui';
 
@@ -379,20 +379,28 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 children: [
                   ButtonLogin(
                     title: "Approve".toUpperCase(),
+
+                    onTap: () {},
+                    borderColor: Color(0xFF0080FF),
+
                     onTap: () {
                       print("Approve");
                     },
                     borderColor: Color(0xFF0080FF),
                     splashIcon: Color(0xffBBDDFF),
+
                   ),
                   SizedBox(width: 15),
                   ButtonLogin(
                     title: "Reject".toUpperCase(),
-                    onTap: () {
-                      print("Reject");
-                    },
+
+                    onTap: () {},
                     borderColor: Color(0xffFF0000),
+
+                  
+                
                     splashIcon: Color(0xffFFC4C4),
+
                   ),
                 ],
               ),

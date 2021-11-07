@@ -170,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 svgIcon: 'assets/icons/setting_icons.svg',
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
             ],

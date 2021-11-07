@@ -207,7 +207,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               // ignore: avoid_print
                               print("Login");
                               Get.to(const MessageScreen());
-                            }, borderColor: Color(0xFF0080FF),
+                            },
+                            borderColor: const Color(0xFF0080FF),
+                            splashIcon: const Color(0x000000ff),
                           ),
                         ),
                       ],

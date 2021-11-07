@@ -1,4 +1,4 @@
-
+// ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'dart:ui';
 
@@ -71,18 +71,22 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 height: 45,
               ),
               RichText(
+               
                 text: TextSpan(
                   text: "Level: ",
+                  
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
                     fontFamily: "Poppins",
                   ),
+                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
+                
                     TextSpan(
                       text: "HIGH",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                         color: Colors.red,
@@ -92,7 +96,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -372,35 +376,25 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   color: ThemeConstant.lightScheme.secondary,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Row(
                 children: [
                   ButtonLogin(
                     title: "Approve".toUpperCase(),
-
-                    onTap: () {},
-                    borderColor: Color(0xFF0080FF),
-
                     onTap: () {
                       print("Approve");
                     },
-                    borderColor: Color(0xFF0080FF),
-                    splashIcon: Color(0xffBBDDFF),
-
+                    borderColor: const Color(0xFF0080FF),
+                    splashIcon: const Color(0xffBBDDFF),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   ButtonLogin(
                     title: "Reject".toUpperCase(),
-
                     onTap: () {},
-                    borderColor: Color(0xffFF0000),
-
-                  
-                
-                    splashIcon: Color(0xffFFC4C4),
-
+                    borderColor: const Color(0xffFF0000),
+                    splashIcon: const Color(0xffFFC4C4),
                   ),
                 ],
               ),

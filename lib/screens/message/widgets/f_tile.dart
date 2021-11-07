@@ -42,21 +42,15 @@ class FTile extends StatelessWidget {
                     color: ThemeConstant.lightScheme.onBackground,
                   ),
                 ),
-                RichText(
-                  text: TextSpan(
-                    text: "$floor\t\t\t\t",
+                Expanded(
+                  //   width: MediaQuery.of(context).size.width - 110,
+                  child: Text(
+                    "F1>IT>201 \tupdated: 02/ 11/ 2021",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: ThemeConstant.textTheme.bodyText2!.copyWith(
                       color: ThemeConstant.lightScheme.secondary,
                     ),
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      // ignore: prefer_const_constructors
-                      TextSpan(
-                        text: date,
-                        // ignore: prefer_const_constructors
-                        style: TextStyle(color: Colors.black),
-                      )
-                    ],
                   ),
                 ),
               ],

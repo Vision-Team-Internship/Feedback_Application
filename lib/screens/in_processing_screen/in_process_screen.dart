@@ -1,17 +1,16 @@
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key}) : super(key: key);
+class InProcessingScreen extends StatefulWidget {
+  const InProcessingScreen({Key? key}) : super(key: key);
 
   @override
-  _MessageScreenState createState() => _MessageScreenState();
+  _InProcessingScreenState createState() => _InProcessingScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
+class _InProcessingScreenState extends State<InProcessingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +26,9 @@ class _MessageScreenState extends State<MessageScreen> {
             size: 24,
           ),
         ),
-
         // ignore: prefer_const_constructors
         title: Text(
-          "Message",
+          "In Processing",
           style: const TextStyle(
             fontFamily: "Poppins",
             color: Color(0xff000000),
@@ -50,11 +48,11 @@ class _MessageScreenState extends State<MessageScreen> {
             children: [
               const SizedBox(height: 20),
               SvgPicture.asset(
-                "assets/icon_background/message_icon.svg",
+                "assets/icon_background/in_processing_icon.svg",
               ),
               const SizedBox(height: 23),
               const Text(
-                "Message Feedback",
+                "In Processing Work",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -63,7 +61,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
               ),
               Text(
-                "Timeline of when recieved request",
+                "We are working on their tasks",
                 style: ThemeConstant.textTheme.bodyText2!.copyWith(
                   color: ThemeConstant.lightScheme.secondary,
                 ),
@@ -74,49 +72,41 @@ class _MessageScreenState extends State<MessageScreen> {
               const FTile(
                 title: 'Not enough Water',
                 floor: 'F1>IT>Room102',
-                level: 'High',
-                date: '02/11/2022',
-                levelColor: Colors.red,
-              ),
-              const FTile(
-                title: 'Not enough Water',
-                floor: 'F1>IT>Room102',
                 level: 'Medium',
-                date: '02/11/2022',
-                levelColor: Color(0xffDEDE22),
+                date: 'updated: 02/11/2022',
+                levelColor: Color(0xffE3E308),
               ),
               const FTile(
                 title: 'Not enough Water',
                 floor: 'F1>IT>Room102',
                 level: 'Low',
-                date: '02/11/2022',
+                date: 'updated: 02/11/2022',
+                levelColor: Color(0xff00C700),
+              ),
+              const FTile(
+                title: 'Not enough Water',
+                floor: 'F1>IT>Room102',
+                level: 'Low',
+                date: 'updated: 02/11/2022',
                 levelColor: Color(0xff00C700),
               ),
               const FTile(
                 title: 'Not enough Water',
                 floor: 'F1>IT>Room102',
                 level: 'High',
-                date: '02/11/2022',
+                date: 'updated: 02/11/2022',
                 levelColor: Colors.red,
               ),
               const FTile(
                 title: 'Not enough Water',
                 floor: 'F1>IT>Room102',
-                level: 'Medium',
-                date: '02/11/2022',
-                levelColor: Color(0xffDEDE22),
-              ),
-              const FTile(
-                title: 'Not enough Water',
-                floor: 'F1>IT>Room102',
                 level: 'Low',
-                date: '02/11/2022',
+                date: 'updated: 02/11/2022',
                 levelColor: Color(0xff00C700),
               ),
             ],
           ),
         ),
-    
       ),
     );
   }

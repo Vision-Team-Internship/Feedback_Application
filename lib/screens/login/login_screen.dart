@@ -1,6 +1,6 @@
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
-import 'package:feedback_application_flutter/screens/widgets/b_login.dart';
+import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -207,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               // ignore: avoid_print
                               print("Login");
                               Get.to(const MessageScreen());
-                            },
+                            }, borderColor: Color(0xFF0080FF),
                           ),
                         ),
                       ],

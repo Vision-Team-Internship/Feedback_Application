@@ -8,6 +8,7 @@ class FTile extends StatelessWidget {
   final String date;
   final String level;
   final Color? levelColor;
+  final VoidCallback? onTap;
 
   const FTile({
     Key? key,
@@ -16,16 +17,14 @@ class FTile extends StatelessWidget {
     required this.date,
     required this.level,
     this.levelColor,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       // splashColor: Colors.grey,
-      onTap: () {
-        // ignore: avoid_print
-        print("Message");
-      },
+      onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 10),

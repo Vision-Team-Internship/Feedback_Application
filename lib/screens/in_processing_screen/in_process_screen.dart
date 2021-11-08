@@ -2,6 +2,7 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class InProcessingScreen extends StatefulWidget {
   const InProcessingScreen({Key? key}) : super(key: key);
@@ -19,7 +20,9 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,

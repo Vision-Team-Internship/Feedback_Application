@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   const MessageDetailScreen({Key? key}) : super(key: key);
@@ -22,7 +23,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -71,10 +74,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 height: 45,
               ),
               RichText(
-               
                 text: TextSpan(
                   text: "Level: ",
-                  
+
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -83,7 +85,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   ),
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                
                     TextSpan(
                       text: "HIGH",
                       style: const TextStyle(
@@ -379,12 +380,14 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
               const SizedBox(
                 height: 40,
               ),
+
               Row(
                 children: [
                   ButtonLogin(
                     title: "Approve".toUpperCase(),
                     onTap: () {
                       print("Approve");
+                      openDialogApprove();
                     },
                     borderColor: const Color(0xFF0080FF),
                     splashIcon: const Color(0xffBBDDFF),
@@ -392,7 +395,10 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   const SizedBox(width: 15),
                   ButtonLogin(
                     title: "Reject".toUpperCase(),
-                    onTap: () {},
+                    onTap: () {
+                      print("Reject");
+                      openDialogReject();
+                    },
                     borderColor: const Color(0xffFF0000),
                     splashIcon: const Color(0xffFFC4C4),
                   ),
@@ -408,4 +414,84 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       ),
     );
   }
+
+  Future openDialogApprove() => Get.defaultDialog(
+        title: "Note",
+        content: TextFormField(
+          minLines: 2,
+          maxLines: 5,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              fontFamily: "Poppins",
+            ),
+            hintText: "Note some message",
+            hintStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              fontFamily: "Poppins",
+            ),
+          ),
+        ),
+        radius: 0.0,
+        actions: [
+          ButtonLogin(
+            title: "Yes",
+            onTap: () {
+              print("Approve");
+            },
+            borderColor: Color(0xff0080FF),
+            splashIcon: const Color(0xffBBDDFF),
+          ),
+          ButtonLogin(
+            title: "No",
+            onTap: () {
+              Get.back();
+            },
+            borderColor: Color(0xffFF0000),
+            splashIcon: const Color(0xffFFC4C4),
+          ),
+        ],
+      );
+
+  Future openDialogReject() => Get.defaultDialog(
+        title: "Note",
+        content: TextFormField(
+          minLines: 2,
+          maxLines: 5,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              fontFamily: "Poppins",
+            ),
+            hintText: "Note some reasone",
+            hintStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              fontFamily: "Poppins",
+            ),
+          ),
+        ),
+        radius: 0.0,
+        actions: [
+          ButtonLogin(
+            title: "Yes",
+            onTap: () {
+              print("Reject");
+            },
+            borderColor: Color(0xff0080FF),
+            splashIcon: const Color(0xffBBDDFF),
+          ),
+          ButtonLogin(
+            title: "No",
+            onTap: () {
+              Get.back();
+            },
+            borderColor: Color(0xffFF0000),
+            splashIcon: const Color(0xffFFC4C4),
+          ),
+        ],
+      );
 }

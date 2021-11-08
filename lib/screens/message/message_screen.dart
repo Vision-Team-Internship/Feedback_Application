@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
+import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({Key? key}) : super(key: key);
@@ -20,7 +24,9 @@ class _MessageScreenState extends State<MessageScreen> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -71,7 +77,10 @@ class _MessageScreenState extends State<MessageScreen> {
               const SizedBox(
                 height: 50,
               ),
-              const FTile(
+              FTile(
+                onTap: () {
+                  Get.to(MessageDetailScreen());
+                },
                 title: 'Not enough Water',
                 floor: 'F1>IT>Room102',
                 level: 'High',
@@ -116,7 +125,6 @@ class _MessageScreenState extends State<MessageScreen> {
             ],
           ),
         ),
-    
       ),
     );
   }

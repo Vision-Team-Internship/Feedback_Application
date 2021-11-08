@@ -1,20 +1,18 @@
-// ignore_for_file: avoid_print, prefer_const_constructors
-
-import 'dart:ui';
+// ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MessageDetailScreen extends StatefulWidget {
-  const MessageDetailScreen({Key? key}) : super(key: key);
+class DetailMessageInProcess extends StatefulWidget {
+  const DetailMessageInProcess({Key? key}) : super(key: key);
 
   @override
-  _MessageDetailScreenState createState() => _MessageDetailScreenState();
+  _DetailMessageInProcessState createState() => _DetailMessageInProcessState();
 }
 
-class _MessageDetailScreenState extends State<MessageDetailScreen> {
+class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +70,32 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             children: [
               const SizedBox(
                 height: 45,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Approve Date:",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  Text(
+                    "03/12/2021",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: ThemeConstant.lightScheme.onBackground,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
               ),
               RichText(
                 text: TextSpan(
@@ -384,7 +408,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
               Row(
                 children: [
                   ButtonLogin(
-                    title: "Approve".toUpperCase(),
+                    title: "done".toUpperCase(),
                     onTap: () {
                       print("Approve");
                       openDialogApprove();
@@ -393,15 +417,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     splashIcon: const Color(0xffBBDDFF),
                   ),
                   const SizedBox(width: 15),
-                  ButtonLogin(
-                    title: "Reject".toUpperCase(),
-                    onTap: () {
-                      print("Reject");
-                      openDialogReject();
-                    },
-                    borderColor: const Color(0xffFF0000),
-                    splashIcon: const Color(0xffFFC4C4),
-                  ),
                 ],
               ),
 
@@ -494,5 +509,4 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           ),
         ],
       );
-
 }

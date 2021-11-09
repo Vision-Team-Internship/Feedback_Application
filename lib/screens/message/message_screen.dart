@@ -34,7 +34,6 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
         ),
 
-        // ignore: prefer_const_constructors
         title: Text(
           "Message",
           style: const TextStyle(

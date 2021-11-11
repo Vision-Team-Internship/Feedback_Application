@@ -44,7 +44,7 @@ class FTile extends StatelessWidget {
                 Expanded(
                   //   width: MediaQuery.of(context).size.width - 110,
                   child: Text(
-                    "F1>IT>201 \tupdated: 02/ 11/ 2021",
+                    floor,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: ThemeConstant.textTheme.bodyText2!.copyWith(

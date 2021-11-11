@@ -2,13 +2,24 @@
 
 import 'dart:ui';
 
-import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
+
 class MessageDetailScreen extends StatefulWidget {
-  const MessageDetailScreen({Key? key}) : super(key: key);
+  final String title;
+  final String date;
+  final String level;
+  final List unquid;
+  const MessageDetailScreen({
+    Key? key,
+    required this.title,
+    required this.date,
+    required this.level,
+    required this.unquid,
+  }) : super(key: key);
 
   @override
   _MessageDetailScreenState createState() => _MessageDetailScreenState();
@@ -32,7 +43,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           ),
         ),
         title: Text(
-          "Not enough Water",
+          widget.title,
           style: ThemeConstant.textTheme.headline6!.copyWith(
             color: Colors.black,
           ),
@@ -51,7 +62,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   ),
                 ),
                 Text(
-                  "03/12/2022",
+                  widget.date,
                   style: ThemeConstant.textTheme.bodyText1!.copyWith(
                     color: Colors.black,
                   ),
@@ -76,7 +87,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
               RichText(
                 text: TextSpan(
                   text: "Level: ",
-
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -86,7 +96,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     TextSpan(
-                      text: "HIGH",
+                      text: widget.level,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -101,7 +111,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 height: 20,
               ),
               Text(
-                "Building:",
+                "${widget.unquid.toList()}",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -494,5 +504,4 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           ),
         ],
       );
-
 }

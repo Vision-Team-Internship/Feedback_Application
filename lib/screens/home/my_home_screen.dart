@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field, prefer_const_constructors
 
+import 'package:feedback_application_flutter/screens/approve_screen/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
@@ -150,6 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   // ignore: avoid_print
                   print("History");
+                  Get.to(() => ApproveHistoryScreen());
                 },
                 subtitle: 'Recieved: 9+',
                 title: 'History',

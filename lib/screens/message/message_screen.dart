@@ -27,7 +27,6 @@ class _MessageScreenState extends State<MessageScreen> {
   MessageApi _messageApi = MessageApi();
   StreamSubscription? sub;
   bool isConnected = false;
-
   @override
   void initState() {
     sub = Connectivity().onConnectivityChanged.listen((event) {
@@ -155,7 +154,7 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  _buildBody(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -191,7 +190,14 @@ class _MessageScreenState extends State<MessageScreen> {
                 _listmessage![index].isRejected == false) {
               return InkWell(
                 onTap: () {
-                
+                  print(_listmessage![index].uniqueIDs!.toList());
+                  Get.to(() => MessageDetailScreen(
+                        title: "${_listmessage![index].title}",
+                        date:
+                            '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
+                        level: '${_listmessage![index].feedbackLevel}',
+                        unquid: [_listmessage![index].uniqueIDs!.toList()],
+                      ));
                 },
                 child: FTile(
                   title: "${_listmessage![index].title}",

@@ -105,19 +105,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
               //  Chart Customize
               Container(
-                width: MediaQuery.of(context).size.width - 50,
+                width: MediaQuery.of(context).size.width - 80,
                 height: 300,
                 decoration: BoxDecoration(
                   color: const Color(0xFFFBFAFA),
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                      offset: const Offset(-2, 2),
+                      offset: Offset(2, 2),
                       color: Colors.black.withOpacity(.25),
                       blurRadius: 4,
                     ),
                     BoxShadow(
-                      offset: const Offset(2, -2),
+                      offset: const Offset(-1, -1),
                       color: Colors.black.withOpacity(.25),
                       blurRadius: 4,
                     ),

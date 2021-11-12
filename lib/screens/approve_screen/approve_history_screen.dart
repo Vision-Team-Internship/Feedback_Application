@@ -27,7 +27,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
   Future<FeedbackModel>? _approve;
   List<Payload>? _listApprove;
 
-  MessageApi _messageApi = MessageApi();
+  final MessageApi _messageApi = MessageApi();
 
   @override
   void initState() {

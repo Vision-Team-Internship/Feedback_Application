@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/message_api.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class ApproveHistoryScreen extends StatefulWidget {
   const ApproveHistoryScreen({Key? key}) : super(key: key);
@@ -81,9 +82,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
               height: 45,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
-                // borderRadius: BorderRadius.circular(
-                //   25.0,
-                // ),
+  
               ),
               child: TabBar(
                 controller: _tabController,
@@ -114,254 +113,9 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                 controller: _tabController,
                 children: [
                   // first tab bar view widget
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    width: MediaQuery.of(context).size.width,
-                    child: FutureBuilder<FeedbackModel>(
-                      future: _approve,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text("Error fetch data"),
-                          );
-                        }
-                        if (snapshot.hasData) {
-                          _listApprove = snapshot.data!.payload;
-                          return ListView.builder(
-                            itemCount: _listApprove?.length,
-                            itemBuilder: (context, index) {
-                              return _listApprove![index].isApproved == true &&
-                                      _listApprove![index].isRejected == false
-                                  ? Slidable(
-                                      key: Key("${_listApprove![index].title}"),
-                                      actionPane: SlidableDrawerActionPane(),
-                                      secondaryActions: <Widget>[
-                                        IconSlideAction(
-                                          caption: 'More',
-                                          color: Colors.black45,
-                                          icon: Icons.more_horiz,
-                                          // onTap: () =>
-                                          //     isDississed(index, SlidableAction.more),
-                                        ),
-                                        IconSlideAction(
-                                          caption: 'Delete',
-                                          color: Colors.red,
-                                          icon: CupertinoIcons.multiply_circle,
-                                          // onTap: () =>
-                                          //     isDississed(index, SlidableAction.delete),
-                                        ),
-                                      ],
-                                      child: FTile(
-                                        onTap: () {
-                                          //   Get.to(MessageDetailScreen());
-                                        },
-                                        title: "${_listApprove![index].title}",
-                                        floor:
-                                            "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
-                                        level:
-                                            "${_listApprove![index].feedbackLevel}",
-                                        date: "",
-                                        levelColor:
-                                            "${_listApprove![index].feedbackLevel}"
-                                                        .toUpperCase() ==
-                                                    "HIGH"
-                                                ? Colors.red
-                                                : "${_listApprove![index].feedbackLevel}"
-                                                            .toUpperCase() ==
-                                                        "Medium".toUpperCase()
-                                                    ? Color(0xffDEDE22)
-                                                    : Color(0xff00C700),
-                                      ),
-                                    )
-                                  : SizedBox();
-                            },
-                          );
-                        }
-
-                        return CircularProgressIndicator();
-                      },
-                    ),
-                  ),
-
-                  // Container(
-                  //   margin: EdgeInsets.only(top: 20),
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: ListView.builder(
-                  //     itemCount: items.length,
-                  //     itemBuilder: (context, index) {
-                  //       final item = items[index];
-                  //       return Slidable(
-                  //         key: Key(item.title),
-                  //         actionPane: SlidableDrawerActionPane(),
-
-                  //         secondaryActions: <Widget>[
-                  //           IconSlideAction(
-                  //             caption: 'More',
-                  //             color: Colors.black45,
-                  //             icon: Icons.more_horiz,
-                  //             onTap: () =>
-                  //                 isDississed(index, SlidableAction.more),
-                  //           ),
-                  //           IconSlideAction(
-                  //             caption: 'Delete',
-                  //             color: Colors.red,
-                  //             icon: CupertinoIcons.multiply_circle,
-                  //             onTap: () =>
-                  //                 isDississed(index, SlidableAction.delete),
-                  //           ),
-                  //         ],
-                  //         child: FTile(
-                  //           onTap: () {
-                  //             Get.to(MessageDetailScreen());
-                  //           },
-                  //           title: items[index].title,
-                  //           floor: items[index].Department,
-                  //           level: items[index].level,
-                  //           date: items[index].Date,
-                  //           levelColor:
-                  //               items[index].level.toUpperCase() == "HIGH"
-                  //                   ? Colors.red
-                  //                   : items[index].level.toUpperCase() ==
-                  //                           "Medium".toUpperCase()
-                  //                       ? Color(0xffDEDE22)
-                  //                       : Color(0xff00C700),
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-
+                  _buildFirstTab(context),
                   // second tab bar view widget
-
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    width: MediaQuery.of(context).size.width,
-                    child: FutureBuilder<FeedbackModel>(
-                      future: _approve,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text("Error fetch data"),
-                          );
-                        }
-                        if (snapshot.hasData) {
-                          _listApprove = snapshot.data!.payload;
-                          if (_listApprove!.isEmpty) {
-                            return Center(
-                              child: Text("Empty"),
-                            );
-                          } else {
-                            return ListView.builder(
-                              itemCount: _listApprove?.length,
-                              itemBuilder: (context, index) {
-                                return _listApprove![index].isApproved ==
-                                            false &&
-                                        _listApprove![index].isRejected == true
-                                    ? Slidable(
-                                        key: Key(
-                                            "${_listApprove![index].title}"),
-                                        actionPane: SlidableDrawerActionPane(),
-                                        secondaryActions: <Widget>[
-                                          IconSlideAction(
-                                            caption: 'More',
-                                            color: Colors.black45,
-                                            icon: Icons.more_horiz,
-                                            // onTap: () =>
-                                            //     isDississed(index, SlidableAction.more),
-                                          ),
-                                          IconSlideAction(
-                                            caption: 'Delete',
-                                            color: Colors.red,
-                                            icon:
-                                                CupertinoIcons.multiply_circle,
-                                            // onTap: () =>
-                                            //     isDississed(index, SlidableAction.delete),
-                                          ),
-                                        ],
-                                        child: FTile(
-                                          onTap: () {
-                                            //   Get.to(MessageDetailScreen());
-                                          },
-                                          title:
-                                              "${_listApprove![index].title}",
-                                          floor:
-                                              "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
-                                          level:
-                                              "${_listApprove![index].feedbackLevel}",
-                                          date: "",
-                                          levelColor:
-                                              "${_listApprove![index].feedbackLevel}"
-                                                          .toUpperCase() ==
-                                                      "HIGH"
-                                                  ? Colors.red
-                                                  : "${_listApprove![index].feedbackLevel}"
-                                                              .toUpperCase() ==
-                                                          "Medium".toUpperCase()
-                                                      ? Color(0xffDEDE22)
-                                                      : Color(0xff00C700),
-                                        ),
-                                      )
-                                    : SizedBox();
-                              },
-                            );
-                          }
-                        }
-
-                        return CircularProgressIndicator();
-                      },
-                    ),
-                  ),
-
-                  // Container(
-                  //   margin: EdgeInsets.only(top: 20),
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: Center(
-                  //     child: Text("Reject"),
-                  //   ),
-                  //   // child: ListView.builder(
-                  //   //   itemCount: items.length,
-                  //   //   itemBuilder: (context, index) {
-                  //   //     final item = items[index];
-                  //   //     return Slidable(
-                  //   //       key: Key(item.title),
-                  //   //       actionPane: SlidableDrawerActionPane(),
-
-                  //   //       secondaryActions: <Widget>[
-                  //   //         IconSlideAction(
-                  //   //           caption: 'More',
-                  //   //           color: Colors.black45,
-                  //   //           icon: Icons.more_horiz,
-                  //   //           onTap: () =>
-                  //   //               isDississed(index, SlidableAction.more),
-                  //   //         ),
-                  //   //         IconSlideAction(
-                  //   //           caption: 'Delete',
-                  //   //           color: Colors.red,
-                  //   //           icon: CupertinoIcons.multiply_circle,
-                  //   //           onTap: () =>
-                  //   //               isDississed(index, SlidableAction.delete),
-                  //   //         ),
-                  //   //       ],
-                  //   //       child: FTile(
-                  //   //         onTap: () {
-                  //   //           Get.to(MessageDetailScreen());
-                  //   //         },
-                  //   //         title: items[index].title,
-                  //   //         floor: items[index].Department,
-                  //   //         level: items[index].level,
-                  //   //         date: items[index].Date,
-                  //   //         levelColor:
-                  //   //             items[index].level.toUpperCase() == "HIGH"
-                  //   //                 ? Colors.red
-                  //   //                 : items[index].level.toUpperCase() ==
-                  //   //                         "Medium".toUpperCase()
-                  //   //                     ? Color(0xffDEDE22)
-                  //   //                     : Color(0xff00C700),
-                  //   //       ),
-                  //   //     );
-                  //   //   },
-                  //   // ),
-                  // ),
+                  _buildSecondTab(context),
                 ],
               ),
             ),
@@ -371,46 +125,310 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
     );
   }
 
-  // void isDississed(int index, SlidableAction action) {
-  //   final item = items[index];
-  //   setState(() => items.removeAt(index));
+  void isDississed(int index, SlidableAction action) {
+    // final item = items[index];
+    // setState(() => items.removeAt(index));
 
-  //   switch (action) {
-  //     case SlidableAction.more:
-  //       Get.snackbar(
-  //         "Processing",
-  //         "Hello everyone",
-  //         icon: Icon(Icons.person, color: Colors.white),
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: Colors.green,
-  //         borderRadius: 20,
-  //         margin: EdgeInsets.all(15),
-  //         colorText: Colors.white,
-  //         duration: Duration(seconds: 4),
-  //         isDismissible: true,
-  //         dismissDirection: SnackDismissDirection.HORIZONTAL,
-  //         forwardAnimationCurve: Curves.easeOutBack,
-  //       );
-  //       break;
-  //     case SlidableAction.delete:
-  //       Get.snackbar(
-  //         "Deleted",
-  //         "${item.title} has been deleted",
-  //         icon: Icon(Icons.person, color: Colors.white),
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: Color(0xff2F2F2F),
-  //         borderRadius: 20,
-  //         margin: EdgeInsets.all(15),
-  //         colorText: Colors.white,
-  //         duration: Duration(seconds: 4),
-  //         isDismissible: true,
-  //         dismissDirection: SnackDismissDirection.HORIZONTAL,
-  //         forwardAnimationCurve: Curves.easeOutBack,
-  //       );
-  //       break;
+    switch (action) {
+      case SlidableAction.more:
+        Get.snackbar(
+          "Processing",
+          "Hello everyone",
+          icon: Icon(Icons.person, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          borderRadius: 20,
+          margin: EdgeInsets.all(15),
+          colorText: Colors.white,
+          duration: Duration(seconds: 4),
+          isDismissible: true,
+          dismissDirection: SnackDismissDirection.HORIZONTAL,
+          forwardAnimationCurve: Curves.easeOutBack,
+        );
+        break;
+      case SlidableAction.delete:
+        Get.snackbar(
+          "Deleted",
+          "{item.title} has been deleted",
+          icon: Icon(Icons.person, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xff2F2F2F),
+          borderRadius: 20,
+          margin: EdgeInsets.all(15),
+          colorText: Colors.white,
+          duration: Duration(seconds: 4),
+          isDismissible: true,
+          dismissDirection: SnackDismissDirection.HORIZONTAL,
+          forwardAnimationCurve: Curves.easeOutBack,
+        );
+        break;
 
-  //     default:
-  //   }
-  // }
+      default:
+    }
+  }
+
+  _buildFirstTab(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      width: MediaQuery.of(context).size.width,
+      child: FutureBuilder<FeedbackModel>(
+        future: _approve,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error fetch data"),
+            );
+          }
+          if (snapshot.hasData) {
+            _listApprove = snapshot.data!.payload;
+            return _listApprove!.isNotEmpty
+                ? ListView.builder(
+                    itemCount: _listApprove?.length,
+                    itemBuilder: (context, index) {
+                      return _listApprove![index].isApproved == true &&
+                              _listApprove![index].isRejected == false
+                          ? Slidable(
+                              key: Key("${_listApprove![index].title}"),
+                              actionPane: SlidableDrawerActionPane(),
+                              secondaryActions: <Widget>[
+                                IconSlideAction(
+                                  caption: 'More',
+                                  color: Colors.black45,
+                                  icon: Icons.more_horiz,
+                                  onTap: () {
+                                    isDississed(index, SlidableAction.more);
+                                    print("More Option Done message");
+                                  },
+                                ),
+                                IconSlideAction(
+                                  caption: 'Delete',
+                                  color: Colors.red,
+                                  icon: CupertinoIcons.multiply_circle,
+                                  onTap: () {
+                                    print("Delete Option in Done messaage");
+                                    isDississed(index, SlidableAction.delete);
+                                  },
+                                ),
+                              ],
+                              child: FTile(
+                                onTap: () {
+                                  //   Get.to(MessageDetailScreen());
+                                },
+                                title: "${_listApprove![index].title}",
+                                floor:
+                                    "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
+                                level: "${_listApprove![index].feedbackLevel}",
+                                date: "",
+                                levelColor:
+                                    "${_listApprove![index].feedbackLevel}"
+                                                .toUpperCase() ==
+                                            "HIGH"
+                                        ? Colors.red
+                                        : "${_listApprove![index].feedbackLevel}"
+                                                    .toUpperCase() ==
+                                                "Medium".toUpperCase()
+                                            ? Color(0xffDEDE22)
+                                            : Color(0xff00C700),
+                              ),
+                            )
+                          : SizedBox();
+                    },
+                  )
+                : Center(
+                    child: Text("Empty"),
+                  );
+          }
+
+          return Center(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: Lottie.asset("assets/loadings/waiting.json"),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  _buildSecondTab(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      width: MediaQuery.of(context).size.width,
+      child: FutureBuilder<FeedbackModel>(
+        future: _approve,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error fetch data"),
+            );
+          }
+          if (snapshot.hasData) {
+            _listApprove = snapshot.data!.payload;
+            if (_listApprove!.isEmpty) {
+              return Center(
+                child: Text("Empty"),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: _listApprove?.length,
+                itemBuilder: (context, index) {
+                  return _listApprove![index].isApproved == false &&
+                          _listApprove![index].isRejected == true
+                      ? Slidable(
+                          key: Key("${_listApprove![index].title}"),
+                          actionPane: SlidableDrawerActionPane(),
+                          secondaryActions: <Widget>[
+                            IconSlideAction(
+                                caption: 'More',
+                                color: Colors.black45,
+                                icon: Icons.more_horiz,
+                                onTap: () {
+                                  print("More Option in Reject message");
+                                  isDississed(index, SlidableAction.more);
+                                }),
+                            IconSlideAction(
+                                caption: 'Delete',
+                                color: Colors.red,
+                                icon: CupertinoIcons.multiply_circle,
+                                onTap: () {
+                                  print("Delete Option in Reject message");
+                                  isDississed(index, SlidableAction.delete);
+                                }),
+                          ],
+                          child: FTile(
+                            onTap: () {
+                              //     Get.to(MessageDetailScreen());
+                            },
+                            title: "${_listApprove![index].title}",
+                            floor:
+                                "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
+                            level: "${_listApprove![index].feedbackLevel}",
+                            date: "",
+                            levelColor: "${_listApprove![index].feedbackLevel}"
+                                        .toUpperCase() ==
+                                    "HIGH"
+                                ? Colors.red
+                                : "${_listApprove![index].feedbackLevel}"
+                                            .toUpperCase() ==
+                                        "Medium".toUpperCase()
+                                    ? Color(0xffDEDE22)
+                                    : Color(0xff00C700),
+                          ),
+                        )
+                      : SizedBox();
+                },
+              );
+            }
+          }
+          return Center(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: Lottie.asset("assets/loadings/waiting.json"),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Container(
+  //   margin: EdgeInsets.only(top: 20),
+  //   width: MediaQuery.of(context).size.width,
+  //   child: Center(
+  //     child: Text("Reject"),
+  //   ),
+  //   // child: ListView.builder(
+  //   //   itemCount: items.length,
+  //   //   itemBuilder: (context, index) {
+  //   //     final item = items[index];
+  //   //     return Slidable(
+  //   //       key: Key(item.title),
+  //   //       actionPane: SlidableDrawerActionPane(),
+  //       secondaryActions: <Widget>[
+  //   //         IconSlideAction(
+  //   //           caption: 'More',
+  //   //           color: Colors.black45,
+  //   //           icon: Icons.more_horiz,
+  //   //           onTap: () =>
+  //   //               isDississed(index, SlidableAction.more),
+  //   //         ),
+  //   //         IconSlideAction(
+  //   //           caption: 'Delete',
+  //   //           color: Colors.red,
+  //   //           icon: CupertinoIcons.multiply_circle,
+  //   //           onTap: () =>
+  //   //               isDississed(index, SlidableAction.delete),
+  //   //         ),
+  //   //       ],
+  //   //       child: FTile(
+  //   //         onTap: () {
+  //   //           Get.to(MessageDetailScreen());
+  //   //         },
+  //   //         title: items[index].title,
+  //   //         floor: items[index].Department,
+  //   //         level: items[index].level,
+  //   //         date: items[index].Date,
+  //   //         levelColor:
+  //   //             items[index].level.toUpperCase() == "HIGH"
+  //   //                 ? Colors.red
+  //   //                 : items[index].level.toUpperCase() ==
+  //   //                         "Medium".toUpperCase()
+  //   //                     ? Color(0xffDEDE22)
+  //   //                     : Color(0xff00C700),
+  //   //       ),
+  //   //     );
+  //   //   },
+  //   // ),
+  // ),
+
+  // Container(
+  //   margin: EdgeInsets.only(top: 20),
+  //   width: MediaQuery.of(context).size.width,
+  //   child: ListView.builder(
+  //     itemCount: items.length,
+  //     itemBuilder: (context, index) {
+  //       final item = items[index];
+  //       return Slidable(
+  //         key: Key(item.title),
+  //         actionPane: SlidableDrawerActionPane(),
+
+  //         secondaryActions: <Widget>[
+  //           IconSlideAction(
+  //             caption: 'More',
+  //             color: Colors.black45,
+  //             icon: Icons.more_horiz,
+  //             onTap: () =>
+  //                 isDississed(index, SlidableAction.more),
+  //           ),
+  //           IconSlideAction(
+  //             caption: 'Delete',
+  //             color: Colors.red,
+  //             icon: CupertinoIcons.multiply_circle,
+  //             onTap: () =>
+  //                 isDississed(index, SlidableAction.delete),
+  //           ),
+  //         ],
+  //         child: FTile(
+  //           onTap: () {
+  //             Get.to(MessageDetailScreen());
+  //           },
+  //           title: items[index].title,
+  //           floor: items[index].Department,
+  //           level: items[index].level,
+  //           date: items[index].Date,
+  //           levelColor:
+  //               items[index].level.toUpperCase() == "HIGH"
+  //                   ? Colors.red
+  //                   : items[index].level.toUpperCase() ==
+  //                           "Medium".toUpperCase()
+  //                       ? Color(0xffDEDE22)
+  //                       : Color(0xff00C700),
+  //         ),
+  //       );
+  //     },
+  //   ),
+  // ),
 
 }

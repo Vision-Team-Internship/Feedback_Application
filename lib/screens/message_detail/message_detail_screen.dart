@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_const_constructors
+// ignore_for_file: avoid_print, prefer_const_constructors, non_constant_identifier_names
 
 import 'dart:ui';
 
@@ -26,6 +26,21 @@ class MessageDetailScreen extends StatefulWidget {
 }
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
+  late TextEditingController _doneNotecontroller;
+
+  @override
+  void initState() {
+    _doneNotecontroller = TextEditingController();
+    _doneNotecontroller.addListener(() {});
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _doneNotecontroller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -425,9 +440,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     );
   }
 
+  bool IsButtonActive = true;
+
   Future openDialogApprove() => Get.defaultDialog(
         title: "Note",
         content: TextFormField(
+          controller: _doneNotecontroller,
           minLines: 2,
           maxLines: 5,
           decoration: InputDecoration(

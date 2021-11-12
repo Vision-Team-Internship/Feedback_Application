@@ -1,12 +1,21 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
-import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
+
 class DetailMessageInProcess extends StatefulWidget {
-  const DetailMessageInProcess({Key? key}) : super(key: key);
+  final String title;
+  final String dateTime;
+  final String message;
+  const DetailMessageInProcess({
+    Key? key,
+    required this.title,
+    required this.dateTime,
+    required this.message,
+  }) : super(key: key);
 
   @override
   _DetailMessageInProcessState createState() => _DetailMessageInProcessState();
@@ -30,34 +39,11 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
           ),
         ),
         title: Text(
-          "Not enough Water",
+          widget.title,
           style: ThemeConstant.textTheme.headline6!.copyWith(
             color: Colors.black,
           ),
         ),
-        actions: [
-          SizedBox(
-            width: 100,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "DateTime:",
-                  style: ThemeConstant.textTheme.bodyText1!.copyWith(
-                    color: ThemeConstant.lightScheme.secondary,
-                  ),
-                ),
-                Text(
-                  "03/12/2022",
-                  style: ThemeConstant.textTheme.bodyText1!.copyWith(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -84,7 +70,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                     ),
                   ),
                   Text(
-                    "03/12/2021",
+                    widget.dateTime,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: 18,
@@ -393,7 +379,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                 height: 20,
               ),
               Text(
-                "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
+                widget.message,
                 style: TextStyle(
                   fontFamily: "Poppins",
                   fontSize: 18,

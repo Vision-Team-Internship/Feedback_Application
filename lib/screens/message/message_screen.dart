@@ -88,10 +88,8 @@ class _MessageScreenState extends State<MessageScreen> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(
-            alignment: Alignment.topLeft,
             padding: EdgeInsets.symmetric(horizontal: 25),
             width: MediaQuery.of(context).size.width,
-            //  height: MediaQuery.of(context).size.height,
             child: FutureBuilder<FeedbackModel>(
               future: _messagemodel,
               builder: (context, snapshot) {
@@ -104,7 +102,10 @@ class _MessageScreenState extends State<MessageScreen> {
                   _listmessage = snapshot.data!.payload;
                   return _buildBody(context);
                 }
-                return Center(
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
                   child: SizedBox(
                     width: 200,
                     height: 200,
@@ -115,41 +116,6 @@ class _MessageScreenState extends State<MessageScreen> {
             ),
           ),
         ),
-        // child: isConnected
-        //     ? SingleChildScrollView(
-        //         physics: BouncingScrollPhysics(),
-        //         child: Container(
-        //           alignment: Alignment.topLeft,
-        //           padding: EdgeInsets.symmetric(horizontal: 25),
-        //           width: MediaQuery.of(context).size.width,
-        //           //  height: MediaQuery.of(context).size.height,
-        //           child: FutureBuilder<MessageModel>(
-        //             future: _messagemodel,
-        //             builder: (context, snapshot) {
-        //               if (snapshot.hasError) {
-        //                 return Center(
-        //                   child: Text("Please try again"),
-        //                 );
-        //               }
-        //               if (snapshot.hasData) {
-        //                 _listmessage = snapshot.data!.payload;
-        //                 return _buildBody(context);
-        //               }
-        //               return Center(
-        //                 child: SizedBox(
-        //                   width: 200,
-        //                   height: 200,
-        //                   child: Lottie.asset("assets/loadings/waiting.json"),
-        //                 ),
-        //               );
-        //             },
-        //           ),
-        //         ),
-        //       )
-
-        //     : Center(
-        //         child: Text("Disconnect"),
-        //       ),
       ),
     );
   }
@@ -223,99 +189,7 @@ class _MessageScreenState extends State<MessageScreen> {
       ],
     );
   }
+
+
+
 }
-
-// FutureBuilder<MessageModel>(
-//             builder: (context, snapshot) {
-//               if (snapshot.hasError) {
-//                 print("Error While reading data from API: ${snapshot.error}");
-//                 return Center(
-//                   child: Text("Has Error Please try again"),
-//                 );
-//               }
-//               if (snapshot.connectionState == ConnectionState.done) {
-//                 _listmessage = snapshot.data!.payload;
-//                 print(_listmessage);
-              
-//               }
-
-//               return SizedBox();
-//             },
-//           ),
-        
-
-
-  // return Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   const SizedBox(height: 20),
-  //                   SvgPicture.asset(
-  //                     "assets/icon_background/message_icon.svg",
-  //                   ),
-  //                   const SizedBox(height: 23),
-  //                   const Text(
-  //                     "Message Feedback",
-  //                     style: TextStyle(
-  //                       fontSize: 24,
-  //                       fontWeight: FontWeight.w600,
-  //                       fontFamily: "Poppins",
-  //                       color: Colors.black,
-  //                     ),
-  //                   ),
-  //                   Text(
-  //                     "Timeline of when recieved request",
-  //                     style: ThemeConstant.textTheme.bodyText2!.copyWith(
-  //                       color: ThemeConstant.lightScheme.secondary,
-  //                     ),
-  //                   ),
-  //                   const SizedBox(
-  //                     height: 50,
-  //                   ),
-  //                   FTile(
-  //                     onTap: () {
-  //                       Get.to(MessageDetailScreen());
-  //                     },
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'High',
-  //                     date: '02/11/2022',
-  //                     levelColor: Colors.red,
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Medium',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xffDEDE22),
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Low',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xff00C700),
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'High',
-  //                     date: '02/11/2022',
-  //                     levelColor: Colors.red,
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Medium',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xffDEDE22),
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Low',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xff00C700),
-  //                   ),
-  //                 ],
-  //               );
-            

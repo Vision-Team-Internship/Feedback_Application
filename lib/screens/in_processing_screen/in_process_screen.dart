@@ -4,7 +4,8 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/data/message_api.dart';
+
+import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_detail_screen.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
@@ -162,7 +163,7 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
                 _listmessage![index].isRejected == false) {
               return InkWell(
                 onTap: () {
-                  print(_listmessage![index].uniqueIDs!.toList());
+                //  print(_listmessage![index].uniqueIDs!.toList());
                   Get.to(() => DetailMessageInProcess(
                         title: '${_listmessage![index].title}',
                         dateTime:

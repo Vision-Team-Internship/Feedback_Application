@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/data/message_api.dart';
+import 'package:feedback_application_flutter/data/deletedata/delete_history_message.dart';
+
+import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 // import 'package:feedback_application_flutter/data/data.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/model/slidable_action.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
-import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -28,11 +29,12 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
   List<Payload>? _listApprove;
 
   final MessageApi _messageApi = MessageApi();
+  final DeleteMessage _deleteMessage = DeleteMessage();
 
   @override
   void initState() {
     _approve = _messageApi.readDataFromMessage();
-    print(_approve);
+    // print(_approve);
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -82,7 +84,6 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
               height: 45,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
-  
               ),
               child: TabBar(
                 controller: _tabController,
@@ -207,12 +208,26 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                   onTap: () {
                                     print("Delete Option in Done messaage");
                                     isDississed(index, SlidableAction.delete);
+                                    _approve =
+                                        _deleteMessage.deleteHistoryMessage(
+                                            _listApprove![index].id.toString()) as Future<FeedbackModel>?;
+
+                                    setState(() {
+                                      _approve =
+                                          _messageApi.readDataFromMessage();
+                                    });
                                   },
                                 ),
                               ],
                               child: FTile(
                                 onTap: () {
                                   //   Get.to(MessageDetailScreen());
+                                  print(_listApprove![index].id);
+
+                                  // _approve =
+                                  //     _deleteMessage.deleteHistoryMessage(
+                                  //   "618a165f361748f0b5035c8e"
+                                  //);
                                 },
                                 title: "${_listApprove![index].title}",
                                 floor:
@@ -299,6 +314,8 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                           child: FTile(
                             onTap: () {
                               //     Get.to(MessageDetailScreen());
+                              _approve = _deleteMessage.deleteHistoryMessage(
+                                  _listApprove![index].id.toString()) as Future<FeedbackModel>?;
                             },
                             title: "${_listApprove![index].title}",
                             floor:

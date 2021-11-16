@@ -4,7 +4,8 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/data/message_api.dart';
+
+import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
@@ -100,7 +101,11 @@ class _MessageScreenState extends State<MessageScreen> {
                 }
                 if (snapshot.hasData) {
                   _listmessage = snapshot.data!.payload;
-                  return _buildBody(context);
+                  return _listmessage!.isNotEmpty
+                      ? _buildBody(context)
+                      : Center(
+                          child: Text("Empty"),
+                        );
                 }
                 return Container(
                   height: MediaQuery.of(context).size.height,
@@ -153,7 +158,8 @@ class _MessageScreenState extends State<MessageScreen> {
           itemCount: _listmessage!.length,
           itemBuilder: (context, index) {
             if (_listmessage![index].isApproved == false &&
-                _listmessage![index].isRejected == false) {
+                _listmessage![index].isRejected == false &&
+                _listmessage![index].isCompleted == false) {
               return InkWell(
                 onTap: () {
                   print(_listmessage![index].uniqueIDs!.toList());
@@ -162,7 +168,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         date:
                             '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
                         level: '${_listmessage![index].feedbackLevel}',
-                        unquid: [_listmessage![index].uniqueIDs!.toList()],
+                        id: _listmessage![index].id.toString(),
                       ));
                 },
                 child: FTile(
@@ -189,7 +195,4 @@ class _MessageScreenState extends State<MessageScreen> {
       ],
     );
   }
-
-
-
 }

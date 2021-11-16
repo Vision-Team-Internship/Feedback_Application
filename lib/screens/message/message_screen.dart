@@ -108,7 +108,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         );
                 }
                 return Container(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height / 1.5,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
                   child: SizedBox(

@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors
-
+// ignore_for_file: prefer_const_constructors, avoid_print, non_constant_identifier_names, prefer_const_declarations
 import 'dart:ui';
 
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final String title;
@@ -27,6 +27,14 @@ class MessageDetailScreen extends StatefulWidget {
 }
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
+  // Future<void> _makePhoneCall(String url) async {
+  //   if (await canLaunch(url)) {
+  //     await launch('tell://$url');
+  //   } else {
+  //     throw "Could not launch $url";
+  //   }
+  // }
+
   late TextEditingController _doneNotecontroller;
   Future<DetailMessageModel>? _detailMessage;
 
@@ -115,37 +123,41 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     const SizedBox(
                       height: 45,
                     ),
-                    RichText(
-                      text: TextSpan(
-                        text: "Level: ",
-                        // ignore: prefer_const_constructors
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                          fontFamily: "Poppins",
-                        ),
+                    Row(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
-                          TextSpan(
-                            text: widget.level,
-                            style: const TextStyle(
+                          Text(
+                            "Level: ",
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
-                              color: Colors.red,
+                              color: Colors.black,
                               fontFamily: "Poppins",
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                          Text(
+                            widget.level,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: widget.level.toUpperCase() ==
+                                      "high".toUpperCase()
+                                  ? Colors.red
+                                  : widget.level.toUpperCase() ==
+                                          "medium".toUpperCase()
+                                      ? Color(0xffCACA03)
+                                      : Color(0xff00C700),
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                        ]),
+
                     const SizedBox(
                       height: 20,
                     ),
-                    // ignore: prefer_const_constructors
+
                     Text(
                       "Location: ",
-                      // ignore: prefer_const_constructors
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -365,13 +377,23 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   color: ThemeConstant.lightScheme.secondary,
                                 ),
                               ),
-                              Text(
-                                "047474747",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: ThemeConstant.lightScheme.onBackground,
+                              InkWell(
+                                onTap: () async {
+                                  final phonenumber = '+85585291097';
+                                  final url = 'tel:$phonenumber';
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  }
+                                },
+                                child: Text(
+                                  "047474747",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    color:
+                                        ThemeConstant.lightScheme.onBackground,
+                                  ),
                                 ),
                               ),
                               Text(

@@ -210,7 +210,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                     isDississed(index, SlidableAction.delete);
                                     _approve =
                                         _deleteMessage.deleteHistoryMessage(
-                                            _listApprove![index].id.toString()) as Future<FeedbackModel>?;
+                                            _listApprove![index].id.toString());
 
                                     setState(() {
                                       _approve =
@@ -315,7 +315,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                             onTap: () {
                               //     Get.to(MessageDetailScreen());
                               _approve = _deleteMessage.deleteHistoryMessage(
-                                  _listApprove![index].id.toString()) as Future<FeedbackModel>?;
+                                  _listApprove![index].id.toString());
                             },
                             title: "${_listApprove![index].title}",
                             floor:

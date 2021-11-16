@@ -9,7 +9,6 @@ import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_detail_screen.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
-import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -25,7 +24,7 @@ class InProcessingScreen extends StatefulWidget {
 class _InProcessingScreenState extends State<InProcessingScreen> {
   Future<FeedbackModel>? _messagemodel;
   List<Payload>? _listmessage;
-  MessageApi _messageApi = MessageApi();
+  final MessageApi _messageApi = MessageApi();
   StreamSubscription? sub;
   bool isConnected = false;
   @override

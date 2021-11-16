@@ -2,7 +2,7 @@
 //
 //     final detailMessageModel = detailMessageModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
+
 import 'dart:convert';
 
 DetailMessageModel detailMessageModelFromJson(String str) => DetailMessageModel.fromJson(json.decode(str));

@@ -1,258 +1,451 @@
-// // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
-// import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:feedback_application_flutter/data/deletedata/delete_history_message.dart';
+
+import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 // import 'package:feedback_application_flutter/data/data.dart';
-// import 'package:feedback_application_flutter/model/message_model.dart';
-// import 'package:feedback_application_flutter/model/slidable_action.dart';
-// import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
-// import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_slidable/flutter_slidable.dart';
-// import 'package:get/get.dart';
+import 'package:feedback_application_flutter/model/message_model.dart';
+import 'package:feedback_application_flutter/model/slidable_action.dart';
+import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
-// class ApproveHistoryScreen extends StatefulWidget {
-//   const ApproveHistoryScreen({Key? key}) : super(key: key);
+class ApproveHistoryScreen extends StatefulWidget {
+  const ApproveHistoryScreen({Key? key}) : super(key: key);
 
-//   @override
-//   _ApproveHistoryScreenState createState() => _ApproveHistoryScreenState();
-// }
+  @override
+  _ApproveHistoryScreenState createState() => _ApproveHistoryScreenState();
+}
 
-// class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
-//     with SingleTickerProviderStateMixin {
-//   TabController? _tabController;
-//   @override
-//   void initState() {
-//     _tabController = TabController(length: 2, vsync: this);
-//     super.initState();
-//   }
+class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
+    with SingleTickerProviderStateMixin {
+  TabController? _tabController;
 
-//   @override
-//   void dispose() {
-//     _tabController!.dispose();
-//     super.dispose();
-//   }
+  Future<FeedbackModel>? _approve;
+  List<Payload>? _listApprove;
 
-//   List<MessageModel> items = List.of(allData);
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         backgroundColor: Colors.white,
-//         elevation: 0.0,
-//         leading: IconButton(
-//           onPressed: () {
-//             Get.back();
-//           },
-//           icon: const Icon(
-//             Icons.arrow_back,
-//             color: Colors.black,
-//             size: 24,
-//           ),
-//         ),
-//         title: Text(
-//           "Messge History",
-//           style: const TextStyle(
-//             fontFamily: "Poppins",
-//             color: Color(0xff000000),
-//             fontSize: 20,
-//             fontWeight: FontWeight.w600,
-//           ),
-//         ),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 23),
-//         child: Column(
-//           children: [
-//             SizedBox(
-//               height: 20,
-//             ),
-//             Container(
-//               height: 45,
-//               decoration: BoxDecoration(
-//                 color: Colors.grey[300],
-//                 // borderRadius: BorderRadius.circular(
-//                 //   25.0,
-//                 // ),
-//               ),
-//               child: TabBar(
-//                 controller: _tabController,
-//                 // give the indicator a decoration (color and border radius)
-//                 indicator: BoxDecoration(
-//                   color: ThemeConstant.lightScheme.primary,
-//                 ),
-//                 physics: BouncingScrollPhysics(),
-//                 labelColor: Colors.white,
-//                 unselectedLabelColor: Colors.black,
-//                 labelStyle: ThemeConstant.textTheme.subtitle1!
-//                     .copyWith(color: Colors.white),
-//                 tabs: [
-//                   // first tab [you can add an icon using the icon property]
-//                   Tab(
-//                     text: 'Done',
-//                   ),
+  final MessageApi _messageApi = MessageApi();
+  final DeleteMessage _deleteMessage = DeleteMessage();
 
-//                   // second tab [you can add an icon using the icon property]
-//                   Tab(
-//                     text: 'Reject',
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Expanded(
-//               child: TabBarView(
-//                 controller: _tabController,
-//                 children: [
-//                   // first tab bar view widget
+  @override
+  void initState() {
+    _approve = _messageApi.readDataFromMessage();
+    // print(_approve);
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
 
-//                   Container(
-//                     margin: EdgeInsets.only(top: 20),
-//                     width: MediaQuery.of(context).size.width,
-//                     child: ListView.builder(
-//                       itemCount: items.length,
-//                       itemBuilder: (context, index) {
-//                         final item = items[index];
-//                         return Slidable(
-//                           key: Key(item.title),
-//                           actionPane: SlidableDrawerActionPane(),
-                
-//                           secondaryActions: <Widget>[
-//                             IconSlideAction(
-//                               caption: 'More',
-//                               color: Colors.black45,
-//                               icon: Icons.more_horiz,
-//                               onTap: () =>
-//                                   isDississed(index, SlidableAction.more),
-//                             ),
-//                             IconSlideAction(
-//                               caption: 'Delete',
-//                               color: Colors.red,
-//                               icon: CupertinoIcons.multiply_circle,
-//                               onTap: () =>
-//                                   isDississed(index, SlidableAction.delete),
-//                             ),
-//                           ],
-//                           child: FTile(
-//                             onTap: () {
-//                               Get.to(MessageDetailScreen());
-//                             },
-//                             title: items[index].title,
-//                             floor: items[index].Department,
-//                             level: items[index].level,
-//                             date: items[index].Date,
-//                             levelColor:
-//                                 items[index].level.toUpperCase() == "HIGH"
-//                                     ? Colors.red
-//                                     : items[index].level.toUpperCase() ==
-//                                             "Medium".toUpperCase()
-//                                         ? Color(0xffDEDE22)
-//                                         : Color(0xff00C700),
-//                           ),
-//                         );
-//                       },
-//                     ),
-//                   ),
+  @override
+  void dispose() {
+    _tabController!.dispose();
+    super.dispose();
+  }
 
-//                   // second tab bar view widget
-//                   Container(
-//                     margin: EdgeInsets.only(top: 20),
-//                     width: MediaQuery.of(context).size.width,
-//                     child: ListView.builder(
-//                       itemCount: items.length,
-//                       itemBuilder: (context, index) {
-//                         final item = items[index];
-//                         return Slidable(
-//                           key: Key(item.title),
-//                           actionPane: SlidableDrawerActionPane(),
-                
-//                           secondaryActions: <Widget>[
-//                             IconSlideAction(
-//                               caption: 'More',
-//                               color: Colors.black45,
-//                               icon: Icons.more_horiz,
-//                               onTap: () =>
-//                                   isDississed(index, SlidableAction.more),
-//                             ),
-//                             IconSlideAction(
-//                               caption: 'Delete',
-//                               color: Colors.red,
-//                               icon: CupertinoIcons.multiply_circle,
-//                               onTap: () =>
-//                                   isDississed(index, SlidableAction.delete),
-//                             ),
-//                           ],
-//                           child: FTile(
-//                             onTap: () {
-//                               Get.to(MessageDetailScreen());
-//                             },
-//                             title: items[index].title,
-//                             floor: items[index].Department,
-//                             level: items[index].level,
-//                             date: items[index].Date,
-//                             levelColor:
-//                                 items[index].level.toUpperCase() == "HIGH"
-//                                     ? Colors.red
-//                                     : items[index].level.toUpperCase() ==
-//                                             "Medium".toUpperCase()
-//                                         ? Color(0xffDEDE22)
-//                                         : Color(0xff00C700),
-//                           ),
-//                         );
-//                       },
-//                     ),
-//                   ),
+  // List<MessageModel> items = List.of(allData);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 24,
+          ),
+        ),
+        title: Text(
+          "Messge History",
+          style: const TextStyle(
+            fontFamily: "Poppins",
+            color: Color(0xff000000),
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 23),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 45,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+              ),
+              child: TabBar(
+                controller: _tabController,
+                // give the indicator a decoration (color and border radius)
+                indicator: BoxDecoration(
+                  color: ThemeConstant.lightScheme.primary,
+                ),
+                physics: BouncingScrollPhysics(),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.black,
+                labelStyle: ThemeConstant.textTheme.subtitle1!
+                    .copyWith(color: Colors.white),
+                tabs: [
+                  // first tab [you can add an icon using the icon property]
+                  Tab(
+                    text: 'Done',
+                  ),
 
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
+                  // second tab [you can add an icon using the icon property]
+                  Tab(
+                    text: 'Reject',
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // first tab bar view widget
+                  _buildFirstTab(context),
+                  // second tab bar view widget
+                  _buildSecondTab(context),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-//   void isDississed(int index, SlidableAction action) {
-//     final item = items[index];
-//     setState(() => items.removeAt(index));
+  void isDississed(int index, SlidableAction action) {
+    // final item = items[index];
+    // setState(() => items.removeAt(index));
 
-//     switch (action) {
-//       case SlidableAction.more:
-//         Get.snackbar(
-//           "Processing",
-//           "Hello everyone",
-//           icon: Icon(Icons.person, color: Colors.white),
-//           snackPosition: SnackPosition.BOTTOM,
-//           backgroundColor: Colors.green,
-//           borderRadius: 20,
-//           margin: EdgeInsets.all(15),
-//           colorText: Colors.white,
-//           duration: Duration(seconds: 4),
-//           isDismissible: true,
-//           dismissDirection: SnackDismissDirection.HORIZONTAL,
-//           forwardAnimationCurve: Curves.easeOutBack,
-//         );
-//         break;
-//       case SlidableAction.delete:
-//         Get.snackbar(
-//           "Deleted",
-//           "${item.title} has been deleted",
-//           icon: Icon(Icons.person, color: Colors.white),
-//           snackPosition: SnackPosition.BOTTOM,
-//           backgroundColor: Color(0xff2F2F2F),
-//           borderRadius: 20,
-//           margin: EdgeInsets.all(15),
-//           colorText: Colors.white,
-//           duration: Duration(seconds: 4),
-//           isDismissible: true,
-//           dismissDirection: SnackDismissDirection.HORIZONTAL,
-//           forwardAnimationCurve: Curves.easeOutBack,
-//         );
-//         break;
+    switch (action) {
+      case SlidableAction.more:
+        Get.snackbar(
+          "Processing",
+          "Hello everyone",
+          icon: Icon(Icons.person, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          borderRadius: 20,
+          margin: EdgeInsets.all(15),
+          colorText: Colors.white,
+          duration: Duration(seconds: 4),
+          isDismissible: true,
+          dismissDirection: SnackDismissDirection.HORIZONTAL,
+          forwardAnimationCurve: Curves.easeOutBack,
+        );
+        break;
+      case SlidableAction.delete:
+        Get.snackbar(
+          "Deleted",
+          "{item.title} has been deleted",
+          icon: Icon(Icons.person, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xff2F2F2F),
+          borderRadius: 20,
+          margin: EdgeInsets.all(15),
+          colorText: Colors.white,
+          duration: Duration(seconds: 4),
+          isDismissible: true,
+          dismissDirection: SnackDismissDirection.HORIZONTAL,
+          forwardAnimationCurve: Curves.easeOutBack,
+        );
+        break;
 
-//       default:
-//     }
-//   }
+      default:
+    }
+  }
 
+  _buildFirstTab(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      width: MediaQuery.of(context).size.width,
+      child: FutureBuilder<FeedbackModel>(
+        future: _approve,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error fetch data"),
+            );
+          }
+          if (snapshot.hasData) {
+            _listApprove = snapshot.data!.payload;
+            return _listApprove!.isNotEmpty
+                ? ListView.builder(
+                    itemCount: _listApprove?.length,
+                    itemBuilder: (context, index) {
+                      return _listApprove![index].isApproved == true &&
+                              _listApprove![index].isRejected == false
+                          ? Slidable(
+                              key: Key("${_listApprove![index].title}"),
+                              actionPane: SlidableDrawerActionPane(),
+                              secondaryActions: <Widget>[
+                                IconSlideAction(
+                                  caption: 'More',
+                                  color: Colors.black45,
+                                  icon: Icons.more_horiz,
+                                  onTap: () {
+                                    isDississed(index, SlidableAction.more);
+                                    print("More Option Done message");
+                                  },
+                                ),
+                                IconSlideAction(
+                                  caption: 'Delete',
+                                  color: Colors.red,
+                                  icon: CupertinoIcons.multiply_circle,
+                                  onTap: () {
+                                    print("Delete Option in Done messaage");
+                                    isDississed(index, SlidableAction.delete);
+                                    _approve =
+                                        _deleteMessage.deleteHistoryMessage(
+                                            _listApprove![index].id.toString());
 
-// }
+                                    setState(() {
+                                      _approve =
+                                          _messageApi.readDataFromMessage();
+                                    });
+                                  },
+                                ),
+                              ],
+                              child: FTile(
+                                onTap: () {
+                                  //   Get.to(MessageDetailScreen());
+                                  print(_listApprove![index].id);
+
+                                  // _approve =
+                                  //     _deleteMessage.deleteHistoryMessage(
+                                  //   "618a165f361748f0b5035c8e"
+                                  //);
+                                },
+                                title: "${_listApprove![index].title}",
+                                floor:
+                                    "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
+                                level: "${_listApprove![index].feedbackLevel}",
+                                date: "",
+                                levelColor:
+                                    "${_listApprove![index].feedbackLevel}"
+                                                .toUpperCase() ==
+                                            "HIGH"
+                                        ? Colors.red
+                                        : "${_listApprove![index].feedbackLevel}"
+                                                    .toUpperCase() ==
+                                                "Medium".toUpperCase()
+                                            ? Color(0xffDEDE22)
+                                            : Color(0xff00C700),
+                              ),
+                            )
+                          : SizedBox();
+                    },
+                  )
+                : Center(
+                    child: Text("Empty"),
+                  );
+          }
+
+          return Center(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: Lottie.asset("assets/loadings/waiting.json"),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  _buildSecondTab(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      width: MediaQuery.of(context).size.width,
+      child: FutureBuilder<FeedbackModel>(
+        future: _approve,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error fetch data"),
+            );
+          }
+          if (snapshot.hasData) {
+            _listApprove = snapshot.data!.payload;
+            if (_listApprove!.isEmpty) {
+              return Center(
+                child: Text("Empty"),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: _listApprove?.length,
+                itemBuilder: (context, index) {
+                  return _listApprove![index].isApproved == false &&
+                          _listApprove![index].isRejected == true
+                      ? Slidable(
+                          key: Key("${_listApprove![index].title}"),
+                          actionPane: SlidableDrawerActionPane(),
+                          secondaryActions: <Widget>[
+                            IconSlideAction(
+                                caption: 'More',
+                                color: Colors.black45,
+                                icon: Icons.more_horiz,
+                                onTap: () {
+                                  print("More Option in Reject message");
+                                  isDississed(index, SlidableAction.more);
+                                }),
+                            IconSlideAction(
+                                caption: 'Delete',
+                                color: Colors.red,
+                                icon: CupertinoIcons.multiply_circle,
+                                onTap: () {
+                                  print("Delete Option in Reject message");
+                                  isDississed(index, SlidableAction.delete);
+                                }),
+                          ],
+                          child: FTile(
+                            onTap: () {
+                              //     Get.to(MessageDetailScreen());
+                              _approve = _deleteMessage.deleteHistoryMessage(
+                                  _listApprove![index].id.toString());
+                            },
+                            title: "${_listApprove![index].title}",
+                            floor:
+                                "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
+                            level: "${_listApprove![index].feedbackLevel}",
+                            date: "",
+                            levelColor: "${_listApprove![index].feedbackLevel}"
+                                        .toUpperCase() ==
+                                    "HIGH"
+                                ? Colors.red
+                                : "${_listApprove![index].feedbackLevel}"
+                                            .toUpperCase() ==
+                                        "Medium".toUpperCase()
+                                    ? Color(0xffDEDE22)
+                                    : Color(0xff00C700),
+                          ),
+                        )
+                      : SizedBox();
+                },
+              );
+            }
+          }
+          return Center(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: Lottie.asset("assets/loadings/waiting.json"),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Container(
+  //   margin: EdgeInsets.only(top: 20),
+  //   width: MediaQuery.of(context).size.width,
+  //   child: Center(
+  //     child: Text("Reject"),
+  //   ),
+  //   // child: ListView.builder(
+  //   //   itemCount: items.length,
+  //   //   itemBuilder: (context, index) {
+  //   //     final item = items[index];
+  //   //     return Slidable(
+  //   //       key: Key(item.title),
+  //   //       actionPane: SlidableDrawerActionPane(),
+  //       secondaryActions: <Widget>[
+  //   //         IconSlideAction(
+  //   //           caption: 'More',
+  //   //           color: Colors.black45,
+  //   //           icon: Icons.more_horiz,
+  //   //           onTap: () =>
+  //   //               isDississed(index, SlidableAction.more),
+  //   //         ),
+  //   //         IconSlideAction(
+  //   //           caption: 'Delete',
+  //   //           color: Colors.red,
+  //   //           icon: CupertinoIcons.multiply_circle,
+  //   //           onTap: () =>
+  //   //               isDississed(index, SlidableAction.delete),
+  //   //         ),
+  //   //       ],
+  //   //       child: FTile(
+  //   //         onTap: () {
+  //   //           Get.to(MessageDetailScreen());
+  //   //         },
+  //   //         title: items[index].title,
+  //   //         floor: items[index].Department,
+  //   //         level: items[index].level,
+  //   //         date: items[index].Date,
+  //   //         levelColor:
+  //   //             items[index].level.toUpperCase() == "HIGH"
+  //   //                 ? Colors.red
+  //   //                 : items[index].level.toUpperCase() ==
+  //   //                         "Medium".toUpperCase()
+  //   //                     ? Color(0xffDEDE22)
+  //   //                     : Color(0xff00C700),
+  //   //       ),
+  //   //     );
+  //   //   },
+  //   // ),
+  // ),
+
+  // Container(
+  //   margin: EdgeInsets.only(top: 20),
+  //   width: MediaQuery.of(context).size.width,
+  //   child: ListView.builder(
+  //     itemCount: items.length,
+  //     itemBuilder: (context, index) {
+  //       final item = items[index];
+  //       return Slidable(
+  //         key: Key(item.title),
+  //         actionPane: SlidableDrawerActionPane(),
+
+  //         secondaryActions: <Widget>[
+  //           IconSlideAction(
+  //             caption: 'More',
+  //             color: Colors.black45,
+  //             icon: Icons.more_horiz,
+  //             onTap: () =>
+  //                 isDississed(index, SlidableAction.more),
+  //           ),
+  //           IconSlideAction(
+  //             caption: 'Delete',
+  //             color: Colors.red,
+  //             icon: CupertinoIcons.multiply_circle,
+  //             onTap: () =>
+  //                 isDississed(index, SlidableAction.delete),
+  //           ),
+  //         ],
+  //         child: FTile(
+  //           onTap: () {
+  //             Get.to(MessageDetailScreen());
+  //           },
+  //           title: items[index].title,
+  //           floor: items[index].Department,
+  //           level: items[index].level,
+  //           date: items[index].Date,
+  //           levelColor:
+  //               items[index].level.toUpperCase() == "HIGH"
+  //                   ? Colors.red
+  //                   : items[index].level.toUpperCase() ==
+  //                           "Medium".toUpperCase()
+  //                       ? Color(0xffDEDE22)
+  //                       : Color(0xff00C700),
+  //         ),
+  //       );
+  //     },
+  //   ),
+  // ),
+
+}

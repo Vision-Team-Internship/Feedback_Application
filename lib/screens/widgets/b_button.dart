@@ -4,7 +4,7 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 
 class ButtonLogin extends StatelessWidget {
   final String title;
-  final VoidCallback onTap;
+  final Function() onTap;
   final Color borderColor;
 
   final Color splashIcon;

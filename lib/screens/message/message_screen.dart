@@ -4,7 +4,8 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/data/message_api.dart';
+
+import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
@@ -88,10 +89,8 @@ class _MessageScreenState extends State<MessageScreen> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(
-            alignment: Alignment.topLeft,
             padding: EdgeInsets.symmetric(horizontal: 25),
             width: MediaQuery.of(context).size.width,
-            //  height: MediaQuery.of(context).size.height,
             child: FutureBuilder<FeedbackModel>(
               future: _messagemodel,
               builder: (context, snapshot) {
@@ -102,9 +101,16 @@ class _MessageScreenState extends State<MessageScreen> {
                 }
                 if (snapshot.hasData) {
                   _listmessage = snapshot.data!.payload;
-                  return _buildBody(context);
+                  return _listmessage!.isNotEmpty
+                      ? _buildBody(context)
+                      : Center(
+                          child: Text("Empty"),
+                        );
                 }
-                return Center(
+                return Container(
+                  height: MediaQuery.of(context).size.height / 1.5,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
                   child: SizedBox(
                     width: 200,
                     height: 200,
@@ -115,41 +121,6 @@ class _MessageScreenState extends State<MessageScreen> {
             ),
           ),
         ),
-        // child: isConnected
-        //     ? SingleChildScrollView(
-        //         physics: BouncingScrollPhysics(),
-        //         child: Container(
-        //           alignment: Alignment.topLeft,
-        //           padding: EdgeInsets.symmetric(horizontal: 25),
-        //           width: MediaQuery.of(context).size.width,
-        //           //  height: MediaQuery.of(context).size.height,
-        //           child: FutureBuilder<MessageModel>(
-        //             future: _messagemodel,
-        //             builder: (context, snapshot) {
-        //               if (snapshot.hasError) {
-        //                 return Center(
-        //                   child: Text("Please try again"),
-        //                 );
-        //               }
-        //               if (snapshot.hasData) {
-        //                 _listmessage = snapshot.data!.payload;
-        //                 return _buildBody(context);
-        //               }
-        //               return Center(
-        //                 child: SizedBox(
-        //                   width: 200,
-        //                   height: 200,
-        //                   child: Lottie.asset("assets/loadings/waiting.json"),
-        //                 ),
-        //               );
-        //             },
-        //           ),
-        //         ),
-        //       )
-
-        //     : Center(
-        //         child: Text("Disconnect"),
-        //       ),
       ),
     );
   }
@@ -187,7 +158,8 @@ class _MessageScreenState extends State<MessageScreen> {
           itemCount: _listmessage!.length,
           itemBuilder: (context, index) {
             if (_listmessage![index].isApproved == false &&
-                _listmessage![index].isRejected == false) {
+                _listmessage![index].isRejected == false &&
+                _listmessage![index].isCompleted == false) {
               return InkWell(
                 onTap: () {
                   print(_listmessage![index].uniqueIDs!.toList());
@@ -196,7 +168,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         date:
                             '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
                         level: '${_listmessage![index].feedbackLevel}',
-                        unquid: [_listmessage![index].uniqueIDs!.toList()],
+                        id: _listmessage![index].id.toString(),
                       ));
                 },
                 child: FTile(
@@ -224,98 +196,3 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 }
-
-// FutureBuilder<MessageModel>(
-//             builder: (context, snapshot) {
-//               if (snapshot.hasError) {
-//                 print("Error While reading data from API: ${snapshot.error}");
-//                 return Center(
-//                   child: Text("Has Error Please try again"),
-//                 );
-//               }
-//               if (snapshot.connectionState == ConnectionState.done) {
-//                 _listmessage = snapshot.data!.payload;
-//                 print(_listmessage);
-              
-//               }
-
-//               return SizedBox();
-//             },
-//           ),
-        
-
-
-  // return Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   const SizedBox(height: 20),
-  //                   SvgPicture.asset(
-  //                     "assets/icon_background/message_icon.svg",
-  //                   ),
-  //                   const SizedBox(height: 23),
-  //                   const Text(
-  //                     "Message Feedback",
-  //                     style: TextStyle(
-  //                       fontSize: 24,
-  //                       fontWeight: FontWeight.w600,
-  //                       fontFamily: "Poppins",
-  //                       color: Colors.black,
-  //                     ),
-  //                   ),
-  //                   Text(
-  //                     "Timeline of when recieved request",
-  //                     style: ThemeConstant.textTheme.bodyText2!.copyWith(
-  //                       color: ThemeConstant.lightScheme.secondary,
-  //                     ),
-  //                   ),
-  //                   const SizedBox(
-  //                     height: 50,
-  //                   ),
-  //                   FTile(
-  //                     onTap: () {
-  //                       Get.to(MessageDetailScreen());
-  //                     },
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'High',
-  //                     date: '02/11/2022',
-  //                     levelColor: Colors.red,
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Medium',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xffDEDE22),
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Low',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xff00C700),
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'High',
-  //                     date: '02/11/2022',
-  //                     levelColor: Colors.red,
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Medium',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xffDEDE22),
-  //                   ),
-  //                   const FTile(
-  //                     title: 'Not enough Water',
-  //                     floor: 'F1>IT>Room102',
-  //                     level: 'Low',
-  //                     date: '02/11/2022',
-  //                     levelColor: Color(0xff00C700),
-  //                   ),
-  //                 ],
-  //               );
-            

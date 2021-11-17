@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_field, prefer_final_fields, avoid_print
+// ignore_for_file: prefer_const_constructors, unused_field, prefer_final_fields, avoid_print, unnecessary_string_interpolations
 
 import 'dart:async';
 
@@ -163,13 +163,18 @@ class _MessageScreenState extends State<MessageScreen> {
               return InkWell(
                 onTap: () {
                   print(_listmessage![index].uniqueIDs!.toList());
-                  Get.to(() => MessageDetailScreen(
-                        title: "${_listmessage![index].title}",
-                        date:
-                            '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
-                        level: '${_listmessage![index].feedbackLevel}',
-                        id: _listmessage![index].id.toString(),
-                      ));
+                  Get.to(
+                    () => MessageDetailScreen(
+                      title: "${_listmessage![index].title}",
+                      date:
+                          '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
+                      level: '${_listmessage![index].feedbackLevel}',
+                      id: _listmessage![index].id.toString(),
+                      managerContact: [
+                        _listmessage![index].managerContact,
+                      ],
+                    ),
+                  );
                 },
                 child: FTile(
                   title: "${_listmessage![index].title}",

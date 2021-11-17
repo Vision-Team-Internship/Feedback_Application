@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     // ignore: avoid_print
                     print("Message");
-                    Get.to(MessageScreen());
+                    Get.to(() => MessageScreen());
                   },
                   subtitle: 'Recieved: 9+',
                   title: 'Message',
@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     // ignore: avoid_print
                     print("In process");
-                    Get.to(InProcessingScreen());
+                    Get.to(() => InProcessingScreen());
                   },
                   subtitle: 'Recieved: 9+',
                   title: 'In Processing',
@@ -173,6 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     // ignore: avoid_print
                     print("History");
+                    Get.to(() => ApproveHistoryScreen());
                   },
                   subtitle: 'Recieved: 9+',
                   title: 'History',

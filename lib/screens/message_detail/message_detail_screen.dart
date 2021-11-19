@@ -82,13 +82,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
               children: [
                 Text(
                   "DateTime:",
-                  style: ThemeConstant.textTheme.bodyText1!.copyWith(
+                  style: ThemeConstant.textTheme.bodyText2!.copyWith(
                     color: ThemeConstant.lightScheme.secondary,
                   ),
                 ),
                 Text(
                   widget.date,
-                  style: ThemeConstant.textTheme.bodyText1!.copyWith(
+                  style: ThemeConstant.textTheme.bodyText2!.copyWith(
                     color: Colors.black,
                   ),
                 ),
@@ -126,7 +126,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           Text(
                             "Level: ",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                               fontFamily: "Poppins",
@@ -135,7 +135,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           Text(
                             widget.level,
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: widget.level.toUpperCase() ==
                                       "high".toUpperCase()
@@ -156,7 +156,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     Text(
                       "Location: ",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                         fontFamily: "Poppins",
@@ -196,7 +196,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                         detail.feedbackLocation!.floor![index],
                                         style: TextStyle(
                                           fontFamily: "Poppins",
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w400,
                                           color: ThemeConstant
                                               .lightScheme.onBackground,
@@ -290,7 +290,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                                   .room![index],
                                               style: TextStyle(
                                                 fontFamily: "Poppins",
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w400,
                                                 color: ThemeConstant
                                                     .lightScheme.onBackground,
@@ -313,7 +313,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     Text(
                       "Manager Contact:",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                         fontFamily: "Poppins",
@@ -341,7 +341,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   "Card ID : ",
                                   style: TextStyle(
                                     fontFamily: "Poppins",
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                     color: ThemeConstant.lightScheme.secondary,
                                   ),
@@ -357,7 +357,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                               .toString(),
                                           style: TextStyle(
                                             fontFamily: "Poppins",
-                                            fontSize: 18,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                             color: ThemeConstant
                                                 .lightScheme.onBackground,
@@ -376,7 +376,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   "Name: ",
                                   style: TextStyle(
                                     fontFamily: "Poppins",
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                     color: ThemeConstant.lightScheme.secondary,
                                   ),
@@ -392,7 +392,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                               .toString(),
                                           style: TextStyle(
                                             fontFamily: "Poppins",
-                                            fontSize: 18,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                             color: ThemeConstant
                                                 .lightScheme.onBackground,
@@ -411,7 +411,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   "Phone : ",
                                   style: TextStyle(
                                     fontFamily: "Poppins",
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                     color: ThemeConstant.lightScheme.secondary,
                                   ),
@@ -438,7 +438,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                               decoration:
                                                   TextDecoration.underline,
                                               fontFamily: "Poppins",
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               color: ThemeConstant
                                                   .lightScheme.primary,
@@ -460,7 +460,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     Text(
                       "Message :",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                         fontFamily: "Poppins",
@@ -473,7 +473,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       detail.message.toString(),
                       style: TextStyle(
                         fontFamily: "Poppins",
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: ThemeConstant.lightScheme.secondary,
                       ),

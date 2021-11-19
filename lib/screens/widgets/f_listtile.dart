@@ -34,7 +34,7 @@ class FListTile extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           fontFamily: 'Poppins',
           color: Color(0xff000000),
         ),

@@ -66,7 +66,7 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
           style: const TextStyle(
             fontFamily: "Poppins",
             color: Color(0xff000000),
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -137,7 +137,7 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
         const Text(
           "In Processing Work",
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins",
             color: Colors.black,
@@ -162,17 +162,11 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
                 _listmessage![index].isRejected == false) {
               return InkWell(
                 onTap: () {
-                //  print(_listmessage![index].uniqueIDs!.toList());
                   Get.to(() => DetailMessageInProcess(
                         title: '${_listmessage![index].title}',
                         dateTime:
                             '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
                         message: '${_listmessage![index].message}',
-                        // title: "${_listmessage![index].title}",
-                        // date:
-                        //     '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
-                        // level: '${_listmessage![index].feedbackLevel}',
-                        // unquid: [_listmessage![index].uniqueIDs!.toList()],
                       ));
                 },
                 child: FTile(

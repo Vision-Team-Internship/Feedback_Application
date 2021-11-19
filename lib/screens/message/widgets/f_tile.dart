@@ -42,12 +42,11 @@ class FTile extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  //   width: MediaQuery.of(context).size.width - 110,
                   child: Text(
                     floor,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: ThemeConstant.textTheme.bodyText2!.copyWith(
+                    style: ThemeConstant.textTheme.caption!.copyWith(
                       color: ThemeConstant.lightScheme.secondary,
                     ),
                   ),
@@ -60,7 +59,7 @@ class FTile extends StatelessWidget {
                 children: [
                   Text(
                     level,
-                    style: ThemeConstant.textTheme.bodyText1!.copyWith(
+                    style: ThemeConstant.textTheme.bodyText2!.copyWith(
                       color: levelColor,
                     ),
                   ),

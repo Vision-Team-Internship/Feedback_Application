@@ -67,7 +67,7 @@ class _MessageScreenState extends State<MessageScreen> {
           style: const TextStyle(
             fontFamily: "Poppins",
             color: Color(0xff000000),
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -137,7 +137,7 @@ class _MessageScreenState extends State<MessageScreen> {
         const Text(
           "Message Feedback",
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins",
             color: Colors.black,

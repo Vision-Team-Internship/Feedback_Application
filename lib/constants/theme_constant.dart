@@ -72,7 +72,7 @@ class ThemeConstant {
           fontFamily: 'Poppins',
         ),
         headline6: TextStyle(
-          fontSize: 19,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.15,
           fontFamily: 'Poppins',
@@ -108,7 +108,7 @@ class ThemeConstant {
           fontFamily: 'Poppins',
         ),
         caption: TextStyle(
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.4,
           fontFamily: 'Poppins',

@@ -19,7 +19,7 @@
       </intent>
     </queries>
     <application
-        android:label="feedback_application_flutter"
+        android:label="Vfeed"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

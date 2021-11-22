@@ -1,11 +1,9 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, non_constant_identifier_names, prefer_const_declarations, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, avoid_print, non_constant_identifier_names
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/detail_message_model.dart';
@@ -39,9 +37,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   @override
   void initState() {
+ 
     _detailMessage = _messageApi.readDetailMessage(widget.id.toString());
     _doneNotecontroller = TextEditingController();
     _doneNotecontroller.addListener(() {});
+   
     super.initState();
   }
 
@@ -260,6 +260,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           ),
                           detail.feedbackLocation!.room!.isNotEmpty
                               ?
+
                               // Room
                               Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -486,7 +487,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       children: [
                         ButtonLogin(
                           title: "Approve".toUpperCase(),
-                          onTap: () {
+                          onTap: () async {
                             print("Approve");
                             openDialogApprove();
                           },

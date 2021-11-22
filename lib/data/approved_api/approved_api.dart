@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:feedback_application_flutter/data/getdata/api_repository.dart';
-import 'package:feedback_application_flutter/model/approved_model.dart';
+
 import 'package:feedback_application_flutter/model/detail_approve_history_model.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:http/http.dart' as http;
@@ -38,24 +38,4 @@ class ApprovedApi extends ApiRepository {
 
   //Make approved Message
 
-  Future<ApprovedModel> exceptApprovedMessage(
-      String note, String feedbackId) async {
-    http.Response response = await http.post(
-      Uri.parse("$baseUrl/approveds"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        <String, String>{
-          'note': "test note with apiiasdfghjkl;kjhgfdfghjkl",
-          'feedback_id': "6195b7ded08b2abda128e33a",
-        },
-      ),
-    );
-    if (response.statusCode == 201) {
-      return ApprovedModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to Allow Approved to Messaage');
-    }
-  }
 }

@@ -17,7 +17,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
     // ignore: prefer_const_constructors
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 3), () {
       // ignore: prefer_const_constructors
       Get.to(() => MyHomePage());
     });

@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:feedback_application_flutter/model/approved_model.dart';
+import 'package:feedback_application_flutter/model/rejected_model.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -35,6 +36,7 @@ class MessageDetailScreen extends StatefulWidget {
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   late TextEditingController _doneNotecontroller;
+  late TextEditingController _rejectNotecontroller;
   Future<DetailMessageModel>? _detailMessage;
 
   final MessageApi _messageApi = MessageApi();
@@ -43,12 +45,14 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   void initState() {
     _detailMessage = _messageApi.readDetailMessage(widget.id.toString());
     _doneNotecontroller = TextEditingController();
+    _rejectNotecontroller = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     _doneNotecontroller.dispose();
+    _rejectNotecontroller.dispose();
     super.dispose();
   }
 
@@ -522,6 +526,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     );
   }
 
+  // Make Approve message
   Future<ApprovedModel?> makeApprove(String note, String id) async {
     http.Response response = await http.post(
       Uri.parse(
@@ -542,6 +547,32 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       // return ApprovedModel.fromJson(jsonDecode(response.body));
       final String data = response.body;
       return approvedModelFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  //Make Reject Message
+  Future<RejectModel?> makeReject(String note, String id) async {
+    http.Response response = await http.post(
+      Uri.parse(
+        'https://feedback-project-api.herokuapp.com/api/v1/rejecteds',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'note': note,
+          'feedback_id': id,
+        },
+      ),
+    );
+
+    if (response.statusCode == 201) {
+      // return ApprovedModel.fromJson(jsonDecode(response.body));
+      final String data = response.body;
+      return rejectModelFromJson(data);
     } else {
       return null;
     }
@@ -582,8 +613,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           title: "Yes",
           onTap: () async {
             print("Approve");
-            final String tips = _doneNotecontroller.text;
-            final ApprovedModel? _approve = await makeApprove(tips, widget.id);
+            final String text = _doneNotecontroller.text;
+            final ApprovedModel? _approve = await makeApprove(text, widget.id);
             Get.to(() => MessageScreen());
           },
           borderColor: Color(0xff0080FF),
@@ -604,14 +635,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   Future openDialogReject() => Get.defaultDialog(
         title: "Note",
         content: TextFormField(
-          minLines: 2,
-          maxLines: 5,
+          controller: _rejectNotecontroller,
+          keyboardType: TextInputType.multiline,
+          maxLines: 6,
+          minLines: 1,
+          autocorrect: true,
           decoration: InputDecoration(
-            labelStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              fontFamily: "Poppins",
-            ),
             hintText: "Note some reasone",
             hintStyle: TextStyle(
               fontSize: 18,
@@ -624,7 +653,10 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         actions: [
           ButtonLogin(
             title: "Yes",
-            onTap: () {
+            onTap: () async {
+              final RejectModel? _reject =
+                  await makeReject(_rejectNotecontroller.text, widget.id);
+              Get.to(() => MessageScreen());
               print("Reject");
             },
             borderColor: Color(0xff0080FF),

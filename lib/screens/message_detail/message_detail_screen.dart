@@ -518,12 +518,14 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   ],
                 ),
               );
+          
             }
             return const SizedBox();
           },
         ),
       ),
     );
+ 
   }
 
   // Make Approve message
@@ -581,7 +583,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   bool IsButtonActive = true;
 
   Future openDialogApprove() async {
-    await Get.defaultDialog(
+    await Get.defaultDialog( 
       title: "Note",
       content: SingleChildScrollView(
         scrollDirection: Axis.vertical,

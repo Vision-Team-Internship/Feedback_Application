@@ -7,6 +7,7 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
+import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_detail_screen.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Get.to(() => MyHomePage());
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -108,7 +109,7 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
                         );
                 }
                 return Container(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height / 1.5,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
                   child: SizedBox(
@@ -157,17 +158,21 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
           shrinkWrap: true,
           itemCount: _listmessage!.length,
           itemBuilder: (context, index) {
-            if (_listmessage![index].isCompleted == true &&
-                _listmessage![index].isApproved == true &&
-                _listmessage![index].isRejected == false) {
+            if (_listmessage![index].isApproved == true &&
+                _listmessage![index].isRejected == false &&
+                _listmessage![index].isCompleted == false) {
               return InkWell(
                 onTap: () {
-                  Get.to(() => DetailMessageInProcess(
-                        title: '${_listmessage![index].title}',
-                        dateTime:
-                            '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
-                        message: '${_listmessage![index].message}',
-                      ));
+                  Get.to(
+                    () => DetailMessageInProcess(
+                      title: '${_listmessage![index].title}',
+                      dateTime:
+                          '${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}',
+                      message: '${_listmessage![index].message}',
+                      id: '${_listmessage![index].id}',
+                      level: '${_listmessage![index].feedbackLevel}',
+                    ),
+                  );
                 },
                 child: FTile(
                   title: "${_listmessage![index].title}",

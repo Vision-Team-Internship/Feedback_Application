@@ -178,7 +178,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                 ? ListView.builder(
                     itemCount: _listApprove?.length,
                     itemBuilder: (context, index) {
-                      return _listApprove![index].isApproved == true &&
+                      return _listApprove![index].isCompleted == true &&
                               _listApprove![index].isRejected == false
                           ? Slidable(
                               key: Key("${_listApprove![index].title}"),

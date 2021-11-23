@@ -1,12 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, camel_case_types
 
 import 'dart:convert';
-
+import 'package:feedback_application_flutter/model/approved_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/completed_model.dart';
@@ -37,6 +36,7 @@ class DetailMessageInProcess extends StatefulWidget {
 class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
   late TextEditingController _comController;
   Future<DetailMessageModel>? _detailMessage;
+  Future<ApprovedModel>? _approveDate;
 
   final MessageApi _messageApi = MessageApi();
 
@@ -44,6 +44,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
   void initState() {
     _comController = TextEditingController();
     _detailMessage = _messageApi.readDetailMessage(widget.id);
+    _approveDate = _messageApi.readDetailApprove(widget.id);
     print(widget.id);
     super.initState();
   }
@@ -100,7 +101,29 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 45,
+                        height: 25,
+                      ),
+                      Column(
+                        // ignore: prefer_const_literals_to_create_immutables
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Approve Date : ",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _dateApproved(approveDate: _approveDate),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       Row(
                         children: [
@@ -216,6 +239,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                         width:
                                             MediaQuery.of(context).size.width,
                                         child: ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             itemCount: detail.feedbackLocation!
                                                 .department!.length,
@@ -267,6 +292,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                         width:
                                             MediaQuery.of(context).size.width,
                                         child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: detail
                                               .feedbackLocation!.room!.length,
@@ -503,15 +530,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        detail.message.toString(),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: ThemeConstant.lightScheme.secondary,
-                        ),
-                      ),
+                      ApproveMess(approveNote: _approveDate),
+
                       const SizedBox(
                         height: 40,
                       ),
@@ -616,4 +636,87 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
           ),
         ],
       );
+}
+
+class ApproveMess extends StatelessWidget {
+  const ApproveMess({
+    Key? key,
+    required Future<ApprovedModel>? approveNote,
+  })  : _approveNote = approveNote,
+        super(key: key);
+
+  final Future<ApprovedModel>? _approveNote;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<ApprovedModel>(
+      future: _approveNote,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error ${snapshot.error}"),
+          );
+        }
+        if (snapshot.hasData) {
+          var note = snapshot.data!.payload;
+          return Wrap(
+            children: List.generate(
+              note!.length,
+              (index) => Text(
+                "${note[index].note}",
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: ThemeConstant.lightScheme.secondary,
+                ),
+              ),
+            ),
+          );
+        }
+        return SizedBox();
+      },
+    );
+  }
+}
+
+class _dateApproved extends StatelessWidget {
+  const _dateApproved({
+    Key? key,
+    required Future<ApprovedModel>? approveDate,
+  })  : _approveDate = approveDate,
+        super(key: key);
+
+  final Future<ApprovedModel>? _approveDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<ApprovedModel>(
+      future: _approveDate,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error ${snapshot.error}"),
+          );
+        }
+        if (snapshot.hasData) {
+          var date = snapshot.data!.payload;
+          return Wrap(
+            children: List.generate(
+              date!.length,
+              (index) => Text(
+                "${date[index].createdDate!.day}/${date[index].createdDate!.month}/${date[index].createdDate!.year}",
+                style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.red),
+              ),
+            ),
+          );
+        }
+        return SizedBox();
+      },
+    );
+  }
 }

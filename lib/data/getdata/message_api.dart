@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:feedback_application_flutter/data/getdata/api_repository.dart';
+import 'package:feedback_application_flutter/model/approved_model.dart';
 import 'package:feedback_application_flutter/model/detail_inprocess_model.dart';
 import 'package:feedback_application_flutter/model/detail_message_model.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
@@ -53,4 +54,19 @@ class MessageApi extends ApiRepository {
       throw Exception("Error while reading data");
     }
   }
+
+Future<ApprovedModel> readDetailApprove(id)async{
+  http.Response response = await http.get(
+      Uri.parse(
+        '$baseUrl/approveds/?feedback_id=$id',
+      ),
+    );
+     if (response.statusCode == 200) {
+      return ApprovedModel.fromJson(
+        jsonDecode(response.body),
+      );
+    } else {
+      throw Exception("Error while reading data");
+    }
+}
 }

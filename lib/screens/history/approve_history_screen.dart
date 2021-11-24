@@ -7,8 +7,12 @@ import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 // import 'package:feedback_application_flutter/data/data.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/model/slidable_action.dart';
-import 'package:feedback_application_flutter/screens/approve_screen/detail_approve_message_screen.dart';
+
+import 'package:feedback_application_flutter/screens/history/detail_approve_message_screen.dart';
+
+import 'package:feedback_application_flutter/screens/history/detail_reject_message_screen.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -220,8 +224,9 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                           .feedbackLevel
                                           .toString(),
                                       title:
-                                          _listApprove![index].title.toString(), date: '', managerContact: [],
-                                      
+                                          _listApprove![index].title.toString(),
+                                      date: '',
+                                      managerContact: [],
                                     ),
                                   );
                                 },
@@ -309,7 +314,16 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                           ],
                           child: FTile(
                             onTap: () {
-                              //     Get.to(MessageDetailScreen());
+                              Get.to(
+                                () => DetailRejectMessageScreen(
+                                  id: '${_listApprove![index].id}',
+                                  date:
+                                      '${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}',
+                                  level:
+                                      '${_listApprove![index].feedbackLevel}',
+                                  title: '${_listApprove![index].title}',
+                                ),
+                              );
                               // _approve = _deleteMessage.deleteHistoryMessage(
                               //     _listApprove![index].id.toString());
                             },
@@ -345,103 +359,4 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
       ),
     );
   }
-
-  // Container(
-  //   margin: EdgeInsets.only(top: 20),
-  //   width: MediaQuery.of(context).size.width,
-  //   child: Center(
-  //     child: Text("Reject"),
-  //   ),
-  //   // child: ListView.builder(
-  //   //   itemCount: items.length,
-  //   //   itemBuilder: (context, index) {
-  //   //     final item = items[index];
-  //   //     return Slidable(
-  //   //       key: Key(item.title),
-  //   //       actionPane: SlidableDrawerActionPane(),
-  //       secondaryActions: <Widget>[
-  //   //         IconSlideAction(
-  //   //           caption: 'More',
-  //   //           color: Colors.black45,
-  //   //           icon: Icons.more_horiz,
-  //   //           onTap: () =>
-  //   //               isDississed(index, SlidableAction.more),
-  //   //         ),
-  //   //         IconSlideAction(
-  //   //           caption: 'Delete',
-  //   //           color: Colors.red,
-  //   //           icon: CupertinoIcons.multiply_circle,
-  //   //           onTap: () =>
-  //   //               isDississed(index, SlidableAction.delete),
-  //   //         ),
-  //   //       ],
-  //   //       child: FTile(
-  //   //         onTap: () {
-  //   //           Get.to(MessageDetailScreen());
-  //   //         },
-  //   //         title: items[index].title,
-  //   //         floor: items[index].Department,
-  //   //         level: items[index].level,
-  //   //         date: items[index].Date,
-  //   //         levelColor:
-  //   //             items[index].level.toUpperCase() == "HIGH"
-  //   //                 ? Colors.red
-  //   //                 : items[index].level.toUpperCase() ==
-  //   //                         "Medium".toUpperCase()
-  //   //                     ? Color(0xffDEDE22)
-  //   //                     : Color(0xff00C700),
-  //   //       ),
-  //   //     );
-  //   //   },
-  //   // ),
-  // ),
-
-  // Container(
-  //   margin: EdgeInsets.only(top: 20),
-  //   width: MediaQuery.of(context).size.width,
-  //   child: ListView.builder(
-  //     itemCount: items.length,
-  //     itemBuilder: (context, index) {
-  //       final item = items[index];
-  //       return Slidable(
-  //         key: Key(item.title),
-  //         actionPane: SlidableDrawerActionPane(),
-
-  //         secondaryActions: <Widget>[
-  //           IconSlideAction(
-  //             caption: 'More',
-  //             color: Colors.black45,
-  //             icon: Icons.more_horiz,
-  //             onTap: () =>
-  //                 isDississed(index, SlidableAction.more),
-  //           ),
-  //           IconSlideAction(
-  //             caption: 'Delete',
-  //             color: Colors.red,
-  //             icon: CupertinoIcons.multiply_circle,
-  //             onTap: () =>
-  //                 isDississed(index, SlidableAction.delete),
-  //           ),
-  //         ],
-  //         child: FTile(
-  //           onTap: () {
-  //             Get.to(MessageDetailScreen());
-  //           },
-  //           title: items[index].title,
-  //           floor: items[index].Department,
-  //           level: items[index].level,
-  //           date: items[index].Date,
-  //           levelColor:
-  //               items[index].level.toUpperCase() == "HIGH"
-  //                   ? Colors.red
-  //                   : items[index].level.toUpperCase() ==
-  //                           "Medium".toUpperCase()
-  //                       ? Color(0xffDEDE22)
-  //                       : Color(0xff00C700),
-  //         ),
-  //       );
-  //     },
-  //   ),
-  // ),
-
 }

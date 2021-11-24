@@ -15,7 +15,7 @@ class DetailApproveMessageScreen extends StatefulWidget {
   final String date;
   final String level;
   final String id;
-  final List managerContact;
+  final List managerContact; 
 
   const DetailApproveMessageScreen({
     Key? key,
@@ -660,6 +660,7 @@ class ApproveMessage extends StatelessWidget {
                       ),
                     ),
                   ),
+               
                 ],
               ),
               SizedBox(

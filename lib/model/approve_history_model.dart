@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final detailApproveHistory = detailApproveHistoryFromJson(jsonString);
+//     final historyApprove = historyApproveFromJson(jsonString);
 
 import 'dart:convert';
 
-DetailApproveHistory detailApproveHistoryFromJson(String str) => DetailApproveHistory.fromJson(json.decode(str));
+HistoryApprove historyApproveFromJson(String str) => HistoryApprove.fromJson(json.decode(str));
 
-String detailApproveHistoryToJson(DetailApproveHistory data) => json.encode(data.toJson());
+String historyApproveToJson(HistoryApprove data) => json.encode(data.toJson());
 
-class DetailApproveHistory {
-    DetailApproveHistory({
+class HistoryApprove {
+    HistoryApprove({
         this.message,
         this.payload,
     });
@@ -17,7 +17,7 @@ class DetailApproveHistory {
     String? message;
     Payload? payload;
 
-    factory DetailApproveHistory.fromJson(Map<String, dynamic> json) => DetailApproveHistory(
+    factory HistoryApprove.fromJson(Map<String, dynamic> json) => HistoryApprove(
         message: json["message"],
         payload: Payload.fromJson(json["payload"]),
     );
@@ -47,14 +47,14 @@ class Payload {
 
     FeedbackLocation? feedbackLocation;
     String? id;
-    String? title;
+    String ?title;
     String? message;
     String? feedbackLevel;
     DateTime? createdDate;
     bool? isApproved;
     bool? isRejected;
     bool? isCompleted;
-    String? feedbackType;
+    String ?feedbackType;
     List<String>? uniqueIDs;
     List<ManagerContact>? managerContact;
     int? v;

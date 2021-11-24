@@ -3,7 +3,9 @@
 import 'dart:convert';
 
 import 'package:feedback_application_flutter/data/getdata/api_repository.dart';
+import 'package:feedback_application_flutter/model/approve_history_model.dart';
 import 'package:feedback_application_flutter/model/approved_model.dart';
+import 'package:feedback_application_flutter/model/completed_model.dart';
 import 'package:feedback_application_flutter/model/detail_inprocess_model.dart';
 import 'package:feedback_application_flutter/model/detail_message_model.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
@@ -41,12 +43,12 @@ class MessageApi extends ApiRepository {
   }
 
   Future<DetailInprocessModel> readDetailInprocess(id) async {
-     http.Response response = await http.get(
+    http.Response response = await http.get(
       Uri.parse(
         '$baseUrl/feedbacks/$id',
       ),
     );
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       return DetailInprocessModel.fromJson(
         jsonDecode(response.body),
       );
@@ -55,18 +57,64 @@ class MessageApi extends ApiRepository {
     }
   }
 
-Future<ApprovedModel> readDetailApprove(id)async{
-  http.Response response = await http.get(
+  Future<ApprovedModel> readDetailApprove(id) async {
+    http.Response response = await http.get(
       Uri.parse(
         '$baseUrl/approveds/?feedback_id=$id',
       ),
     );
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       return ApprovedModel.fromJson(
         jsonDecode(response.body),
       );
     } else {
       throw Exception("Error while reading data");
     }
-}
+  }
+
+    Future<CompletedModel> completedHistory(id) async {
+    http.Response response = await http.get(
+      Uri.parse(
+        '$baseUrl/completeds/?feedback_id=$id',
+      ),
+    );
+    if (response.statusCode == 200) {
+      return CompletedModel.fromJson(
+        jsonDecode(response.body),
+      );
+    } else {
+      throw Exception("Error while reading data");
+    }
+  }
+
+Future<FeedbackModel> readDetailHistory(id) async {
+    http.Response response = await http.get(
+      Uri.parse(
+        '$baseUrl/approveds/?feedback_id=$id',
+      ),
+    );
+    if (response.statusCode == 200) {
+      return FeedbackModel.fromJson(
+        jsonDecode(response.body),
+      );
+    } else {
+      throw Exception("Error while reading data");
+    }
+  }
+
+Future<HistoryApprove> historyApp(id) async {
+    http.Response response = await http.get(
+      Uri.parse(
+        '$baseUrl/feedbacks',
+      ),
+    );
+    if (response.statusCode == 200) {
+      return HistoryApprove.fromJson(
+        jsonDecode(response.body),
+      );
+    } else {
+      throw Exception("Error while reading data");
+    }
+  }
+
 }

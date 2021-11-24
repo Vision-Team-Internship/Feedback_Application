@@ -1,32 +1,29 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, unused_field
+// ignore_for_file: prefer_const_constructors
 
+import 'dart:ui';
+import 'package:feedback_application_flutter/model/approved_model.dart';
+import 'package:feedback_application_flutter/model/completed_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/data/approved_api/approved_api.dart';
-import 'package:feedback_application_flutter/model/detail_approve_history_model.dart';
+import 'package:feedback_application_flutter/data/getdata/message_api.dart';
+import 'package:feedback_application_flutter/model/detail_message_model.dart';
 
 class DetailApproveMessageScreen extends StatefulWidget {
-  final String id;
   final String title;
-  final String comDated;
+  final String date;
   final String level;
-  final String location;
-  final String reqMessage;
-  final String approveMessage;
-  final String completedMessage;
+  final String id;
+  final List managerContact;
 
   const DetailApproveMessageScreen({
     Key? key,
-    required this.id,
     required this.title,
-    required this.comDated,
+    required this.date,
     required this.level,
-    required this.location,
-    required this.reqMessage,
-    required this.approveMessage,
-    required this.completedMessage,
+    required this.id,
+    required this.managerContact,
   }) : super(key: key);
 
   @override
@@ -36,14 +33,17 @@ class DetailApproveMessageScreen extends StatefulWidget {
 
 class _DetailApproveMessageScreenState
     extends State<DetailApproveMessageScreen> {
-  Future<DetailApproveModel>? _detailApproved;
-  List<Payload>? _listApprove;
-  final ApprovedApi _approvedApi = ApprovedApi();
+  Future<DetailMessageModel>? _detailMessage;
+  Future<ApprovedModel>? _approve;
+  Future<CompletedModel>? _completedMessage;
+
+  final MessageApi _messageApi = MessageApi();
 
   @override
   void initState() {
-    _detailApproved = _approvedApi.readApproveDetail(widget.id.toString());
-    print(widget.id);
+    _detailMessage = _messageApi.readDetailMessage(widget.id.toString());
+    _approve = _messageApi.readDetailApprove(widget.id);
+    _completedMessage = _messageApi.completedHistory(widget.id);
     super.initState();
   }
 
@@ -65,8 +65,11 @@ class _DetailApproveMessageScreenState
         ),
         title: Text(
           widget.title,
-          style: ThemeConstant.textTheme.headline6!.copyWith(
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
             color: Colors.black,
+            fontFamily: "Poppins",
           ),
         ),
         actions: [
@@ -88,845 +91,602 @@ class _DetailApproveMessageScreenState
         ],
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
-        child: Container(),
-        // child: FutureBuilder<DetailApproveModel>(
-        //     future: _detailApproved,
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasError) {
-        //         return Center(
-        //           child: Text("Error while read data in Approve detail Screen"),
-        //         );
-        //       }
-        //       if (snapshot.hasData) {
-        //         _listApprove = snapshot.data!.payload;
-        //         return ListView.builder(
-        //           shrinkWrap: true,
-        //           itemCount: _listApprove?.length,
-        //           itemBuilder: (context, index) {
-        //             return Container(
-        //               padding: const EdgeInsets.symmetric(horizontal: 25),
-        //               width: MediaQuery.of(context).size.width,
-        //               child: Column(
-        //                 crossAxisAlignment: CrossAxisAlignment.start,
-        //                 children: [
-        //                   const SizedBox(
-        //                     height: 45,
-        //                   ),
-        //                   Container(
-        //                     padding: EdgeInsets.symmetric(horizontal: 3),
-        //                     width: MediaQuery.of(context).size.width,
-        //                     child: Row(
-        //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                       children: [
-        //                         //Floor
-        //                         Column(
-        //                           crossAxisAlignment: CrossAxisAlignment.start,
-        //                           // ignore: prefer_const_literals_to_create_immutables
-        //                           children: [
-        //                             Text(
-        //                               "Date completed: ",
-        //                               style: TextStyle(
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w500,
-        //                                 color: Colors.black,
-        //                                 fontFamily: "Poppins",
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "${_listApprove![index].createdDate.year.toString()}/${_listApprove![index].createdDate.month.toString()}/${_listApprove![index].createdDate.day.toString()}",
-        //                               style: const TextStyle(
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w500,
-        //                                 color: Colors.red,
-        //                                 fontFamily: "Poppins",
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                       ],
-        //                     ),
-        //                   ),
+        child: FutureBuilder<DetailMessageModel>(
+          future: _detailMessage,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("Error While read Detail Message"),
+              );
+            }
 
-        //                   const SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Row(
-        //                     // ignore: prefer_const_literals_to_create_immutables
-        //                     children: [
-        //                       Text(
-        //                         "Level: ",
-        //                         style: TextStyle(
-        //                           fontSize: 18,
-        //                           fontWeight: FontWeight.w500,
-        //                           color: Colors.black,
-        //                           fontFamily: "Poppins",
-        //                         ),
-        //                       ),
-        //                       Text(
-        //                         widget.level,
-        //                         style: TextStyle(
-        //                           fontSize: 18,
-        //                           fontWeight: FontWeight.w500,
-        //                           color: widget.level.toUpperCase() ==
-        //                                   "high".toUpperCase()
-        //                               ? Colors.red
-        //                               : widget.level.toUpperCase() ==
-        //                                       "medium".toUpperCase()
-        //                                   ? Color(0xffCACA03)
-        //                                   : Color(0xff00C700),
-        //                           fontFamily: "Poppins",
-        //                         ),
-        //                       ),
-        //                     ],
-        //                   ),
+            if (snapshot.hasData) {
+              var detail = snapshot.data!.payload;
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 25,
+                    ),
 
-        //                   const SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Text(
-        //                     "Location:",
-        //                     style: TextStyle(
-        //                       fontSize: 18,
-        //                       fontWeight: FontWeight.w500,
-        //                       color: Colors.black,
-        //                       fontFamily: "Poppins",
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
+                    Row(
+                      children: [
+                        Text(
+                          "Level: ",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        Text(
+                          widget.level,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: widget.level.toUpperCase() ==
+                                    "high".toUpperCase()
+                                ? Colors.red
+                                : widget.level.toUpperCase() ==
+                                        "medium".toUpperCase()
+                                    ? Color(0xffCACA03)
+                                    : Color(0xff00C700),
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                      ],
+                    ),
 
-        //                   //Building
-        //                   Container(
-        //                     padding: EdgeInsets.symmetric(horizontal: 3),
-        //                     width: MediaQuery.of(context).size.width,
-        //                     child: Text(
-        //                       widget.location,
-        //                       style: TextStyle(
-        //                         fontFamily: "Poppins",
-        //                         fontSize: 18,
-        //                         fontWeight: FontWeight.w400,
-        //                         color: ThemeConstant.lightScheme.onBackground,
-        //                       ),
-        //                     ),
-        //                   ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Text(
-        //                     "Manager Contact:",
-        //                     style: TextStyle(
-        //                       fontSize: 18,
-        //                       fontWeight: FontWeight.w500,
-        //                       color: Colors.black,
-        //                       fontFamily: "Poppins",
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
+                    Text(
+                      "Location: ",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    //Location
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          //Floor
+                          Row(
+                            children: [
+                              Text(
+                                "+ Floor: ",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: ThemeConstant.lightScheme.secondary,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Wrap(
+                                children: List.generate(
+                                  detail!.feedbackLocation!.floor!.length,
+                                  (index) => Column(
+                                    children: [
+                                      Text(
+                                        detail.feedbackLocation!.floor![index],
+                                        style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: ThemeConstant
+                                              .lightScheme.onBackground,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
 
-        //                   //Manager Contact
-        //                   Container(
-        //                     padding: EdgeInsets.symmetric(horizontal: 3),
-        //                     width: MediaQuery.of(context).size.width,
-        //                     child: Row(
-        //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                       crossAxisAlignment: CrossAxisAlignment.start,
-        //                       children: [
-        //                         //Floor
-        //                         Column(
-        //                           crossAxisAlignment: CrossAxisAlignment.start,
-        //                           children: [
-        //                             Text(
-        //                               "Card ID : ",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color:
-        //                                     ThemeConstant.lightScheme.secondary,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "B20120..",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "B20120..",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "B20120..",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
+                          // Department
+                          SizedBox(
+                            height: 10,
+                          ),
+                          detail.feedbackLocation!.department!.isNotEmpty
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "+ Department :",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color:
+                                            ThemeConstant.lightScheme.secondary,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: detail.feedbackLocation!
+                                              .department!.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0),
+                                              child: Text(
+                                                detail.feedbackLocation!
+                                                    .department![index],
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: ThemeConstant
+                                                      .lightScheme.onBackground,
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          detail.feedbackLocation!.room!.isNotEmpty
+                              ?
 
-        //                         //Department
-        //                         Column(
-        //                           crossAxisAlignment: CrossAxisAlignment.start,
-        //                           children: [
-        //                             Text(
-        //                               "Name: ",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color:
-        //                                     ThemeConstant.lightScheme.secondary,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "Dara",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "Dara",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "Dara",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
+                              // Room
+                              Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "+ Room :",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color:
+                                            ThemeConstant.lightScheme.secondary,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: detail
+                                            .feedbackLocation!.room!.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 18.0),
+                                            child: Text(
+                                              detail.feedbackLocation!
+                                                  .room![index],
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: ThemeConstant
+                                                    .lightScheme.onBackground,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(),
+                        ],
+                      ),
+                    ),
 
-        //                         //Room
-        //                         Column(
-        //                           crossAxisAlignment: CrossAxisAlignment.start,
-        //                           children: [
-        //                             Text(
-        //                               "Phone: ",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color:
-        //                                     ThemeConstant.lightScheme.secondary,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "047474747",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "047474747",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                             Text(
-        //                               "047474747",
-        //                               style: TextStyle(
-        //                                 fontFamily: "Poppins",
-        //                                 fontSize: 18,
-        //                                 fontWeight: FontWeight.w400,
-        //                                 color: ThemeConstant
-        //                                     .lightScheme.onBackground,
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Text(
-        //                     "Request Message:",
-        //                     style: TextStyle(
-        //                       fontSize: 18,
-        //                       fontWeight: FontWeight.w500,
-        //                       color: Colors.black,
-        //                       fontFamily: "Poppins",
-        //                     ),
-        //                   ),
-        //                   Text(
-        //                     "01/11/2022 ",
-        //                     style: const TextStyle(
-        //                       fontSize: 16,
-        //                       fontWeight: FontWeight.w500,
-        //                       color: Colors.red,
-        //                       fontFamily: "Poppins",
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Text(
-        //                     widget.reqMessage,
-        //                     style: TextStyle(
-        //                       fontFamily: "Poppins",
-        //                       fontSize: 18,
-        //                       fontWeight: FontWeight.w400,
-        //                       color: ThemeConstant.lightScheme.secondary,
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Manager Contact:",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-        //                   //Reqest Message
+                    //Manager Contact
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3),
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //Card ID
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Card ID : ",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: ThemeConstant.lightScheme.secondary,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: detail.managerContact!.length,
+                                      itemBuilder: (context, index) {
+                                        return Text(
+                                          detail.managerContact![index].cardId
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: ThemeConstant
+                                                .lightScheme.onBackground,
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
 
-        //                   Row(
-        //                     crossAxisAlignment: CrossAxisAlignment.start,
-        //                     children: [
-        //                       Icon(Icons.add, color: Colors.red),
-        //                       Column(
-        //                         crossAxisAlignment: CrossAxisAlignment.start,
-        //                         // ignore: prefer_const_literals_to_create_immutables
-        //                         children: [
-        //                           Text(
-        //                             " Approve Message:",
-        //                             style: TextStyle(
-        //                               fontSize: 18,
-        //                               fontWeight: FontWeight.w500,
-        //                               color: Colors.black,
-        //                               fontFamily: "Poppins",
-        //                             ),
-        //                           ),
-        //                           Text(
-        //                             "01/11/2022 ",
-        //                             style: const TextStyle(
-        //                               fontSize: 16,
-        //                               fontWeight: FontWeight.w500,
-        //                               color: Colors.red,
-        //                               fontFamily: "Poppins",
-        //                             ),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                     ],
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Text(
-        //                     "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
-        //                     style: TextStyle(
-        //                       fontFamily: "Poppins",
-        //                       fontSize: 18,
-        //                       fontWeight: FontWeight.w400,
-        //                       color: ThemeConstant.lightScheme.secondary,
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
+                            //Department
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Name: ",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: ThemeConstant.lightScheme.secondary,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                  child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: detail.managerContact!.length,
+                                      itemBuilder: (context, index) {
+                                        return Text(
+                                          detail.managerContact![index].username
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: ThemeConstant
+                                                .lightScheme.onBackground,
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
 
-        //                   //Reqest Message
+                            //Room
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Phone : ",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: ThemeConstant.lightScheme.secondary,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                  child: ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: detail.managerContact!.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () async {
+                                          final phonenumber = detail
+                                              .managerContact![index]
+                                              .phoneNumber;
+                                          final url = 'tel:0$phonenumber';
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          }
+                                        },
+                                        child: Text(
+                                          "0${detail.managerContact![index].phoneNumber}",
+                                          style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontFamily: "Poppins",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: ThemeConstant
+                                                .lightScheme.primary,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
 
-        //                   Row(
-        //                     crossAxisAlignment: CrossAxisAlignment.start,
-        //                     children: [
-        //                       Icon(Icons.add, color: Colors.red),
-        //                       Column(
-        //                         crossAxisAlignment: CrossAxisAlignment.start,
-        //                         // ignore: prefer_const_literals_to_create_immutables
-        //                         children: [
-        //                           Text(
-        //                             " Competed Message:",
-        //                             style: TextStyle(
-        //                               fontSize: 18,
-        //                               fontWeight: FontWeight.w500,
-        //                               color: Colors.black,
-        //                               fontFamily: "Poppins",
-        //                             ),
-        //                           ),
-        //                           Text(
-        //                             "01/11/2022 ",
-        //                             style: const TextStyle(
-        //                               fontSize: 16,
-        //                               fontWeight: FontWeight.w500,
-        //                               color: Colors.red,
-        //                               fontFamily: "Poppins",
-        //                             ),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                     ],
-        //                   ),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-        //                   SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Text(
-        //                     "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
-        //                     style: TextStyle(
-        //                       fontFamily: "Poppins",
-        //                       fontSize: 18,
-        //                       fontWeight: FontWeight.w400,
-        //                       color: ThemeConstant.lightScheme.secondary,
-        //                     ),
-        //                   ),
+                    Column(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Request Message :",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        Text(
+                          "${detail.createdDate!.day}/${detail.createdDate!.month}/${detail.createdDate!.year}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                      ],
+                    ),
 
-        //                   SizedBox(
-        //                     height: 50,
-        //                   ),
-        //                 ],
-        //               ),
-        //             );
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      detail.message.toString(),
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeConstant.lightScheme.secondary,
+                      ),
+                    ),
 
-        //             // return Text(
-        //             //   "${_listApprove![index].createdDate.year.toString()}/${_listApprove![index].createdDate.month.toString()}/${_listApprove![index].createdDate.day.toString()}",
-        //             // );
-        //           },
-        //         );
-        //       }
-        //       return SizedBox();
-        //       // return Container(
-        //       //   padding: const EdgeInsets.symmetric(horizontal: 25),
-        //       //   width: MediaQuery.of(context).size.width,
-        //       //   child: Column(
-        //       //     crossAxisAlignment: CrossAxisAlignment.start,
-        //       //     children: [
-        //       //       const SizedBox(
-        //       //         height: 45,
-        //       //       ),
-        //       //       Container(
-        //       //         padding: EdgeInsets.symmetric(horizontal: 3),
-        //       //         width: MediaQuery.of(context).size.width,
-        //       //         child: Row(
-        //       //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       //           children: [
-        //       //             //Floor
-        //       //             Column(
-        //       //               crossAxisAlignment: CrossAxisAlignment.start,
-        //       //               // ignore: prefer_const_literals_to_create_immutables
-        //       //               children: [
-        //       //                 Text(
-        //       //                   "Date completed: ",
-        //       //                   style: TextStyle(
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w500,
-        //       //                     color: Colors.black,
-        //       //                     fontFamily: "Poppins",
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   widget.comDated,
-        //       //                   style: const TextStyle(
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w500,
-        //       //                     color: Colors.red,
-        //       //                     fontFamily: "Poppins",
-        //       //                   ),
-        //       //                 ),
-        //       //               ],
-        //       //             ),
-        //       //           ],
-        //       //         ),
-        //       //       ),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-        //       //       const SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Row(
-        //       //           // ignore: prefer_const_literals_to_create_immutables
-        //       //           children: [
-        //       //             Text(
-        //       //               "Level: ",
-        //       //               style: TextStyle(
-        //       //                 fontSize: 18,
-        //       //                 fontWeight: FontWeight.w500,
-        //       //                 color: Colors.black,
-        //       //                 fontFamily: "Poppins",
-        //       //               ),
-        //       //             ),
-        //       //             Text(
-        //       //               widget.level,
-        //       //               style: TextStyle(
-        //       //                 fontSize: 18,
-        //       //                 fontWeight: FontWeight.w500,
-        //       //                 color: widget.level.toUpperCase() ==
-        //       //                         "high".toUpperCase()
-        //       //                     ? Colors.red
-        //       //                     : widget.level.toUpperCase() ==
-        //       //                             "medium".toUpperCase()
-        //       //                         ? Color(0xffCACA03)
-        //       //                         : Color(0xff00C700),
-        //       //                 fontFamily: "Poppins",
-        //       //               ),
-        //       //             ),
-        //       //           ]),
+                    ApproveMessage(approve: _approve),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-        //       //       const SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Text(
-        //       //         "Location:",
-        //       //         style: TextStyle(
-        //       //           fontSize: 18,
-        //       //           fontWeight: FontWeight.w500,
-        //       //           color: Colors.black,
-        //       //           fontFamily: "Poppins",
-        //       //         ),
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
+                    CompletedMessage(completedMessage: _completedMessage),
 
-        //       //       //Building
-        //       //       Container(
-        //       //         padding: EdgeInsets.symmetric(horizontal: 3),
-        //       //         width: MediaQuery.of(context).size.width,
-        //       //         child: Text(
-        //       //           widget.location,
-        //       //           style: TextStyle(
-        //       //             fontFamily: "Poppins",
-        //       //             fontSize: 18,
-        //       //             fontWeight: FontWeight.w400,
-        //       //             color: ThemeConstant.lightScheme.onBackground,
-        //       //           ),
-        //       //         ),
-        //       //       ),
-
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Text(
-        //       //         "Manager Contact:",
-        //       //         style: TextStyle(
-        //       //           fontSize: 18,
-        //       //           fontWeight: FontWeight.w500,
-        //       //           color: Colors.black,
-        //       //           fontFamily: "Poppins",
-        //       //         ),
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-
-        //       //       //Manager Contact
-        //       //       Container(
-        //       //         padding: EdgeInsets.symmetric(horizontal: 3),
-        //       //         width: MediaQuery.of(context).size.width,
-        //       //         child: Row(
-        //       //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       //           crossAxisAlignment: CrossAxisAlignment.start,
-        //       //           children: [
-        //       //             //Floor
-        //       //             Column(
-        //       //               crossAxisAlignment: CrossAxisAlignment.start,
-        //       //               children: [
-        //       //                 Text(
-        //       //                   "Card ID : ",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.secondary,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "B20120..",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "B20120..",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "B20120..",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //               ],
-        //       //             ),
-
-        //       //             //Department
-        //       //             Column(
-        //       //               crossAxisAlignment: CrossAxisAlignment.start,
-        //       //               children: [
-        //       //                 Text(
-        //       //                   "Name: ",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.secondary,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "Dara",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "Dara",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "Dara",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //               ],
-        //       //             ),
-
-        //       //             //Room
-        //       //             Column(
-        //       //               crossAxisAlignment: CrossAxisAlignment.start,
-        //       //               children: [
-        //       //                 Text(
-        //       //                   "Phone: ",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.secondary,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "047474747",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "047474747",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //                 Text(
-        //       //                   "047474747",
-        //       //                   style: TextStyle(
-        //       //                     fontFamily: "Poppins",
-        //       //                     fontSize: 18,
-        //       //                     fontWeight: FontWeight.w400,
-        //       //                     color: ThemeConstant.lightScheme.onBackground,
-        //       //                   ),
-        //       //                 ),
-        //       //               ],
-        //       //             ),
-        //       //           ],
-        //       //         ),
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Text(
-        //       //         "Request Message:",
-        //       //         style: TextStyle(
-        //       //           fontSize: 18,
-        //       //           fontWeight: FontWeight.w500,
-        //       //           color: Colors.black,
-        //       //           fontFamily: "Poppins",
-        //       //         ),
-        //       //       ),
-        //       //       Text(
-        //       //         "01/11/2022 ",
-        //       //         style: const TextStyle(
-        //       //           fontSize: 16,
-        //       //           fontWeight: FontWeight.w500,
-        //       //           color: Colors.red,
-        //       //           fontFamily: "Poppins",
-        //       //         ),
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Text(
-        //       //         widget.reqMessage,
-        //       //         style: TextStyle(
-        //       //           fontFamily: "Poppins",
-        //       //           fontSize: 18,
-        //       //           fontWeight: FontWeight.w400,
-        //       //           color: ThemeConstant.lightScheme.secondary,
-        //       //         ),
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-
-        //       //       //Reqest Message
-
-        //       //       Row(
-        //       //         crossAxisAlignment: CrossAxisAlignment.start,
-        //       //         children: [
-        //       //           Icon(Icons.add, color: Colors.red),
-        //       //           Column(
-        //       //             crossAxisAlignment: CrossAxisAlignment.start,
-        //       //             // ignore: prefer_const_literals_to_create_immutables
-        //       //             children: [
-        //       //               Text(
-        //       //                 " Approve Message:",
-        //       //                 style: TextStyle(
-        //       //                   fontSize: 18,
-        //       //                   fontWeight: FontWeight.w500,
-        //       //                   color: Colors.black,
-        //       //                   fontFamily: "Poppins",
-        //       //                 ),
-        //       //               ),
-        //       //               Text(
-        //       //                 "01/11/2022 ",
-        //       //                 style: const TextStyle(
-        //       //                   fontSize: 16,
-        //       //                   fontWeight: FontWeight.w500,
-        //       //                   color: Colors.red,
-        //       //                   fontFamily: "Poppins",
-        //       //                 ),
-        //       //               ),
-        //       //             ],
-        //       //           ),
-        //       //         ],
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Text(
-        //       //         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
-        //       //         style: TextStyle(
-        //       //           fontFamily: "Poppins",
-        //       //           fontSize: 18,
-        //       //           fontWeight: FontWeight.w400,
-        //       //           color: ThemeConstant.lightScheme.secondary,
-        //       //         ),
-        //       //       ),
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-
-        //       //       //Reqest Message
-
-        //       //       Row(
-        //       //         crossAxisAlignment: CrossAxisAlignment.start,
-        //       //         children: [
-        //       //           Icon(Icons.add, color: Colors.red),
-        //       //           Column(
-        //       //             crossAxisAlignment: CrossAxisAlignment.start,
-        //       //             // ignore: prefer_const_literals_to_create_immutables
-        //       //             children: [
-        //       //               Text(
-        //       //                 " Competed Message:",
-        //       //                 style: TextStyle(
-        //       //                   fontSize: 18,
-        //       //                   fontWeight: FontWeight.w500,
-        //       //                   color: Colors.black,
-        //       //                   fontFamily: "Poppins",
-        //       //                 ),
-        //       //               ),
-        //       //               Text(
-        //       //                 "01/11/2022 ",
-        //       //                 style: const TextStyle(
-        //       //                   fontSize: 16,
-        //       //                   fontWeight: FontWeight.w500,
-        //       //                   color: Colors.red,
-        //       //                   fontFamily: "Poppins",
-        //       //                 ),
-        //       //               ),
-        //       //             ],
-        //       //           ),
-        //       //         ],
-        //       //       ),
-
-        //       //       SizedBox(
-        //       //         height: 20,
-        //       //       ),
-        //       //       Text(
-        //       //         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
-        //       //         style: TextStyle(
-        //       //           fontFamily: "Poppins",
-        //       //           fontSize: 18,
-        //       //           fontWeight: FontWeight.w400,
-        //       //           color: ThemeConstant.lightScheme.secondary,
-        //       //         ),
-        //       //       ),
-
-        //       //       SizedBox(
-        //       //         height: 50,
-        //       //       ),
-        //       //     ],
-        //       //   ),
-        //       // );
-        //     }),
-   
+                    const SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ),
       ),
+    );
+  }
+}
+
+class CompletedMessage extends StatelessWidget {
+  const CompletedMessage({
+    Key? key,
+    required Future<CompletedModel>? completedMessage,
+  })  : _completedMessage = completedMessage,
+        super(key: key);
+
+  final Future<CompletedModel>? _completedMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<CompletedModel>(
+        future: _completedMessage,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error ${snapshot.error}"),
+            );
+          }
+
+          if (snapshot.hasData) {
+            var complete = snapshot.data!.payload;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Complete Message :",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    Wrap(
+                      children: List.generate(
+                        complete!.length,
+                        (index) =>
+                            // ignore: prefer_const_literals_to_create_immutables
+                            Text(
+                          "${complete[index].createdDate!.day}/${complete[index].createdDate!.month}/${complete[index].createdDate!.year}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                  children: List.generate(
+                    complete.length,
+                    (index) => Text(
+                      "${complete[index].note}",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeConstant.lightScheme.secondary,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return SizedBox();
+        });
+  }
+}
+
+// Class Message Approve
+class ApproveMessage extends StatelessWidget {
+  const ApproveMessage({
+    Key? key,
+    required Future<ApprovedModel>? approve,
+  })  : _approve = approve,
+        super(key: key);
+
+  final Future<ApprovedModel>? _approve;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<ApprovedModel>(
+      future: _approve,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "Error ${snapshot.error}",
+            ),
+          );
+        }
+        if (snapshot.hasData) {
+          var approveMessage = snapshot.data!.payload;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Approve Message :",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  Wrap(
+                    children: List.generate(
+                      approveMessage!.length,
+                      (index) =>
+                          // ignore: prefer_const_literals_to_create_immutables
+                          Text(
+                        "${approveMessage[index].createdDate!.day}/${approveMessage[index].createdDate!.month}/${approveMessage[index].createdDate!.year}",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Wrap(
+                children: List.generate(
+                  approveMessage.length,
+                  (index) => Text(
+                    "${approveMessage[index].note}",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: ThemeConstant.lightScheme.secondary,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          );
+        }
+        return SizedBox();
+      },
     );
   }
 }

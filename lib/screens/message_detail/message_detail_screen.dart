@@ -236,6 +236,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: detail.feedbackLocation!
                                               .department!.length,
@@ -248,7 +250,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                                     .department![index],
                                                 style: TextStyle(
                                                   fontFamily: "Poppins",
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.w400,
                                                   color: ThemeConstant
                                                       .lightScheme.onBackground,
@@ -285,23 +287,29 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                       width: MediaQuery.of(context).size.width,
                                       child: ListView.builder(
                                         shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
                                         itemCount: detail
                                             .feedbackLocation!.room!.length,
                                         itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 18.0),
-                                            child: Text(
-                                              detail.feedbackLocation!
-                                                  .room![index],
-                                              style: TextStyle(
-                                                fontFamily: "Poppins",
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: ThemeConstant
-                                                    .lightScheme.onBackground,
+                                          return Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 18.0),
+                                                child: Text(
+                                                  detail.feedbackLocation!
+                                                      .room![index],
+                                                  style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: ThemeConstant
+                                                        .lightScheme
+                                                        .onBackground,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           );
                                         },
                                       ),
@@ -356,6 +364,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   width: 100,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
                                       itemCount: detail.managerContact!.length,
                                       itemBuilder: (context, index) {
                                         return Text(
@@ -391,6 +400,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   width: 100,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
                                       itemCount: detail.managerContact!.length,
                                       itemBuilder: (context, index) {
                                         return Text(
@@ -426,6 +436,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   width: 100,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
                                       itemCount: detail.managerContact!.length,
                                       itemBuilder: (context, index) {
                                         return InkWell(
@@ -518,14 +529,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   ],
                 ),
               );
-          
             }
             return const SizedBox();
           },
         ),
       ),
     );
- 
   }
 
   // Make Approve message
@@ -583,7 +592,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   bool IsButtonActive = true;
 
   Future openDialogApprove() async {
-    await Get.defaultDialog( 
+    await Get.defaultDialog(
       title: "Note",
       content: SingleChildScrollView(
         scrollDirection: Axis.vertical,

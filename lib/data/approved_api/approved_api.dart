@@ -7,12 +7,12 @@ import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApprovedApi extends ApiRepository {
-  Future<DetailApproveModel> readApproveDetail(id) async {
+  Future<DetailApproveHistory> readApproveDetail(id) async {
     http.Response response = await http.get(
       Uri.parse("$baseUrl/approveds?feedback_id=$id"),
     );
     if (response.statusCode == 200) {
-      return DetailApproveModel.fromJson(jsonDecode(response.body));
+      return DetailApproveHistory.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Error while reading data in Approve");
     }

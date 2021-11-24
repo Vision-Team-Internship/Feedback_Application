@@ -559,6 +559,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
               }
               return SizedBox();
             }),
+    
       ),
     );
   }

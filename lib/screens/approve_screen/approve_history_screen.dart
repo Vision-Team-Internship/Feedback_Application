@@ -216,27 +216,14 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                   Get.to(
                                     () => DetailApproveMessageScreen(
                                       id: _listApprove![index].id.toString(),
-                                      approveMessage: '',
-                                      comDated: '${DateTime.now().year}',
-                                      completedMessage: '',
                                       level: _listApprove![index]
                                           .feedbackLevel
                                           .toString(),
-                                      location: _listApprove![index]
-                                          .feedbackLocation
-                                          .toString(),
-                                      reqMessage: _listApprove![index]
-                                          .message
-                                          .toString(),
                                       title:
-                                          _listApprove![index].title.toString(),
+                                          _listApprove![index].title.toString(), date: '', managerContact: [],
+                                      
                                     ),
                                   );
-
-                                  // _approve =
-                                  //     _deleteMessage.deleteHistoryMessage(
-                                  //   "618a165f361748f0b5035c8e"
-                                  //);
                                 },
                                 title: "${_listApprove![index].title}",
                                 floor:

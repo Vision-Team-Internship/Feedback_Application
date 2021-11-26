@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, non_constant_identifier_names, await_only_futures, unused_local_variable
+// ignore_for_file: prefer_const_constructors, avoid_print, non_constant_identifier_names, await_only_futures, unused_local_variable, deprecated_member_use
 
 import 'dart:convert';
 import 'dart:ui';
@@ -41,11 +41,17 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   final MessageApi _messageApi = MessageApi();
 
+  bool isButtonActive = true;
+
   @override
   void initState() {
     _detailMessage = _messageApi.readDetailMessage(widget.id.toString());
     _doneNotecontroller = TextEditingController();
     _rejectNotecontroller = TextEditingController();
+    _doneNotecontroller.addListener(() {
+      final isButtonActive = _doneNotecontroller.text.isNotEmpty;
+      setState(() => this.isButtonActive = isButtonActive);
+    });
     super.initState();
   }
 
@@ -65,7 +71,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            Get.to(() => MessageScreen());
+            // Get.to(() => MessageScreen());
+            Get.back();
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -501,24 +508,42 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
                     Row(
                       children: [
-                        ButtonLogin(
-                          title: "Approve".toUpperCase(),
-                          onTap: () async {
+                        OutlineButton(
+                          onPressed: () async {
                             print("Approve");
                             openDialogApprove();
                           },
-                          borderColor: const Color(0xFF0080FF),
-                          splashIcon: const Color(0xffBBDDFF),
+                          textColor: ThemeConstant.lightScheme.primary,
+                          borderSide: BorderSide(
+                            color: ThemeConstant.lightScheme.primary,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 14.0),
+                            child: Text("Approve"),
+                          ),
                         ),
                         const SizedBox(width: 15),
-                        ButtonLogin(
-                          title: "Reject".toUpperCase(),
-                          onTap: () {
+                        OutlineButton(
+                          highlightedBorderColor: Colors.red,
+                          onPressed: () {
                             print("Reject");
                             openDialogReject();
                           },
-                          borderColor: const Color(0xffFF0000),
-                          splashIcon: const Color(0xffFFC4C4),
+                          textColor: Colors.red,
+                          borderSide: BorderSide(
+                            color: Colors.red,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14.0, horizontal: 18.0),
+                            child: Text(
+                              "Reject",
+                              style: ThemeConstant.textTheme.button!.copyWith(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -620,24 +645,83 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       ),
       radius: 0.0,
       actions: [
-        ButtonLogin(
-          title: "Yes",
-          onTap: () async {
-            print("Approve");
-            final String text = _doneNotecontroller.text;
-            final ApprovedModel? _approve = await makeApprove(text, widget.id);
-            Get.to(() => MessageScreen());
-          },
-          borderColor: Color(0xff0080FF),
-          splashIcon: const Color(0xffBBDDFF),
+        OutlineButton(
+          highlightedBorderColor: ThemeConstant.lightScheme.primary,
+          onPressed: isButtonActive
+              ? () async {
+                  final String text = _doneNotecontroller.text;
+                  final ApprovedModel? _approve =
+                      await makeApprove(text, widget.id);
+                  setState(() {
+                    _doneNotecontroller.clear();
+                  });
+                  // Get.to(() => MessageScreen());
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => MessageScreen()),
+                      (Route<dynamic> route) => false);
+
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) {
+                  //       return MessageScreen();
+                  //     },
+                  //   ),
+                  // );
+                  Get.back();
+                  // Navigator.pop(context);
+
+                  setState(() => isButtonActive = false);
+                }
+              : null,
+          // onPressed: () async {
+          //   print("Approve");
+          //   final String text = _doneNotecontroller.text;
+          //   final ApprovedModel? _approve = await makeApprove(text, widget.id);
+          //   Get.to(() => MessageScreen());
+          // },
+          textColor: ThemeConstant.lightScheme.primary,
+          borderSide: BorderSide(
+            color: ThemeConstant.lightScheme.primary,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14.0),
+            child: Text(
+              "Yes",
+              style: ThemeConstant.textTheme.button!.copyWith(
+                color: ThemeConstant.lightScheme.primary,
+              ),
+            ),
+          ),
         ),
-        ButtonLogin(
-          title: "No",
-          onTap: () {
+        // ButtonLogin(
+        //   title: "Yes",
+        //   onTap: () async {
+        //     print("Approve");
+        //     final String text = _doneNotecontroller.text;
+        //     // final ApprovedModel? _approve = await makeApprove(text, widget.id);
+        //     // Get.to(() => MessageScreen());
+        //   },
+        //   borderColor: Color(0xff0080FF),
+        //   splashIcon: const Color(0xffBBDDFF),
+        // ),
+        OutlineButton(
+          highlightedBorderColor: Colors.red,
+          onPressed: () {
             Get.back();
           },
-          borderColor: Color(0xffFF0000),
-          splashIcon: const Color(0xffFFC4C4),
+          textColor: Colors.red,
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14.0),
+            child: Text(
+              "No",
+              style: ThemeConstant.textTheme.button!.copyWith(
+                color: Colors.red,
+              ),
+            ),
+          ),
         ),
       ],
     );

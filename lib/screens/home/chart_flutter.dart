@@ -46,18 +46,9 @@ class _ChartFlutterState extends State<ChartFlutter> {
 
   List<CounterData> getChartData() {
     final List<CounterData> chartData = [
-      CounterData(title: 'Water', count: 1),
-      CounterData(title: 'Electriciry', count: 10),
-      CounterData(title: 'Food', count: 1),
-      CounterData(title: 'Light', count: 4),
-      CounterData(title: 'Developer', count: 7),
-      CounterData(title: 'Designer', count: 5),
-      CounterData(title: 'Water', count: 1),
-      CounterData(title: 'Electriciry', count: 10),
-      CounterData(title: 'Food', count: 1),
-      CounterData(title: 'Light', count: 4),
-      CounterData(title: 'Developer', count: 7),
-      CounterData(title: 'Designer', count: 5),
+      CounterData(title: 'HIGH', count: 10),
+      CounterData(title: 'MEDUIM', count: 3),
+      CounterData(title: 'LOW', count: 5),
     ];
     return chartData;
   }

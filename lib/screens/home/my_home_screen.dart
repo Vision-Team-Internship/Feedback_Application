@@ -211,12 +211,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<CounterData> getChartData() {
     final List<CounterData> chartData = [
-      CounterData(title: "Water", count: 10),
-      CounterData(title: "Sport", count: 8),
-      CounterData(title: "Technical", count: 1),
-      CounterData(title: "Electricity", count: 4),
-      CounterData(title: "Internet", count: 2),
-      CounterData(title: "Hot", count: 7),
+      CounterData(title: "High", count: 10),
+      CounterData(title: "Meduim", count: 8),
+      CounterData(title: "Low", count: 8),
     ];
 
     return chartData;

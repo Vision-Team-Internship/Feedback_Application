@@ -1,10 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
+import 'package:feedback_application_flutter/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
@@ -16,12 +19,24 @@ class MySplashScreen extends StatefulWidget {
 class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
-    // ignore: prefer_const_constructors
     Timer(Duration(seconds: 3), () {
-      // ignore: prefer_const_constructors
-      Get.offAll(() => MyHomePage());
-    });
+     checkLogin();
+    },);
     super.initState();
+  }
+
+  void checkLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? check = pref.getString("login");
+    if (check != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => MyHomePage()),
+          (route) => false);
+    }else{
+       Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false);
+    }
   }
 
   @override

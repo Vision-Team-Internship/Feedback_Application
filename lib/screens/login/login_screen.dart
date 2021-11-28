@@ -1,9 +1,12 @@
+// ignore_for_file: unused_field, prefer_typing_uninitialized_variables, avoid_print
+
+import 'dart:convert';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:feedback_application_flutter/screens/message/message_screen.dart';
-import 'package:feedback_application_flutter/screens/widgets/b_button.dart';
+import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,12 +17,44 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController? _emailController;
+  TextEditingController? _passController;
   late bool visible;
+  bool? _isLoading;
   @override
   void initState() {
+    _emailController = TextEditingController();
+    _passController = TextEditingController();
     visible = false;
-
+    _isLoading = true;
     super.initState();
+  }
+
+  signIn(String email, String password) async {
+    var jsonData;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    http.Response response = await http.post(
+      Uri.parse("https://feedback-project-api.herokuapp.com/login"),
+      headers: <String, String>{
+        'Content-Type': 'application/json-patch+json',
+        'accept': 'application/json'
+      },
+      body: <dynamic, dynamic>{
+        'email': email,
+        'password': password,
+      },
+    );
+    if (response.statusCode == 200) {
+      jsonData = json.decode(response.body);
+      setState(() {
+        _isLoading = false;
+        sharedPreferences.setString("token", jsonData['token']);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
+            (route) => false);
+      });
+    }
   }
 
   @override
@@ -70,26 +105,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               .copyWith(color: Colors.black),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 40,
                         ),
                         Form(
                           key: formKey,
                           child: Column(
                             children: [
-                              //Enter Username
-                              TextFieldText(
-                                hinttext: "Enter username",
-                                text: "Username",
-                                validator: (value) {},
-                                onChanged: (value) {},
-                                obscurText: false,
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-
                               //Enter Email
                               TextFieldText(
+                                controller: _emailController,
                                 hinttext: "Enter email",
                                 text: "Email",
                                 validator: (value) {
@@ -115,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               //Enter Password
                               TextFieldText(
+                                controller: _passController,
                                 hinttext: "Enter password",
                                 sufixIcon: IconButton(
                                   icon: Icon(
@@ -201,15 +226,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         Align(
                           alignment: Alignment.topRight,
                           // ignore: deprecated_member_use
-                          child: ButtonLogin(
-                            title: "LOGIN",
-                            onTap: () {
-                              // ignore: avoid_print
-                              print("Login");
-                              Get.to(const MessageScreen());
+                          child: OutlineButton(
+                            onPressed: () async {
+                              login();
                             },
-                            borderColor: const Color(0xFF0080FF),
-                            splashIcon: const Color(0x000000ff),
+                            textColor: ThemeConstant.lightScheme.primary,
+                            borderSide: BorderSide(
+                              color: ThemeConstant.lightScheme.primary,
+                            ),
+                            // ignore: prefer_const_constructors
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 14.0),
+                              child: Text(
+                                "Login",
+                                style: ThemeConstant.textTheme.button!.copyWith(
+                                  color: ThemeConstant.lightScheme.primary,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -222,5 +257,45 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void login() async {
+    if (_emailController!.text.isNotEmpty && _passController!.text.isNotEmpty) {
+      var response = await http.post(
+        Uri.parse("https://feedback-project-api.herokuapp.com/login"),
+        headers: <String, String>{},
+        body: ({
+          "email": _emailController!.text,
+          "password": _passController!.text,
+        }),
+      );
+      if (response.statusCode == 200) {
+        print("Login Token  " + response.body);
+        pageRoute(response.body);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Error Credentail",
+            ),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Blank Value Found",
+          ),
+        ),
+      );
+    }
+  } 
+ 
+  void pageRoute(String token) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString("login", token);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MyHomePage()));
   }
 }

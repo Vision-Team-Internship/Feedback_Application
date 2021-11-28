@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, prefer_const_constructors
+// ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable
 
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -20,7 +21,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<CounterData>? _chartData;
   DateTime? lastPressed;
-
   @override
   void initState() {
     super.initState();
@@ -85,9 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Stack(
                 children: [
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       // ignore: avoid_print
                       print("Notification");
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      pref.remove("login");
+                      pref.commit();
                     },
                     child: SvgPicture.asset(
                       "assets/icons/notification_icons.svg",
@@ -184,8 +188,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     // ignore: avoid_print
                     print("See more");
                   },
-                  subtitle: 'Body sensors, Calendar and more in settings',
-                  title: 'See other permissions',
+                  subtitle: 'Edit account ,Logout',
+                  title: 'Account',
                   svgIcon: 'assets/icons/arrow_down_icons.svg',
                 ),
                 FListTile(

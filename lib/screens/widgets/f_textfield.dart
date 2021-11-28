@@ -7,6 +7,7 @@ class TextFieldText extends StatefulWidget {
   final String? hinttext;
   final Widget? sufixIcon;
   final bool obscurText;
+  final TextEditingController? controller;
 
   const TextFieldText({
     Key? key,
@@ -16,30 +17,38 @@ class TextFieldText extends StatefulWidget {
     this.hinttext,
     this.sufixIcon,
     required this.obscurText,
+    this.controller,
   }) : super(key: key);
   @override
   _TextFieldTextState createState() => _TextFieldTextState();
 }
 
 class _TextFieldTextState extends State<TextFieldText> {
-  final _textCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _textCtrl,
-      keyboardType: TextInputType.text,
-      validator: widget.validator,
-      onChanged: widget.onChanged,
-      obscureText: widget.obscurText,
-      decoration: InputDecoration(
-        suffixIcon: widget.sufixIcon,
-        hintStyle: const TextStyle(
+    return SizedBox(
+      height: 60,
+      child: TextFormField(
+        controller: widget.controller,
+        keyboardType: TextInputType.text,
+        validator: widget.validator,
+        onChanged: widget.onChanged,
+        obscureText: widget.obscurText,
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           fontFamily: 'Poppins',
         ),
-        hintText: widget.hinttext,
-        border: const OutlineInputBorder(),
+        decoration: InputDecoration(
+          suffixIcon: widget.sufixIcon,
+          hintStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            fontFamily: 'Poppins',
+          ),
+          hintText: widget.hinttext,
+          border: const OutlineInputBorder(),
+        ),
       ),
     );
   }

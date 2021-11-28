@@ -1,14 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:feedback_application_flutter/data/getdata/reject_api.dart';
-import 'package:feedback_application_flutter/model/approved_model.dart';
 import 'package:feedback_application_flutter/model/detail_message_model.dart';
 import 'package:feedback_application_flutter/model/rejected_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DetailRejectMessageScreen extends StatefulWidget {
   final String title;

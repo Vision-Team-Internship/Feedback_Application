@@ -1,9 +1,11 @@
 // ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable
 
+import 'package:feedback_application_flutter/screens/admin_account/admin_account.dart';
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
+import 'package:feedback_application_flutter/screens/notification_screen/nofitication_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_listtile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -88,10 +90,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () async {
                       // ignore: avoid_print
                       print("Notification");
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.remove("login");
-                      pref.commit();
+                      // SharedPreferences pref =
+                      //     await SharedPreferences.getInstance();
+                      // pref.remove("login");
+                      // pref.commit();
+                      Get.to(() => NofiticationScreen());
                     },
                     child: SvgPicture.asset(
                       "assets/icons/notification_icons.svg",
@@ -186,11 +189,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 FListTile(
                   onTap: () {
                     // ignore: avoid_print
-                    print("See more");
+                    print("Account");
+                    Get.to(() => AdminAccontScreen());
                   },
                   subtitle: 'Edit account ,Logout',
                   title: 'Account',
-                  svgIcon: 'assets/icons/arrow_down_icons.svg',
+                  svgIcon: 'assets/icons/account.svg',
                 ),
                 FListTile(
                   onTap: () {

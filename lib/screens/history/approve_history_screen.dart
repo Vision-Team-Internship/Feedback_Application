@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_string_interpolations
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_string_interpolations, unused_field
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/deletedata/delete_history_message.dart';
@@ -125,7 +125,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
     );
   }
 
-  void isDississed(int index, SlidableAction action) {
+  void isDississed(int index, SlidableAction action,String title) {
     switch (action) {
       case SlidableAction.more:
         Get.snackbar(
@@ -146,7 +146,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
       case SlidableAction.delete:
         Get.snackbar(
           "Deleted",
-          "{item.title} has been deleted",
+          "$title has been deleted",
           icon: Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff2F2F2F),
@@ -193,7 +193,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                   color: Colors.black45,
                                   icon: Icons.more_horiz,
                                   onTap: () {
-                                    isDississed(index, SlidableAction.more);
+                                    isDississed(index, SlidableAction.more,_listApprove![index].title.toString());
                                     print("More Option Done message");
                                   },
                                 ),
@@ -203,15 +203,15 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                   icon: CupertinoIcons.multiply_circle,
                                   onTap: () {
                                     print("Delete Option in Done messaage");
-                                    isDississed(index, SlidableAction.delete);
-                                    _approve =
-                                        _deleteMessage.deleteHistoryMessage(
-                                            _listApprove![index].id.toString());
+                                    isDississed(index, SlidableAction.delete,_listApprove![index].title.toString());
+                                    // _approve =
+                                    //     _deleteMessage.deleteHistoryMessage(
+                                    //         _listApprove![index].id.toString());
 
-                                    setState(() {
-                                      _approve =
-                                          _messageApi.readDataFromMessage();
-                                    });
+                                    // setState(() {
+                                    //   _approve =
+                                    //       _messageApi.readDataFromMessage();
+                                    // });
                                   },
                                 ),
                               ],
@@ -301,7 +301,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                 icon: Icons.more_horiz,
                                 onTap: () {
                                   print("More Option in Reject message");
-                                  isDississed(index, SlidableAction.more);
+                                  isDississed(index, SlidableAction.more,_listApprove![index].title.toString());
                                 }),
                             IconSlideAction(
                                 caption: 'Delete',
@@ -309,7 +309,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                 icon: CupertinoIcons.multiply_circle,
                                 onTap: () {
                                   print("Delete Option in Reject message");
-                                  isDississed(index, SlidableAction.delete);
+                                  isDississed(index, SlidableAction.delete,_listApprove![index].title.toString());
                                 }),
                           ],
                           child: FTile(

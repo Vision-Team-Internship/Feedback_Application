@@ -8,6 +8,7 @@ import 'package:feedback_application_flutter/screens/message/message_screen.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
@@ -564,12 +565,15 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   // Make Approve message
   Future<ApprovedModel?> makeApprove(String note, String id) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString("login");
     http.Response response = await http.post(
       Uri.parse(
         'https://feedback-project-api.herokuapp.com/api/v1/approveds',
       ),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+      headers:{
+        "auth-token": '$token',
+        "Content-Type": "application/json"
       },
       body: jsonEncode(
         {
@@ -590,12 +594,15 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   //Make Reject Message
   Future<RejectModel?> makeReject(String note, String id) async {
+     SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString("login");
     http.Response response = await http.post(
       Uri.parse(
         'https://feedback-project-api.herokuapp.com/api/v1/rejecteds',
       ),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+       headers:{
+        "auth-token": '$token',
+        "Content-Type": "application/json"
       },
       body: jsonEncode(
         {
@@ -647,38 +654,18 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       actions: [
         OutlineButton(
           highlightedBorderColor: ThemeConstant.lightScheme.primary,
-          onPressed: isButtonActive
-              ? () async {
-                  final String text = _doneNotecontroller.text;
-                  final ApprovedModel? _approve =
-                      await makeApprove(text, widget.id);
-                  setState(() {
-                    _doneNotecontroller.clear();
-                  });
-                  // Get.to(() => MessageScreen());
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => MessageScreen()),
-                      (Route<dynamic> route) => false);
-
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //   MaterialPageRoute(
-                  //     builder: (BuildContext context) {
-                  //       return MessageScreen();
-                  //     },
-                  //   ),
-                  // );
-                  Get.back();
-                  // Navigator.pop(context);
-
-                  setState(() => isButtonActive = false);
-                }
-              : null,
           // onPressed: () async {
-          //   print("Approve");
           //   final String text = _doneNotecontroller.text;
           //   final ApprovedModel? _approve = await makeApprove(text, widget.id);
           //   Get.to(() => MessageScreen());
+          //   setState(() => isButtonActive = false);
           // },
+          onPressed: () async {
+            print("Approve");
+            final String text = _doneNotecontroller.text;
+            final ApprovedModel? _approve = await makeApprove(text, widget.id);
+            Get.to(() => MessageScreen());
+          },
           textColor: ThemeConstant.lightScheme.primary,
           borderSide: BorderSide(
             color: ThemeConstant.lightScheme.primary,
@@ -693,17 +680,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             ),
           ),
         ),
-        // ButtonLogin(
-        //   title: "Yes",
-        //   onTap: () async {
-        //     print("Approve");
-        //     final String text = _doneNotecontroller.text;
-        //     // final ApprovedModel? _approve = await makeApprove(text, widget.id);
-        //     // Get.to(() => MessageScreen());
-        //   },
-        //   borderColor: Color(0xff0080FF),
-        //   splashIcon: const Color(0xffBBDDFF),
-        // ),
         OutlineButton(
           highlightedBorderColor: Colors.red,
           onPressed: () {

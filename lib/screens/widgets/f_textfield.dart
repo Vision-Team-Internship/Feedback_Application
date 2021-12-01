@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TextFieldText extends StatefulWidget {
-  final String text;
   final String? Function(String?)? validator;
   final Function(String?) onChanged;
   final String? hinttext;
@@ -11,7 +10,6 @@ class TextFieldText extends StatefulWidget {
 
   const TextFieldText({
     Key? key,
-    required this.text,
     required this.validator,
     required this.onChanged,
     this.hinttext,
@@ -26,29 +24,26 @@ class TextFieldText extends StatefulWidget {
 class _TextFieldTextState extends State<TextFieldText> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      child: TextFormField(
-        controller: widget.controller,
-        keyboardType: TextInputType.text,
-        validator: widget.validator,
-        onChanged: widget.onChanged,
-        obscureText: widget.obscurText,
-        style: const TextStyle(
+    return TextFormField(
+      controller: widget.controller,
+      keyboardType: TextInputType.text,
+      validator: widget.validator,
+      onChanged: widget.onChanged,
+      obscureText: widget.obscurText,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        fontFamily: 'Poppins',
+      ),
+      decoration: InputDecoration(
+        suffixIcon: widget.sufixIcon,
+        hintStyle: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           fontFamily: 'Poppins',
         ),
-        decoration: InputDecoration(
-          suffixIcon: widget.sufixIcon,
-          hintStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'Poppins',
-          ),
-          hintText: widget.hinttext,
-          border: const OutlineInputBorder(),
-        ),
+        hintText: widget.hinttext,
+        border: const OutlineInputBorder(),
       ),
     );
   }

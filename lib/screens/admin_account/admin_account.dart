@@ -1,10 +1,13 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminAccontScreen extends StatefulWidget {
@@ -15,6 +18,7 @@ class AdminAccontScreen extends StatefulWidget {
 }
 
 class _AdminAccontScreenState extends State<AdminAccontScreen> {
+  bool isLoading = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +47,44 @@ class _AdminAccontScreenState extends State<AdminAccontScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              SharedPreferences pref = await SharedPreferences.getInstance();
-              pref.remove("login");
-              pref.commit();
-              Get.offAll(() => LoginScreen());
+              await Get.defaultDialog(
+                title: "Logout",
+                content: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Text("Are you sure you want to logout ?"),
+                ),
+                radius: 0.0,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      "No",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      pref.remove("login");
+                      pref.commit();
+                      setState(() {
+                        isLoading = !isLoading;
+                        Get.back();
+                      });
+
+                      Timer(Duration(seconds: 1), () {
+                        Get.offAll(() => LoginScreen());
+                      });
+                    },
+                    child: Text(
+                      "Yes",
+                    ),
+                  ),
+                ],
+              );
             },
             icon: SizedBox(
               width: 25,
@@ -58,35 +96,43 @@ class _AdminAccontScreenState extends State<AdminAccontScreen> {
           )
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.topLeft,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              header(),
-              InkWell(onTap: () {}, child: nameField()),
-              Divider(
-                color: Color(0xff8B9299),
+      body: isLoading
+          ? Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.topLeft,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    header(),
+                    InkWell(onTap: () {}, child: nameField()),
+                    Divider(
+                      color: Color(0xff8B9299),
+                    ),
+                    SizedBox(
+                      height: 29,
+                    ),
+                    InkWell(onTap: () {}, child: emailField()),
+                    Divider(
+                      color: Color(0xff8B9299),
+                    ),
+                    SizedBox(
+                      height: 29,
+                    ),
+                    passwordField(),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 29,
+            )
+          : Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: Lottie.asset("assets/loadings/waiting.json"),
               ),
-              InkWell(onTap: () {}, child: emailField()),
-              Divider(
-                color: Color(0xff8B9299),
-              ),
-              SizedBox(
-                height: 29,
-              ),
-              passwordField(),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
@@ -232,7 +278,7 @@ class _AdminAccontScreenState extends State<AdminAccontScreen> {
   }
 
   Widget header() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * .38,
       // color: Colors.black,
       child: Column(

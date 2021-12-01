@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, camel_case_types
+// ignore_for_file: prefer_const_constructors, avoid_print, camel_case_types, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 import 'package:feedback_application_flutter/model/approved_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
@@ -239,6 +240,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                         width:
                                             MediaQuery.of(context).size.width,
                                         child: ListView.builder(
+
                                             physics:
                                                 NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
@@ -366,6 +368,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                   SizedBox(
                                     width: 100,
                                     child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             detail.managerContact!.length,
@@ -403,6 +406,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                   SizedBox(
                                     width: 100,
                                     child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             detail.managerContact!.length,
@@ -441,6 +445,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                   SizedBox(
                                     width: 100,
                                     child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             detail.managerContact!.length,
@@ -505,7 +510,6 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                         height: 20,
                       ),
                       Row(
-                        // ignore: prefer_const_literals_to_create_immutables
                         children: [
                           Text(
                             "+ ",
@@ -559,19 +563,17 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
               }
               return SizedBox();
             }),
-    
       ),
     );
   }
 
   //Make Completed Message
-
   Future<CompletedModel?> makeCompleted(String note, String id) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString('login');
     http.Response response = await http.post(
       Uri.parse('https://feedback-project-api.herokuapp.com/api/v1/completeds'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: {"auth-token": '$token', "Content-Type": "application/json"},
       body: jsonEncode(
         {
           'note': note,

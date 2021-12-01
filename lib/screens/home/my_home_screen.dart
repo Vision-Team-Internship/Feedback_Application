@@ -6,12 +6,12 @@ import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
 import 'package:feedback_application_flutter/screens/notification_screen/nofitication_screen.dart';
+import 'package:feedback_application_flutter/screens/setting/setting_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_listtile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -199,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 FListTile(
                   onTap: () {
                     // ignore: avoid_print
-                    print("Setting");
+                    Get.to(() => SettingScreen());
                   },
                   subtitle: 'Manage app Account, themes, permissions, etc..',
                   title: 'Settings',

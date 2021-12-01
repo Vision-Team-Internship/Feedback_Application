@@ -5,6 +5,7 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,41 +21,14 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController? _emailController;
   TextEditingController? _passController;
   late bool visible;
-  bool? _isLoading;
+  bool _isLoading = true;
   @override
   void initState() {
     _emailController = TextEditingController();
     _passController = TextEditingController();
-    visible = false;
-    _isLoading = true;
+    visible = true;
+
     super.initState();
-  }
-
-  signIn(String email, String password) async {
-    var jsonData;
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
-    http.Response response = await http.post(
-      Uri.parse("https://feedback-project-api.herokuapp.com/login"),
-      headers: <String, String>{
-        'Content-Type': 'application/json-patch+json',
-        'accept': 'application/json'
-      },
-      body: <dynamic, dynamic>{
-        'email': email,
-        'password': password,
-      },
-    );
-    if (response.statusCode == 200) {
-      jsonData = json.decode(response.body);
-      setState(() {
-        _isLoading = false;
-        sharedPreferences.setString("token", jsonData['token']);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const MyHomePage()),
-            (route) => false);
-      });
-    }
   }
 
   @override
@@ -72,188 +46,205 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           physics: const BouncingScrollPhysics(),
-          child: SafeArea(
-            child: Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Vision",
-                        style: ThemeConstant.textTheme.headline3!.copyWith(
-                          color: ThemeConstant.lightScheme.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
+          child: _isLoading
+              ? SafeArea(
+                  child: Container(
+                    color: Colors.white,
+                    height: MediaQuery.of(context).size.height,
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Login",
-                          style: ThemeConstant.textTheme.headline5!
-                              .copyWith(color: Colors.black),
-                        ),
                         const SizedBox(
-                          height: 40,
+                          height: 50,
                         ),
-                        Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              //Enter Email
-                              TextFieldText(
-                                controller: _emailController,
-                                hinttext: "Enter email",
-                                text: "Email",
-                                validator: (value) {
-                                  const pattern =
-                                      r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
-                                  final regExp = RegExp(pattern);
-
-                                  if (value!.isEmpty) {
-                                    return 'Please enter an email';
-                                  } else if (!regExp.hasMatch(value)) {
-                                    return 'Please enter a valid email';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                onChanged: (value) =>
-                                    setState(() => email = value),
-                                obscurText: false,
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Vision",
+                              style:
+                                  ThemeConstant.textTheme.headline3!.copyWith(
+                                color: ThemeConstant.lightScheme.primary,
                               ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-
-                              //Enter Password
-                              TextFieldText(
-                                controller: _passController,
-                                hinttext: "Enter password",
-                                sufixIcon: IconButton(
-                                  icon: Icon(
-                                    // Based on passwordVisible state choose the icon
-                                    visible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    // Update the state i.e. toogle the state of passwordVisible variable
-                                    setState(() {
-                                      visible = !visible;
-                                    });
-                                  },
-                                ),
-                                text: "Password",
-                                validator: (value) {},
-                                onChanged: (value) {},
-                                obscurText: visible,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                        // const TextField(
-                        //   decoration: InputDecoration(
-                        //     hintStyle: TextStyle(
-                        //       fontSize: 16,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontFamily: 'Poppins',
-                        //     ),
-                        //     hintText: "Username",
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        // const SizedBox(height: 25),
-                        // const TextField(
-                        //   decoration: InputDecoration(
-                        //     hintText: "Email",
-                        //     hintStyle: TextStyle(
-                        //       fontSize: 16,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontFamily: 'Poppins',
-                        //     ),
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 71,
-                        //   child: TextFieldText(
-                        //     text: "demo@gmail.com",
-                        //     validator: (value) {
-                        //       const pattern =
-                        //           r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
-                        //       final regExp = RegExp(pattern);
-
-                        //       if (value!.isEmpty) {
-                        //         return 'Please enter an email';
-                        //       } else if (!regExp.hasMatch(value)) {
-                        //         return 'Please enter a valid email';
-                        //       } else {
-                        //         return null;
-                        //       }
-                        //     },
-                        //     onChanged: (value) => setState(() => email = value),
-                        //   ),
-                        // ),
-                        // const TextField(
-                        //   obscureText: true,
-                        //   decoration: InputDecoration(
-                        //     hintText: "Password",
-                        //     hintStyle: TextStyle(
-                        //       fontSize: 16,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontFamily: 'Poppins',
-                        //     ),
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-
-                        const SizedBox(
-                          height: 36,
-                        ),
-                        // ignore: deprecated_member_use
-                        Align(
-                          alignment: Alignment.topRight,
-                          // ignore: deprecated_member_use
-                          child: OutlineButton(
-                            onPressed: () async {
-                              login();
-                            },
-                            textColor: ThemeConstant.lightScheme.primary,
-                            borderSide: BorderSide(
-                              color: ThemeConstant.lightScheme.primary,
-                            ),
-                            // ignore: prefer_const_constructors
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 14.0),
-                              child: Text(
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
                                 "Login",
-                                style: ThemeConstant.textTheme.button!.copyWith(
-                                  color: ThemeConstant.lightScheme.primary,
+                                style: ThemeConstant.textTheme.headline5!
+                                    .copyWith(color: Colors.black),
+                              ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Form(
+                                key: formKey,
+                                child: Column(
+                                  children: [
+                                    //Enter Email
+                                    TextFieldText(
+                                      controller: _emailController,
+                                      hinttext: "Enter email",
+                                      validator: (value) {
+                                        const pattern =
+                                            r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
+                                        final regExp = RegExp(pattern);
+
+                                        if (value!.isEmpty) {
+                                          return 'Please enter an email';
+                                        } else if (!regExp.hasMatch(value)) {
+                                          return 'Please enter a valid email';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                      onChanged: (value) =>
+                                          setState(() => email = value),
+                                      obscurText: false,
+                                    ),
+                                    const SizedBox(
+                                      height: 25,
+                                    ),
+
+                                    //Enter Password
+                                    TextFieldText(
+                                      controller: _passController,
+                                      hinttext: "Enter password",
+                                      sufixIcon: IconButton(
+                                        icon: Icon(
+                                          // Based on passwordVisible state choose the icon
+                                          visible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                        ),
+                                        onPressed: () {
+                                          // Update the state i.e. toogle the state of passwordVisible variable
+                                          setState(() {
+                                            visible = !visible;
+                                          });
+                                        },
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Enter your password";
+                                        }
+                                        if (value.length <= 5) {
+                                          return "Please enter 6 digit";
+                                        }
+                                      },
+                                      onChanged: (value) {},
+                                      obscurText: visible,
+                                    ),
+                                    const SizedBox(
+                                      height: 36,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      // ignore: deprecated_member_use
+                                      child: OutlineButton(
+                                        onPressed: () async {
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            print("Your Data");
+                                            login();
+                                          }
+                                        },
+                                        textColor:
+                                            ThemeConstant.lightScheme.primary,
+                                        borderSide: BorderSide(
+                                          color:
+                                              ThemeConstant.lightScheme.primary,
+                                        ),
+                                        // ignore: prefer_const_constructors
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 14.0),
+                                          child: Text(
+                                            "Login",
+                                            style: ThemeConstant
+                                                .textTheme.button!
+                                                .copyWith(
+                                              color: ThemeConstant
+                                                  .lightScheme.primary,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
+                              // const TextField(
+                              //   decoration: InputDecoration(
+                              //     hintStyle: TextStyle(
+                              //       fontSize: 16,
+                              //       fontWeight: FontWeight.w400,
+                              //       fontFamily: 'Poppins',
+                              //     ),
+                              //     hintText: "Username",
+                              //     border: OutlineInputBorder(),
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 25),
+                              // const TextField(
+                              //   decoration: InputDecoration(
+                              //     hintText: "Email",
+                              //     hintStyle: TextStyle(
+                              //       fontSize: 16,
+                              //       fontWeight: FontWeight.w400,
+                              //       fontFamily: 'Poppins',
+                              //     ),
+                              //     border: OutlineInputBorder(),
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 71,
+                              //   child: TextFieldText(
+                              //     text: "demo@gmail.com",
+                              //     validator: (value) {
+                              //       const pattern =
+                              //           r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
+                              //       final regExp = RegExp(pattern);
+
+                              //       if (value!.isEmpty) {
+                              //         return 'Please enter an email';
+                              //       } else if (!regExp.hasMatch(value)) {
+                              //         return 'Please enter a valid email';
+                              //       } else {
+                              //         return null;
+                              //       }
+                              //     },
+                              //     onChanged: (value) => setState(() => email = value),
+                              //   ),
+                              // ),
+                              // const TextField(
+                              //   obscureText: true,
+                              //   decoration: InputDecoration(
+                              //     hintText: "Password",
+                              //     hintStyle: TextStyle(
+                              //       fontSize: 16,
+                              //       fontWeight: FontWeight.w400,
+                              //       fontFamily: 'Poppins',
+                              //     ),
+                              //     border: OutlineInputBorder(),
+                              //   ),
+                              // ),
+
+                              // ignore: deprecated_member_use
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : const CircularProgressIndicator(),
         ),
       ),
     );
@@ -261,17 +252,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login() async {
     if (_emailController!.text.isNotEmpty && _passController!.text.isNotEmpty) {
+      Map body = {
+        "email": _emailController!.text,
+        "password": _passController!.text,
+      };
+      var jsonResponse;
       var response = await http.post(
         Uri.parse("https://feedback-project-api.herokuapp.com/login"),
         headers: <String, String>{},
-        body: ({
-          "email": _emailController!.text,
-          "password": _passController!.text,
-        }),
+        body: body,
       );
+
       if (response.statusCode == 200) {
-        print("Login Token  " + response.body);
-        pageRoute(response.body);
+        jsonResponse = json.decode(response.body);
+        print("Login Token  " + jsonResponse['token']);
+
+        pageRoute(jsonResponse['token']);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -290,12 +286,11 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
-  } 
- 
+  }
+
   void pageRoute(String token) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("login", token);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+    Get.offAll(() => const MyHomePage());
   }
 }

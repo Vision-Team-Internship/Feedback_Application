@@ -1,11 +1,12 @@
-// ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable
+// ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print
 
 import 'package:feedback_application_flutter/screens/admin_account/admin_account.dart';
+import 'package:feedback_application_flutter/screens/empty_screen/empty_notification_screen.dart';
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
-import 'package:feedback_application_flutter/screens/notification_screen/notification_screen1.dart';
+import 'package:feedback_application_flutter/screens/notification_screen/notification_screen.dart';
 import 'package:feedback_application_flutter/screens/setting/setting_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_listtile.dart';
 import 'package:flutter/material.dart';
@@ -83,37 +84,39 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: [
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              // padding: const EdgeInsets.symmetric(horizontal: 30),
+              margin: const EdgeInsets.only(right: 10),
               child: Stack(
                 children: [
                   InkWell(
                     onTap: () async {
-                      // ignore: avoid_print
                       print("Notification");
-                      // SharedPreferences pref =
-                      //     await SharedPreferences.getInstance();
-                      // pref.remove("login");
-                      // pref.commit();
-                      Get.to(() => Notification1(
-                            title: "",
-                          ));
+
+                      Get.to(
+                        () => EmptyNotificationScreen(),
+                      );
                     },
-                    child: SvgPicture.asset(
-                      "assets/icons/notification_icons.svg",
-                      width: 26,
-                      cacheColorFilter: true,
-                      height: 26,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: SvgPicture.asset(
+                        "assets/icons/notification_icons.svg",
+                        width: 26,
+                        cacheColorFilter: true,
+                        height: 26,
+                      ),
                     ),
                   ),
                   Positioned(
                     right: 0,
                     child: Container(
-                      width: 10,
-                      height: 10,
+                      width: 15,
+                      height: 15,
+                      alignment: Alignment.center,
                       decoration: const BoxDecoration(
                         color: Colors.red,
                         shape: BoxShape.circle,
                       ),
+                      child: Text("1"),
                     ),
                   ),
                 ],

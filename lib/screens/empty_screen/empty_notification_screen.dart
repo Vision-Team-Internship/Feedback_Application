@@ -3,6 +3,7 @@
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class EmptyNotificationScreen extends StatelessWidget {
   const EmptyNotificationScreen({Key? key}) : super(key: key);
@@ -15,7 +16,9 @@ class EmptyNotificationScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,

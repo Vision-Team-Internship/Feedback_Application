@@ -1,7 +1,6 @@
 // ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print
 
 import 'package:feedback_application_flutter/screens/admin_account/admin_account.dart';
-import 'package:feedback_application_flutter/screens/empty_screen/empty_notification_screen.dart';
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
@@ -93,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       print("Notification");
 
                       Get.to(
-                        () => EmptyNotificationScreen(),
+                        () => NotificationScreen(),
                       );
                     },
                     child: Padding(
@@ -132,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
             scrollDirection: Axis.vertical,
             physics: const BouncingScrollPhysics(),
             child: Column(
-              // ignore: prefer_const_literals_to_create_immutables
+             
               children: [
                 const SizedBox(
                   height: 30,
@@ -163,7 +162,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 50),
                 FListTile(
                   onTap: () {
-                    // ignore: avoid_print
                     print("Message");
                     Get.to(() => MessageScreen());
                   },
@@ -173,7 +171,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 FListTile(
                   onTap: () {
-                    // ignore: avoid_print
                     print("In process");
                     Get.to(() => InProcessingScreen());
                   },
@@ -183,7 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 FListTile(
                   onTap: () {
-                    // ignore: avoid_print
                     print("History");
                     Get.to(() => ApproveHistoryScreen());
                   },
@@ -193,7 +189,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 FListTile(
                   onTap: () {
-                    // ignore: avoid_print
                     print("Account");
                     Get.to(() => AdminAccontScreen());
                   },
@@ -203,7 +198,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 FListTile(
                   onTap: () {
-                    // ignore: avoid_print
                     Get.to(() => SettingScreen());
                   },
                   subtitle: 'Manage app Account, themes, permissions, etc..',

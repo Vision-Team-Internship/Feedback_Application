@@ -105,7 +105,6 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                         height: 25,
                       ),
                       Column(
-                        // ignore: prefer_const_literals_to_create_immutables
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(

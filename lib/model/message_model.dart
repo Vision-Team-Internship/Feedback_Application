@@ -2,6 +2,8 @@
 //
 //     final feedbackModel = feedbackModelFromJson(jsonString);
 
+// ignore_for_file: prefer_if_null_operators
+
 import 'dart:convert';
 
 FeedbackModel feedbackModelFromJson(String str) => FeedbackModel.fromJson(json.decode(str));

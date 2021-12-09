@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, prefer_typing_uninitialized_variables, avoid_print
+// ignore_for_file: unused_field, prefer_typing_uninitialized_variables, avoid_print, unused_local_variable
 
 import 'dart:convert';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
@@ -34,9 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    // ignore: unused_local_variable
     String? email;
     return Scaffold(
       backgroundColor: Colors.white,

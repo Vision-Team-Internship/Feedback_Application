@@ -19,12 +19,14 @@ class MySplashScreen extends StatefulWidget {
 class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
-     checkLogin();
-    },);
+    Timer(
+      Duration(seconds: 3),
+      () {
+        checkLogin();
+      },
+    );
     super.initState();
   }
-
   void checkLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? check = pref.getString("login");
@@ -32,8 +34,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => MyHomePage()),
           (route) => false);
-    }else{
-       Navigator.of(context).pushAndRemoveUntil(
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginScreen()),
           (route) => false);
     }

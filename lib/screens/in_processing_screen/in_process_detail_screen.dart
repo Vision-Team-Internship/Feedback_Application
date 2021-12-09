@@ -240,7 +240,6 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                         width:
                                             MediaQuery.of(context).size.width,
                                         child: ListView.builder(
-
                                             physics:
                                                 NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
@@ -368,7 +367,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                   SizedBox(
                                     width: 100,
                                     child: ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                        physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             detail.managerContact!.length,
@@ -406,7 +405,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                   SizedBox(
                                     width: 100,
                                     child: ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                        physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             detail.managerContact!.length,
@@ -445,7 +444,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                   SizedBox(
                                     width: 100,
                                     child: ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                        physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             detail.managerContact!.length,
@@ -573,7 +572,10 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
     var token = pref.getString('login');
     http.Response response = await http.post(
       Uri.parse('https://feedback-project-api.herokuapp.com/api/v1/completeds'),
-      headers: {"auth-token": '$token', "Content-Type": "application/json"},
+      headers: {
+        "auth-token": '$token',
+        "Content-Type": "application/json",
+      },
       body: jsonEncode(
         {
           'note': note,

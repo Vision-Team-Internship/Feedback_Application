@@ -184,17 +184,16 @@ class _MessageScreenState extends State<MessageScreen> {
                       " Request date: ${_listmessage![index].createdDate!.day}/${_listmessage![index].createdDate!.month}/${_listmessage![index].createdDate!.year}",
                   level: "${_listmessage![index].feedbackLevel}",
                   levelColor:
-                      _listmessage![index].feedbackLevel!.toUpperCase() ==
+                      _listmessage![index].feedbackLevel?.toUpperCase() ==
                               "high".toUpperCase()
                           ? Colors.red
-                          : _listmessage![index].feedbackLevel!.toUpperCase() ==
+                          : _listmessage?[index].feedbackLevel?.toUpperCase() ==
                                   "medium".toUpperCase()
                               ? Color(0xffCACA03)
                               : Color(0xff00C700),
                 ),
               );
             }
-
             return SizedBox();
           },
         ),

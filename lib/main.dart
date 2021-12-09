@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable, prefer_const_constructors
 
 import 'package:feedback_application_flutter/my_splash_screen.dart';
+import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:feedback_application_flutter/screens/notification_screen/notification_screen1.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,24 +22,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   initState() {
-    // //Remove this method to stop OneSignal Debugging
-    // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-    // OneSignal.shared.setAppId("711e896c-e13a-4dad-82c6-40fe033c8939");
-
-    // // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-    // OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-    //   print("Accepted permission: $accepted");
-    // });
-
-    // OneSignal.shared
-    //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
-
-    // OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-    //   var data = openedResult.notification.title;
-    //   Get.to(() => Notification1());
-    // });
-
     initPlatformState();
     super.initState();
   }
@@ -56,21 +39,37 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    //Remove this method to stop OneSignal Debugging
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
     OneSignal.shared.setAppId("711e896c-e13a-4dad-82c6-40fe033c8939");
-    // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-      print("Accepted permission: $accepted");
+      // print("Accepted permission: $accepted");
     });
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
 
-    OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-      var data = openedResult.notification.title;
-      Get.to(() => Notification1());
-    });
+    OneSignal.shared.setNotificationOpenedHandler(
+      (openedResult) {
+        var title = openedResult.notification.title;
+        var subtitle = openedResult.notification.additionalData?["feedback_id"];
+        print("Subtitle here : ${subtitle.toString()}");
+        Get.to(() => Notification1(
+              title: subtitle.toString(),
+            ));
+
+
+            Get.to(()=>MessageDetailScreen(
+                      title: title.toString(),
+                      date:
+                          '111/1/1',
+                      level:"High",
+                      id: subtitle.toString(),
+                      // ignore: prefer_const_literals_to_create_immutables
+                      managerContact: [
+                        "df"
+                      ],
+                    ),);
+      },
+    );
   }
 }

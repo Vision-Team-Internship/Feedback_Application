@@ -95,7 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       //     await SharedPreferences.getInstance();
                       // pref.remove("login");
                       // pref.commit();
-                      Get.to(() => Notification1());
+                      Get.to(() => Notification1(
+                            title: "",
+                          ));
                     },
                     child: SvgPicture.asset(
                       "assets/icons/notification_icons.svg",

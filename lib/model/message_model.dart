@@ -1,4 +1,6 @@
-// ignore_for_file: prefer_if_null_operators
+// To parse this JSON data, do
+//
+//     final feedbackModel = feedbackModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -30,87 +32,95 @@ class Payload {
     Payload({
         this.feedbackLocation,
         this.id,
-        this.title,
-        this.message,
-        this.feedbackLevel,
         this.createdDate,
         this.isApproved,
         this.isRejected,
         this.isCompleted,
-        this.feedbackType,
         this.uniqueIDs,
-        this.v,
         this.managerContact,
+        this.v,
+        this.title,
+        this.message,
+        this.feedbackLevel,
+        this.feedbackType,
+        this.url,
+        this.cloudinaryId,
     });
 
-    dynamic feedbackLocation;
+    FeedbackLocation? feedbackLocation;
     String? id;
-    String? title;
-    String? message;
-    String? feedbackLevel;
     DateTime? createdDate;
     bool? isApproved;
     bool? isRejected;
     bool? isCompleted;
-    String? feedbackType;
     List<String>? uniqueIDs;
-    int? v;
     List<ManagerContact>? managerContact;
+    int? v;
+    String? title;
+    String? message;
+    String? feedbackLevel;
+    String? feedbackType;
+    String? url;
+    String? cloudinaryId;
 
     factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-        feedbackLocation: json["feedbackLocation"],
+        feedbackLocation: FeedbackLocation.fromJson(json["feedbackLocation"]),
         id: json["_id"],
-        title: json["title"],
-        message: json["message"],
-        feedbackLevel: json["feedbackLevel"],
         createdDate: DateTime.parse(json["createdDate"]),
         isApproved: json["isApproved"],
         isRejected: json["isRejected"],
         isCompleted: json["isCompleted"],
-        feedbackType: json["feedbackType"],
         uniqueIDs: List<String>.from(json["uniqueIDs"].map((x) => x)),
-        v: json["__v"],
         managerContact: List<ManagerContact>.from(json["managerContact"].map((x) => ManagerContact.fromJson(x))),
+        v: json["__v"],
+        title: json["title"] == null ? null : json["title"],
+        message: json["message"] == null ? null : json["message"],
+        feedbackLevel: json["feedbackLevel"] == null ? null : json["feedbackLevel"],
+        feedbackType: json["feedbackType"] == null ? null : json["feedbackType"],
+        url: json["url"] == null ? null : json["url"],
+        cloudinaryId: json["cloudinary_id"] == null ? null : json["cloudinary_id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "feedbackLocation": feedbackLocation,
+        "feedbackLocation": feedbackLocation!.toJson(),
         "_id": id,
-        "title": title,
-        "message": message,
-        "feedbackLevel": feedbackLevel,
         "createdDate": createdDate!.toIso8601String(),
         "isApproved": isApproved,
         "isRejected": isRejected,
         "isCompleted": isCompleted,
-        "feedbackType": feedbackType,
         "uniqueIDs": List<dynamic>.from(uniqueIDs!.map((x) => x)),
-        "__v": v,
         "managerContact": List<dynamic>.from(managerContact!.map((x) => x.toJson())),
+        "__v": v,
+        "title": title == null ? null : title,
+        "message": message == null ? null : message,
+        "feedbackLevel": feedbackLevel == null ? null : feedbackLevel,
+        "feedbackType": feedbackType == null ? null : feedbackType,
+        "url": url == null ? null : url,
+        "cloudinary_id": cloudinaryId == null ? null : cloudinaryId,
     };
 }
 
-class FeedbackLocationClass {
-    FeedbackLocationClass({
-        this.room,
+class FeedbackLocation {
+    FeedbackLocation({
         this.floor,
         this.department,
+        this.room,
     });
 
-    List<String>? room;
     List<String>? floor;
     List<String>? department;
+    List<String>? room;
 
-    factory FeedbackLocationClass.fromJson(Map<String, dynamic> json) => FeedbackLocationClass(
-        room: List<String>.from(json["room"].map((x) => x)),
+    factory FeedbackLocation.fromJson(Map<String, dynamic> json) => FeedbackLocation(
         floor: List<String>.from(json["floor"].map((x) => x)),
         department: List<String>.from(json["department"].map((x) => x)),
+        room: List<String>.from(json["room"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "room": List<dynamic>.from(room!.map((x) => x)),
         "floor": List<dynamic>.from(floor!.map((x) => x)),
         "department": List<dynamic>.from(department!.map((x) => x)),
+        "room": List<dynamic>.from(room!.map((x) => x)),
     };
 }
 
@@ -124,24 +134,24 @@ class ManagerContact {
     });
 
     String? location;
-    String? cardId;
+    String ?cardId;
     String? username;
     int? phoneNumber;
     String? id;
 
     factory ManagerContact.fromJson(Map<String, dynamic> json) => ManagerContact(
-        location: json["location"] == null ? null : json["location"],
-        cardId: json["cardID"] == null ? null : json["cardID"],
-        username: json["username"] == null ? null : json["username"],
-        phoneNumber: json["phone_number"] == null ? null : json["phone_number"],
+        location: json["location"],
+        cardId: json["cardID"],
+        username: json["username"],
+        phoneNumber: json["phone_number"],
         id: json["_id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "location": location == null ? null : location,
-        "cardID": cardId == null ? null : cardId,
-        "username": username == null ? null : username,
-        "phone_number": phoneNumber == null ? null : phoneNumber,
+        "location": location,
+        "cardID": cardId,
+        "username": username,
+        "phone_number": phoneNumber,
         "_id": id,
     };
 }

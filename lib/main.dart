@@ -1,6 +1,4 @@
 // ignore_for_file: avoid_print, unused_local_variable, prefer_const_constructors
-
-import 'package:feedback_application_flutter/my_splash_screen.dart';
 import 'package:feedback_application_flutter/screens/empty_screen/empty_notification_screen.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:feedback_application_flutter/screens/notification_screen/notification_screen1.dart';

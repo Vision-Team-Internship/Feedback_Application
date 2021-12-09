@@ -6,6 +6,7 @@ import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
 import 'package:feedback_application_flutter/screens/message/message_screen.dart';
 import 'package:feedback_application_flutter/screens/notification_screen/nofitication_screen.dart';
+import 'package:feedback_application_flutter/screens/notification_screen/notification_screen1.dart';
 import 'package:feedback_application_flutter/screens/setting/setting_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_listtile.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       //     await SharedPreferences.getInstance();
                       // pref.remove("login");
                       // pref.commit();
-                      Get.to(() => NofiticationScreen());
+                      Get.to(() => Notification1());
                     },
                     child: SvgPicture.asset(
                       "assets/icons/notification_icons.svg",

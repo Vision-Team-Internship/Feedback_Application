@@ -6,6 +6,7 @@ import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
 import 'package:feedback_application_flutter/screens/widgets/f_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -93,16 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                       hinttext: "Enter email",
                                       validator: (value) {
                                         const pattern =
-                                            r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
+                                            r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+/.[a-zA-Z0-9-.]+$)';
                                         final regExp = RegExp(pattern);
 
                                         if (value!.isEmpty) {
                                           return 'Please enter an email';
-                                        } else if (!regExp.hasMatch(value)) {
-                                          return 'Please enter a valid email';
                                         } else {
                                           return null;
                                         }
+                                        // else if (!regExp.hasMatch(value)) {
+                                        //   return 'Please enter a valid email';
+                                        // }
                                       },
                                       onChanged: (value) =>
                                           setState(() => email = value),
@@ -151,7 +153,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         onPressed: () async {
                                           if (formKey.currentState!
                                               .validate()) {
-                                            print("Your Data");
+                                            setState(() {
+                                              _isLoading = !_isLoading;
+                                            });
                                             login();
                                           }
                                         },
@@ -180,63 +184,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                               ),
-                              // const TextField(
-                              //   decoration: InputDecoration(
-                              //     hintStyle: TextStyle(
-                              //       fontSize: 16,
-                              //       fontWeight: FontWeight.w400,
-                              //       fontFamily: 'Poppins',
-                              //     ),
-                              //     hintText: "Username",
-                              //     border: OutlineInputBorder(),
-                              //   ),
-                              // ),
-                              // const SizedBox(height: 25),
-                              // const TextField(
-                              //   decoration: InputDecoration(
-                              //     hintText: "Email",
-                              //     hintStyle: TextStyle(
-                              //       fontSize: 16,
-                              //       fontWeight: FontWeight.w400,
-                              //       fontFamily: 'Poppins',
-                              //     ),
-                              //     border: OutlineInputBorder(),
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: 71,
-                              //   child: TextFieldText(
-                              //     text: "demo@gmail.com",
-                              //     validator: (value) {
-                              //       const pattern =
-                              //           r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
-                              //       final regExp = RegExp(pattern);
-
-                              //       if (value!.isEmpty) {
-                              //         return 'Please enter an email';
-                              //       } else if (!regExp.hasMatch(value)) {
-                              //         return 'Please enter a valid email';
-                              //       } else {
-                              //         return null;
-                              //       }
-                              //     },
-                              //     onChanged: (value) => setState(() => email = value),
-                              //   ),
-                              // ),
-                              // const TextField(
-                              //   obscureText: true,
-                              //   decoration: InputDecoration(
-                              //     hintText: "Password",
-                              //     hintStyle: TextStyle(
-                              //       fontSize: 16,
-                              //       fontWeight: FontWeight.w400,
-                              //       fontFamily: 'Poppins',
-                              //     ),
-                              //     border: OutlineInputBorder(),
-                              //   ),
-                              // ),
-
-                              // ignore: deprecated_member_use
                             ],
                           ),
                         ),
@@ -244,7 +191,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 )
-              : const CircularProgressIndicator(),
+              : Container(
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Lottie.asset(
+                      "assets/loadings/checking.json",
+                      width: 150,
+                      height: 150,
+                    ),
+                  ),
+                ),
         ),
       ),
     );
@@ -267,15 +225,21 @@ class _LoginScreenState extends State<LoginScreen> {
         jsonResponse = json.decode(response.body);
         print("Login Token  " + jsonResponse['token']);
 
-        pageRoute(jsonResponse['token']);
+        setState(() {
+          pageRoute(jsonResponse['token']);
+          _isLoading = true;
+        });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Error Credentail",
+        setState(() {
+          _isLoading = true;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "Email and Password is incorrent",
+              ),
             ),
-          ),
-        );
+          );
+        });
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

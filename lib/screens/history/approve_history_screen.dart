@@ -139,7 +139,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
           colorText: Colors.white,
           duration: Duration(seconds: 4),
           isDismissible: true,
-          dismissDirection: SnackDismissDirection.HORIZONTAL,
+        //  dismissDirection: SnackDismissDirection.HORIZONTAL,
           forwardAnimationCurve: Curves.easeOutBack,
         );
         break;
@@ -155,7 +155,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
           colorText: Colors.white,
           duration: Duration(seconds: 4),
           isDismissible: true,
-          dismissDirection: SnackDismissDirection.HORIZONTAL,
+       //   dismissDirection: SnackDismissDirection.HORIZONTAL,
           forwardAnimationCurve: Curves.easeOutBack,
         );
         break;

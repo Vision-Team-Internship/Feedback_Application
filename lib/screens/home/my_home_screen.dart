@@ -1,5 +1,8 @@
 // ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print
 
+import 'package:feedback_application_flutter/data/getdata/home_api.dart';
+import 'package:feedback_application_flutter/model/count_inprocessing_model.dart';
+import 'package:feedback_application_flutter/model/home_model.dart';
 import 'package:feedback_application_flutter/screens/admin_account/admin_account.dart';
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
@@ -21,11 +24,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future<HomeModel>? _homemodel;
+  Future<CountInprocessingModel>? _countInprocess;
+
+  final HomeApi _api = HomeApi();
+
   List<CounterData>? _chartData;
   DateTime? lastPressed;
+
   @override
   void initState() {
     super.initState();
+    _homemodel = _api.readCountMessage('?isApproved=false&isRejected=false');
+    _countInprocess =
+        _api.readCountInprocessing('?isApproved=true&isCompleted=false');
+
     _chartData = getChartData();
   }
 
@@ -131,7 +144,6 @@ class _MyHomePageState extends State<MyHomePage> {
             scrollDirection: Axis.vertical,
             physics: const BouncingScrollPhysics(),
             child: Column(
-             
               children: [
                 const SizedBox(
                   height: 30,
@@ -160,24 +172,70 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const ChartFlutter(),
                 ),
                 const SizedBox(height: 50),
-                FListTile(
-                  onTap: () {
-                    print("Message");
-                    Get.to(() => MessageScreen());
+                FutureBuilder<HomeModel>(
+                  future: _homemodel,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("Error"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      var counter = snapshot.data!.payload;
+                      print("Message Request= ${counter?.length}");
+                      return FListTile(
+                        onTap: () {
+                          print("Message");
+                          Get.to(() => MessageScreen());
+                        },
+                        subtitle: "Received: ${counter!.length.toString()}",
+                        title: 'Message',
+                        svgIcon: 'assets/icons/chat_icons.svg',
+                      );
+                    }
+                    return FListTile(
+                      onTap: () {
+                        print("Message");
+                        Get.to(() => MessageScreen());
+                      },
+                      subtitle: 'Recieved: 0',
+                      title: 'Message',
+                      svgIcon: 'assets/icons/chat_icons.svg',
+                    );
                   },
-                  subtitle: 'Recieved: 9+',
-                  title: 'Message',
-                  svgIcon: 'assets/icons/chat_icons.svg',
                 ),
-                FListTile(
-                  onTap: () {
-                    print("In process");
-                    Get.to(() => InProcessingScreen());
-                  },
-                  subtitle: 'Recieved: 9+',
-                  title: 'In Processing',
-                  svgIcon: 'assets/icons/inprocess_icons.svg',
-                ),
+                FutureBuilder<CountInprocessingModel>(
+                    future: _countInprocess,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Error"),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        var inprocessing = snapshot.data!;
+                        print("inprocessing message = ${inprocessing.count}");
+                        return FListTile(
+                          onTap: () {
+                            print("In process");
+                            Get.to(() => InProcessingScreen());
+                          },
+                          subtitle:
+                              "Received: ${inprocessing.count.toString()}",
+                          title: 'In Processing',
+                          svgIcon: 'assets/icons/inprocess_icons.svg',
+                        );
+                      }
+                      return FListTile(
+                        onTap: () {
+                          print("In process");
+                          Get.to(() => InProcessingScreen());
+                        },
+                        subtitle: 'Recieved: 0',
+                        title: 'In Processing',
+                        svgIcon: 'assets/icons/inprocess_icons.svg',
+                      );
+                    }),
                 FListTile(
                   onTap: () {
                     print("History");

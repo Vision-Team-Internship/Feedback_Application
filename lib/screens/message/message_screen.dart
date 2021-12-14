@@ -7,6 +7,7 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
+import 'package:feedback_application_flutter/screens/empty_screen/empty_message_screen.dart';
 import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
@@ -55,7 +56,7 @@ class _MessageScreenState extends State<MessageScreen> {
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            Get.to(()=>MyHomePage());
+            Get.to(() => MyHomePage());
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -104,17 +105,15 @@ class _MessageScreenState extends State<MessageScreen> {
                   _listmessage = snapshot.data!.payload;
                   return _listmessage!.isNotEmpty
                       ? _buildBody(context)
-                      : Center(
-                          child: Text("Empty"),
-                        );
+                      : EmptyMessageScreen();
                 }
                 return Container(
                   height: MediaQuery.of(context).size.height / 1.5,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: 200,
-                    height: 200,
+                    width: 180,
+                    height: 180,
                     child: Lottie.asset("assets/loadings/waiting.json"),
                   ),
                 );

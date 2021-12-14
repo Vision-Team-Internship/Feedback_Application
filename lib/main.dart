@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
       (openedResult) {
         var title = openedResult.notification.title;
         var subtitle = openedResult.notification.additionalData?["feedback_id"];
-        print("Subtitle here : ${subtitle.toString()}");
+    
         Get.to(
           () => MessageDetailScreen(
             title: title.toString(),

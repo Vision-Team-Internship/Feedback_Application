@@ -222,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         jsonResponse = json.decode(response.body);
         print("Login Token  " + jsonResponse['token']);
-
         setState(() {
           pageRoute(jsonResponse['token']);
           _isLoading = true;

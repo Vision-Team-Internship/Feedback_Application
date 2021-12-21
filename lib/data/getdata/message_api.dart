@@ -14,12 +14,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MessageApi extends ApiRepository {
-  Future<FeedbackModel> readDataFromMessage() async {
+  Future<FeedbackModel> readDataFromMessage(String url) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString("login");
     http.Response response = await http.get(
       Uri.parse(
-        '$baseUrl/feedbacks',
+        '$baseUrl/feedbacks/$url',
       ),
       headers:{
         "auth-token": '$token',

@@ -4,6 +4,7 @@ import 'package:feedback_application_flutter/data/getdata/home_api.dart';
 import 'package:feedback_application_flutter/model/count_inprocessing_model.dart';
 import 'package:feedback_application_flutter/model/home_model.dart';
 import 'package:feedback_application_flutter/screens/admin_account/admin_account.dart';
+import 'package:feedback_application_flutter/screens/archived_screen/archived_message.dart';
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
 import 'package:feedback_application_flutter/screens/home/chart_flutter.dart';
 import 'package:feedback_application_flutter/screens/in_processing_screen/in_process_screen.dart';
@@ -205,46 +206,60 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 FutureBuilder<CountInprocessingModel>(
-                    future: _countInprocess,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Error"),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        var inprocessing = snapshot.data!;
-                        print("inprocessing message = ${inprocessing.count}");
-                        return FListTile(
-                          onTap: () {
-                            print("In process");
-                            Get.to(() => InProcessingScreen());
-                          },
-                          subtitle:
-                              "Received: ${inprocessing.count.toString()}",
-                          title: 'In Processing',
-                          svgIcon: 'assets/icons/inprocess_icons.svg',
-                        );
-                      }
+                  future: _countInprocess,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("Error"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      var inprocessing = snapshot.data!;
+                      print("inprocessing message = ${inprocessing.count}");
                       return FListTile(
                         onTap: () {
                           print("In process");
                           Get.to(() => InProcessingScreen());
                         },
-                        subtitle: 'Recieved: 0',
+                        subtitle: "Received: ${inprocessing.count.toString()}",
                         title: 'In Processing',
                         svgIcon: 'assets/icons/inprocess_icons.svg',
                       );
-                    }),
+                    }
+                    return FListTile(
+                      onTap: () {
+                        print("In process Message");
+                        Get.to(() => InProcessingScreen());
+                      },
+                      subtitle: 'Recieved: 0',
+                      title: 'In Processing',
+                      svgIcon: 'assets/icons/inprocess_icons.svg',
+                    );
+                  },
+                ),
+                FListTile(
+                  onTap: () {
+                    print("Archive");
+                    Get.to(
+                      () => ArchivedMessage(),
+                    );
+                  },
+                  subtitle: 'Received: 0',
+                  title: 'Archive Message',
+                  svgIcon: 'assets/icons/archive.svg',
+                ),
                 FListTile(
                   onTap: () {
                     print("History");
-                    Get.to(() => ApproveHistoryScreen());
+                    Get.to(
+                      () => ApproveHistoryScreen(),
+                    );
                   },
-                  subtitle: 'Recieved: 9+',
-                  title: 'History',
+                  subtitle: 'Done, Reject',
+                  title: 'History Message',
                   svgIcon: 'assets/icons/history_icons.svg',
                 ),
+
                 FListTile(
                   onTap: () {
                     print("Account");
@@ -254,6 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: 'Account',
                   svgIcon: 'assets/icons/account.svg',
                 ),
+
                 FListTile(
                   onTap: () {
                     Get.to(() => SettingScreen());

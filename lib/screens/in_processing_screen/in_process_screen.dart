@@ -35,7 +35,7 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
         isConnected = (event != ConnectivityResult.none);
       });
     });
-    _messagemodel = _messageApi.readDataFromMessage();
+    _messagemodel = _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
     super.initState();
   }
 
@@ -80,10 +80,10 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
             sub = Connectivity().onConnectivityChanged.listen((event) {
               setState(() {
                 isConnected = (event != ConnectivityResult.none);
-                _messagemodel = _messageApi.readDataFromMessage();
+                _messagemodel = _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
               });
             });
-            _messagemodel = _messageApi.readDataFromMessage();
+            _messagemodel = _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
           });
         },
         child: SingleChildScrollView(

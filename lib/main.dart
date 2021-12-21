@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print, unused_local_variable, prefer_const_constructors
+import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/my_splash_screen.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+            color: ThemeConstant.lightScheme.background, elevation: 0.0),
+        scaffoldBackgroundColor: ThemeConstant.lightScheme.background,
       ),
       home: const MySplashScreen(),
     );
@@ -50,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       (openedResult) {
         var title = openedResult.notification.title;
         var subtitle = openedResult.notification.additionalData?["feedback_id"];
-    
+
         Get.to(
           () => MessageDetailScreen(
             title: title.toString(),

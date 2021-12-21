@@ -2,17 +2,13 @@
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/deletedata/delete_history_message.dart';
-
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
-// import 'package:feedback_application_flutter/data/data.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
+import 'package:feedback_application_flutter/model/rejected_model.dart';
 import 'package:feedback_application_flutter/model/slidable_action.dart';
-
 import 'package:feedback_application_flutter/screens/history/detail_approve_message_screen.dart';
-
 import 'package:feedback_application_flutter/screens/history/detail_reject_message_screen.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -31,14 +27,15 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
   TabController? _tabController;
 
   Future<FeedbackModel>? _approve;
-  List<Payload>? _listApprove;
+
 
   final MessageApi _messageApi = MessageApi();
   final DeleteMessage _deleteMessage = DeleteMessage();
 
   @override
   void initState() {
-    _approve = _messageApi.readDataFromMessage();
+    _approve =
+        _messageApi.readDataFromMessage('?isApproved=true&isCompleted=true');
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -125,7 +122,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
     );
   }
 
-  void isDississed(int index, SlidableAction action,String title) {
+  void isDississed(int index, SlidableAction action, String title) {
     switch (action) {
       case SlidableAction.more:
         Get.snackbar(
@@ -139,7 +136,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
           colorText: Colors.white,
           duration: Duration(seconds: 4),
           isDismissible: true,
-        //  dismissDirection: SnackDismissDirection.HORIZONTAL,
+          //  dismissDirection: SnackDismissDirection.HORIZONTAL,
           forwardAnimationCurve: Curves.easeOutBack,
         );
         break;
@@ -155,7 +152,7 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
           colorText: Colors.white,
           duration: Duration(seconds: 4),
           isDismissible: true,
-       //   dismissDirection: SnackDismissDirection.HORIZONTAL,
+          //   dismissDirection: SnackDismissDirection.HORIZONTAL,
           forwardAnimationCurve: Curves.easeOutBack,
         );
         break;
@@ -177,15 +174,15 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
             );
           }
           if (snapshot.hasData) {
-            _listApprove = snapshot.data!.payload;
+           var _listApprove = snapshot.data!.payload;
             return _listApprove!.isNotEmpty
                 ? ListView.builder(
-                    itemCount: _listApprove?.length,
+                    itemCount: _listApprove.length,
                     itemBuilder: (context, index) {
-                      return _listApprove![index].isCompleted == true &&
-                              _listApprove![index].isRejected == false
+                      return _listApprove[index].isCompleted == true &&
+                              _listApprove[index].isRejected == false
                           ? Slidable(
-                              key: Key("${_listApprove![index].title}"),
+                              key: Key("${_listApprove[index].title}"),
                               actionPane: SlidableDrawerActionPane(),
                               secondaryActions: <Widget>[
                                 IconSlideAction(
@@ -193,7 +190,8 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                   color: Colors.black45,
                                   icon: Icons.more_horiz,
                                   onTap: () {
-                                    isDississed(index, SlidableAction.more,_listApprove![index].title.toString());
+                                    isDississed(index, SlidableAction.more,
+                                        _listApprove[index].title.toString());
                                     print("More Option Done message");
                                   },
                                 ),
@@ -203,7 +201,8 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                   icon: CupertinoIcons.multiply_circle,
                                   onTap: () {
                                     print("Delete Option in Done messaage");
-                                    isDississed(index, SlidableAction.delete,_listApprove![index].title.toString());
+                                    isDississed(index, SlidableAction.delete,
+                                        _listApprove[index].title.toString());
                                     // _approve =
                                     //     _deleteMessage.deleteHistoryMessage(
                                     //         _listApprove![index].id.toString());
@@ -219,28 +218,28 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                 onTap: () {
                                   Get.to(
                                     () => DetailApproveMessageScreen(
-                                      id: _listApprove![index].id.toString(),
-                                      level: _listApprove![index]
+                                      id: _listApprove[index].id.toString(),
+                                      level: _listApprove[index]
                                           .feedbackLevel
                                           .toString(),
                                       title:
-                                          _listApprove![index].title.toString(),
+                                          _listApprove[index].title.toString(),
                                       date: '',
                                       managerContact: [],
                                     ),
                                   );
                                 },
-                                title: "${_listApprove![index].title}",
+                                title: "${_listApprove[index].title}",
                                 floor:
-                                    "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
-                                level: "${_listApprove![index].feedbackLevel}",
+                                    "Date: ${_listApprove[index].createdDate!.day}/${_listApprove[index].createdDate!.month}/${_listApprove[index].createdDate!.year}",
+                                level: "${_listApprove[index].feedbackLevel}",
                                 date: "",
                                 levelColor:
-                                    "${_listApprove![index].feedbackLevel}"
+                                    "${_listApprove[index].feedbackLevel}"
                                                 .toUpperCase() ==
                                             "HIGH"
                                         ? Colors.red
-                                        : "${_listApprove![index].feedbackLevel}"
+                                        : "${_listApprove[index].feedbackLevel}"
                                                     .toUpperCase() ==
                                                 "Medium".toUpperCase()
                                             ? Color(0xffDEDE22)
@@ -280,19 +279,19 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
             );
           }
           if (snapshot.hasData) {
-            _listApprove = snapshot.data!.payload;
+           var _listApprove = snapshot.data!.payload;
             if (_listApprove!.isEmpty) {
               return Center(
                 child: Text("Empty"),
               );
             } else {
               return ListView.builder(
-                itemCount: _listApprove?.length,
+                itemCount: _listApprove.length,
                 itemBuilder: (context, index) {
-                  return _listApprove![index].isApproved == false &&
-                          _listApprove![index].isRejected == true
+                  return _listApprove[index].isApproved == false &&
+                          _listApprove[index].isRejected == true
                       ? Slidable(
-                          key: Key("${_listApprove![index].title}"),
+                          key: Key("${_listApprove[index].title}"),
                           actionPane: SlidableDrawerActionPane(),
                           secondaryActions: <Widget>[
                             IconSlideAction(
@@ -301,7 +300,8 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                 icon: Icons.more_horiz,
                                 onTap: () {
                                   print("More Option in Reject message");
-                                  isDississed(index, SlidableAction.more,_listApprove![index].title.toString());
+                                  isDississed(index, SlidableAction.more,
+                                      _listApprove[index].title.toString());
                                 }),
                             IconSlideAction(
                                 caption: 'Delete',
@@ -309,34 +309,33 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                                 icon: CupertinoIcons.multiply_circle,
                                 onTap: () {
                                   print("Delete Option in Reject message");
-                                  isDississed(index, SlidableAction.delete,_listApprove![index].title.toString());
+                                  isDississed(index, SlidableAction.delete,
+                                      _listApprove[index].title.toString());
                                 }),
                           ],
                           child: FTile(
                             onTap: () {
                               Get.to(
                                 () => DetailRejectMessageScreen(
-                                  id: '${_listApprove![index].id}',
+                                  id: '${_listApprove[index].id}',
                                   date:
-                                      '${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}',
+                                      '${_listApprove[index].createdDate!.day}/${_listApprove[index].createdDate!.month}/${_listApprove[index].createdDate!.year}',
                                   level:
-                                      '${_listApprove![index].feedbackLevel}',
-                                  title: '${_listApprove![index].title}',
+                                      '${_listApprove[index].feedbackLevel}',
+                                  title: '${_listApprove[index].title}',
                                 ),
                               );
-                              // _approve = _deleteMessage.deleteHistoryMessage(
-                              //     _listApprove![index].id.toString());
                             },
-                            title: "${_listApprove![index].title}",
+                            title: "${_listApprove[index].title}",
                             floor:
-                                "Date: ${_listApprove![index].createdDate!.day}/${_listApprove![index].createdDate!.month}/${_listApprove![index].createdDate!.year}",
-                            level: "${_listApprove![index].feedbackLevel}",
+                                "Date: ${_listApprove[index].createdDate!.day}/${_listApprove[index].createdDate!.month}/${_listApprove[index].createdDate!.year}",
+                            level: "${_listApprove[index].feedbackLevel}",
                             date: "",
-                            levelColor: "${_listApprove![index].feedbackLevel}"
+                            levelColor: "${_listApprove[index].feedbackLevel}"
                                         .toUpperCase() ==
                                     "HIGH"
                                 ? Colors.red
-                                : "${_listApprove![index].feedbackLevel}"
+                                : "${_listApprove[index].feedbackLevel}"
                                             .toUpperCase() ==
                                         "Medium".toUpperCase()
                                     ? Color(0xffDEDE22)

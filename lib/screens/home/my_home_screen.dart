@@ -187,7 +187,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       return FListTile(
                         onTap: () {
                           print("Message");
-                          Get.to(() => MessageScreen());
+                          Get.to(() => MessageScreen())!.then(
+                            (value) {
+                              _homemodel = _api.readCountMessage(
+                                  '?isApproved=false&isRejected=false');
+                              _countInprocess = _api.readCountInprocessing(
+                                  '?isApproved=true&isCompleted=false');
+                            },
+                          );
                         },
                         subtitle: "Received: ${counter!.length.toString()}",
                         title: 'Message',
@@ -219,7 +226,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       return FListTile(
                         onTap: () {
                           print("In process");
-                          Get.to(() => InProcessingScreen());
+                          Get.to(() => InProcessingScreen())!.then(
+                            (value) {
+                              _homemodel = _api.readCountMessage(
+                                  '?isApproved=false&isRejected=false');
+                              _countInprocess = _api.readCountInprocessing(
+                                  '?isApproved=true&isCompleted=false');
+                            },
+                          );
                         },
                         subtitle: "Received: ${inprocessing.count.toString()}",
                         title: 'In Processing',
@@ -242,6 +256,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     print("Archive");
                     Get.to(
                       () => ArchivedMessage(),
+                    )!
+                        .then(
+                      (value) {
+                        _homemodel = _api.readCountMessage(
+                            '?isApproved=false&isRejected=false');
+                        _countInprocess = _api.readCountInprocessing(
+                            '?isApproved=true&isCompleted=false');
+                      },
                     );
                   },
                   subtitle: 'Received: 0',
@@ -253,6 +275,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     print("History");
                     Get.to(
                       () => ApproveHistoryScreen(),
+                    )!
+                        .then(
+                      (value) {
+                        _homemodel = _api.readCountMessage(
+                            '?isApproved=false&isRejected=false');
+                        _countInprocess = _api.readCountInprocessing(
+                            '?isApproved=true&isCompleted=false');
+                      },
                     );
                   },
                   subtitle: 'Done, Reject',
@@ -263,7 +293,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 FListTile(
                   onTap: () {
                     print("Account");
-                    Get.to(() => AdminAccontScreen());
+                    Get.to(() => AdminAccontScreen())!.then(
+                      (value) {
+                        _homemodel = _api.readCountMessage(
+                            '?isApproved=false&isRejected=false');
+                        _countInprocess = _api.readCountInprocessing(
+                            '?isApproved=true&isCompleted=false');
+                      },
+                    );
+                    ;
                   },
                   subtitle: 'Edit account ,Logout',
                   title: 'Account',
@@ -272,7 +310,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 FListTile(
                   onTap: () {
-                    Get.to(() => SettingScreen());
+                    Get.to(() => SettingScreen())!.then(
+                      (value) {
+                        _homemodel = _api.readCountMessage(
+                            '?isApproved=false&isRejected=false');
+                        _countInprocess = _api.readCountInprocessing(
+                            '?isApproved=true&isCompleted=false');
+                      },
+                    );
+                    
                   },
                   subtitle: 'Manage app Account, themes, permissions, etc..',
                   title: 'Settings',

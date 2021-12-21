@@ -37,7 +37,8 @@ class _MessageScreenState extends State<MessageScreen> {
         isConnected = (event != ConnectivityResult.none);
       });
     });
-    _messagemodel = _messageApi.readDataFromMessage('?isApproved=false&isRejected=false');
+    _messagemodel =
+        _messageApi.readDataFromMessage('?isApproved=false&isRejected=false');
     super.initState();
   }
 
@@ -82,10 +83,12 @@ class _MessageScreenState extends State<MessageScreen> {
             sub = Connectivity().onConnectivityChanged.listen((event) {
               setState(() {
                 isConnected = (event != ConnectivityResult.none);
-                _messagemodel = _messageApi.readDataFromMessage('?isApproved=false&isRejected=false');
+                _messagemodel = _messageApi
+                    .readDataFromMessage('?isApproved=false&isRejected=false');
               });
             });
-            _messagemodel = _messageApi.readDataFromMessage('?isApproved=false&isRejected=false');
+            _messagemodel = _messageApi
+                .readDataFromMessage('?isApproved=false&isRejected=false');
           });
         },
         child: SingleChildScrollView(
@@ -174,7 +177,12 @@ class _MessageScreenState extends State<MessageScreen> {
                         _listmessage![index].managerContact,
                       ],
                     ),
-                  );
+                  )!
+                      .then((value) {
+                    _messagemodel = _messageApi.readDataFromMessage(
+                        '?isApproved=false&isRejected=false');
+                    print("setState");
+                  });
                 },
                 child: FTile(
                   title: "${_listmessage![index].title}",
@@ -192,7 +200,6 @@ class _MessageScreenState extends State<MessageScreen> {
                               : Color(0xff00C700),
                 ),
               );
-           
             }
             return SizedBox();
           },

@@ -119,7 +119,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     setState(() {
                                       notificationmodel = _notificationApi
                                           .readDataFromNotification();
-                                      print("setstae");
+                                    
                                     });
                                   },
                                 );

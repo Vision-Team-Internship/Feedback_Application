@@ -102,10 +102,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 : null,
                             child: InkWell(
                               onTap: () async {
-                                print(_listNotification?[index].isClick);
-                                setState(() {
-                                  _listNotification = snapshot.data!.payload;
-                                });
                                 Get.to(
                                   () => MessageDetailScreen(
                                     title:
@@ -118,11 +114,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     managerContact: [],
                                   ),
                                 )!
-                                    .then((value) {
-                                  setState(() {
-                                    _listNotification = value;
-                                  });
-                                });
+                                    .then(
+                                  (value) {
+                                    setState(() {
+                                      notificationmodel = _notificationApi
+                                          .readDataFromNotification();
+                                      print("setstae");
+                                    });
+                                  },
+                                );
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(

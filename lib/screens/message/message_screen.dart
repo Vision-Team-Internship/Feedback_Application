@@ -75,24 +75,12 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
         ),
       ),
-      body: RefreshIndicator(
-        backgroundColor: Colors.black,
-        color: Colors.white,
-        onRefresh: () async {
-          setState(() {
-            sub = Connectivity().onConnectivityChanged.listen((event) {
-              setState(() {
-                isConnected = (event != ConnectivityResult.none);
-                _messagemodel = _messageApi
-                    .readDataFromMessage('?isApproved=false&isRejected=false');
-              });
-            });
-            _messagemodel = _messageApi
-                .readDataFromMessage('?isApproved=false&isRejected=false');
-          });
-        },
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            print("Refresh");
+          },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 25),
             width: MediaQuery.of(context).size.width,
@@ -165,7 +153,6 @@ class _MessageScreenState extends State<MessageScreen> {
                 _listmessage![index].isCompleted == false) {
               return InkWell(
                 onTap: () {
-                  print(_listmessage![index].uniqueIDs!.toList());
                   Get.to(
                     () => MessageDetailScreen(
                       title: "${_listmessage![index].title}",
@@ -181,7 +168,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       .then((value) {
                     _messagemodel = _messageApi.readDataFromMessage(
                         '?isApproved=false&isRejected=false');
-                    print("setState");
+                    print("setState Message");
                   });
                 },
                 child: FTile(

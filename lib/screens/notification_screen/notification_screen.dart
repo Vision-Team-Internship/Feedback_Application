@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, avoid_print, prefer_final_fields, prefer_const_literals_to_create_immutables
-import 'dart:convert';
-
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:feedback_application_flutter/data/notification/mark_as_read_api.dart';
 import 'package:feedback_application_flutter/data/notification/notification_api.dart';
+import 'package:feedback_application_flutter/model/mark_as_read_model.dart'
+    as mark;
 import 'package:feedback_application_flutter/model/notification_model.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -24,12 +26,15 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   Future<NotificationModel>? notificationmodel;
   List<Payload>? _listNotification;
-
+  Future<mark.MarkAsReadModel>? markAsreadmodel;
+  MarkAsReadApi _markAsReadApi = MarkAsReadApi();
   NotificationApi _notificationApi = NotificationApi();
 
   @override
   initState() {
     notificationmodel = _notificationApi.readDataFromNotification();
+    // markAsreadmodel = _markAsReadApi.markAsRead();
+    // print("Mark as Read ${markAsreadmodel.toString()}");
     super.initState();
   }
 
@@ -64,6 +69,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
             fontFamily: "Poppins",
           ),
         ),
+        actions: [
+          Row(
+            children: [
+              SvgPicture.asset("assets/icons/mark_ask_done.svg"),
+              SizedBox(
+                width: 4,
+              ),
+              TextButton(
+                style: ButtonStyle(),
+                onPressed: () {
+                  markAsreadmodel = _markAsReadApi.markAsRead().then((value) {
+                    setState(() {
+                      notificationmodel =
+                          _notificationApi.readDataFromNotification();
+                    });
+                    print("mark as read done");
+                    return value;
+                  });
+                },
+                child: Text(
+                  "Mark as read",
+                  style: ThemeConstant.textTheme.subtitle2!
+                      .copyWith(color: ThemeConstant.lightScheme.primary),
+                ),
+              ),
+              SizedBox(
+                width: 18,
+              ),
+            ],
+          ),
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -116,11 +152,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 )!
                                     .then(
                                   (value) {
-                                    setState(() {
-                                      notificationmodel = _notificationApi
-                                          .readDataFromNotification();
-                                    
-                                    });
+                                    setState(
+                                      () {
+                                        notificationmodel = _notificationApi
+                                            .readDataFromNotification();
+                                      },
+                                    );
                                   },
                                 );
                               },

@@ -1,8 +1,10 @@
 // ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print
 
 import 'package:feedback_application_flutter/data/getdata/home_api.dart';
+import 'package:feedback_application_flutter/data/notification/notification_api.dart';
 import 'package:feedback_application_flutter/model/count_inprocessing_model.dart';
 import 'package:feedback_application_flutter/model/home_model.dart';
+import 'package:feedback_application_flutter/model/notification_model.dart';
 import 'package:feedback_application_flutter/screens/admin_account/admin_account.dart';
 import 'package:feedback_application_flutter/screens/archived_screen/archived_message.dart';
 import 'package:feedback_application_flutter/screens/history/approve_history_screen.dart';
@@ -27,9 +29,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Future<HomeModel>? _homemodel;
   Future<CountInprocessingModel>? _countInprocess;
-
+  Future<NotificationModel>? _countNotification;
+  final NotificationApi _notificationApi = NotificationApi();
   final HomeApi _api = HomeApi();
-
   List<CounterData>? _chartData;
   DateTime? lastPressed;
 
@@ -39,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _homemodel = _api.readCountMessage('?isApproved=false&isRejected=false');
     _countInprocess =
         _api.readCountInprocessing('?isApproved=true&isCompleted=false');
+    _countNotification = _notificationApi.readDataFromNotification();
 
     _chartData = getChartData();
   }
@@ -95,45 +98,21 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
-            Container(
-              alignment: Alignment.center,
-              // padding: const EdgeInsets.symmetric(horizontal: 30),
-              margin: const EdgeInsets.only(right: 10),
-              child: Stack(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      print("Notification");
-
-                      Get.to(
-                        () => NotificationScreen(),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: SvgPicture.asset(
-                        "assets/icons/notification_icons.svg",
-                        width: 26,
-                        cacheColorFilter: true,
-                        height: 26,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      width: 15,
-                      height: 15,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text("1"),
-                    ),
-                  ),
-                ],
-              ),
+            InkWell(
+              onTap: () {
+                Get.to(() => NotificationScreen())?.then((value) {
+                  print("Notification: $value");
+                  setState(() {
+                    _homemodel = _api
+                        .readCountMessage('?isApproved=false&isRejected=false');
+                    _countInprocess = _api.readCountInprocessing(
+                        '?isApproved=true&isCompleted=false');
+                    _countNotification =
+                        _notificationApi.readDataFromNotification();
+                  });
+                });
+              },
+              child: CountNotification(),
             ),
           ],
         ),
@@ -190,9 +169,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           Get.to(() => MessageScreen())!.then(
                             (value) {
                               _homemodel = _api.readCountMessage(
-                                  '?isApproved=false&isRejected=false');
+                                '?isApproved=false&isRejected=false',
+                              );
                               _countInprocess = _api.readCountInprocessing(
-                                  '?isApproved=true&isCompleted=false');
+                                '?isApproved=true&isCompleted=false',
+                              );
                             },
                           );
                         },
@@ -318,7 +299,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             '?isApproved=true&isCompleted=false');
                       },
                     );
-                    
                   },
                   subtitle: 'Manage app Account, themes, permissions, etc..',
                   title: 'Settings',
@@ -334,6 +314,99 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  Widget CountNotification() {
+    return FutureBuilder<NotificationModel>(
+        future: _countNotification,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error ${snapshot.error}"),
+            );
+          }
+
+          if (snapshot.hasData) {
+            String unRead = snapshot.data!.unRead.toString();
+            print(unRead);
+            return Container(
+              alignment: Alignment.center,
+              // padding: const EdgeInsets.symmetric(horizontal: 30),
+              margin: const EdgeInsets.only(right: 10),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: SvgPicture.asset(
+                      "assets/icons/notification_icons.svg",
+                      width: 26,
+                      cacheColorFilter: true,
+                      height: 26,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                      width: 15,
+                      height: 15,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        "$unRead",
+                        style: TextStyle(
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container(
+            alignment: Alignment.center,
+            // padding: const EdgeInsets.symmetric(horizontal: 30),
+            margin: const EdgeInsets.only(right: 10),
+            child: Stack(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    print("Notification");
+
+                    Get.to(
+                      () => NotificationScreen(),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: SvgPicture.asset(
+                      "assets/icons/notification_icons.svg",
+                      width: 26,
+                      cacheColorFilter: true,
+                      height: 26,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                    width: 15,
+                    height: 15,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text("1"),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   List<CounterData> getChartData() {

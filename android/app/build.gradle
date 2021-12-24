@@ -62,6 +62,7 @@ android {
         applicationId "com.example.feedback_application_flutter"
         minSdkVersion 19
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

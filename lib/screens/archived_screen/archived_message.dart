@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable
+// ignore_for_file: prefer_const_constructors, unused_local_variable, unrelated_type_equality_checks, curly_braces_in_flow_control_structures
 import 'package:feedback_application_flutter/data/archived_api/archived_message_api.dart';
-import 'package:feedback_application_flutter/data/archived_api/data_api.dart';
 import 'package:feedback_application_flutter/model/archived_message_model.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/dismissible_widget.dart';
 import 'package:feedback_application_flutter/screens/message/widgets/f_tile.dart';
@@ -15,14 +14,14 @@ class ArchivedMessage extends StatefulWidget {
 }
 
 class _ArchivedMessageState extends State<ArchivedMessage> {
-  List<ArchivedMessaeModel?> items = List.of(Data.datas);
-  Future<ArchivedModel>? _archivedModel;
-  ArchivedMessageApi _archivedMessageApi = ArchivedMessageApi();
+  Future<ArchivedMessageModel>? _archivedMessageModel;
+  List<Payload>? _listArchived;
+  final ArchivedMessageApi _archivedMessageApi = ArchivedMessageApi();
 
   @override
   void initState() {
-    _archivedModel = _archivedMessageApi.readArchived();
     super.initState();
+    _archivedMessageModel = _archivedMessageApi.readArchived();
   }
 
   @override
@@ -56,52 +55,38 @@ class _ArchivedMessageState extends State<ArchivedMessage> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
-          child: FutureBuilder<ArchivedModel>(
-              future: _archivedModel,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error ${snapshot.error}"),
-                  );
-                }
-                if (snapshot.hasData) {
-                  var archivedMessage = snapshot.data!.payload;
-
-                  print(archivedMessage!.length);
-                  return Column(
-                    children: List.generate(
-                      archivedMessage.length,
-                      (index) => DismissibleWidget(
-                        item: archivedMessage[index],
-                        onDismissed: (DismissDirection direction)async {
-                          print(direction);
-                        },
-                        child: FTile(
-                          title: archivedMessage[index].title.toString(),
-                          floor: "floor",
-                          date: "date",
-                          level: "level",
-                        ),
+          child: FutureBuilder<ArchivedMessageModel>(
+            future: _archivedMessageModel,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error ${snapshot.error}"),
+                );
+              }
+              if (snapshot.hasData) {
+                _listArchived = snapshot.data!.payload;
+                return Column(
+                  children: List.generate(
+                    _listArchived!.length,
+                    (index) => DismissibleWidget(
+                      item: _listArchived?[index],
+                      onDismissed: (DismissDirection direction) =>
+                          dismissItem(context, index, direction),
+                      child: FTile(
+                        title: _listArchived![index].title.toString(),
+                        floor: "floor",
+                        date: "date",
+                        level: "level",
                       ),
                     ),
-                  );
-                }
-                return CircularProgressIndicator();
-                // return ListView.separated(
-                //   shrinkWrap: true,
-                //   separatorBuilder: (context, index) => Divider(),
-                //   itemCount: items.length,
-                //   itemBuilder: (context, index) {
-                //     final item = items[index];
-                //     return DismissibleWidget(
-                //       item: item,
-                //       onDismissed: (DismissDirection direction) =>
-                //           dismissItem(context, index, direction),
-                //       child: buildListTile(item!),
-                //     );
-                //   },
-                // );
-              }),
+                  ),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -109,12 +94,9 @@ class _ArchivedMessageState extends State<ArchivedMessage> {
 
   void dismissItem(
       BuildContext context, int index, DismissDirection direction) {
-    setState(() async {
-      print("object");
-    });
     switch (direction) {
       case DismissDirection.startToEnd:
-        Get.snackbar("title", "message");
+        // _archivedMessageApi.makeArchivedApi(${_listArchived?[index].id.toString()});
         break;
       case DismissDirection.endToStart:
         Get.snackbar("title1", "message1");
@@ -123,17 +105,4 @@ class _ArchivedMessageState extends State<ArchivedMessage> {
         break;
     }
   }
-}
-
-Widget buildListTile(ArchivedMessaeModel item) {
-  return ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    leading: CircleAvatar(),
-    title: Text(
-      item.firstname.toString(),
-      style: TextStyle(
-        color: Colors.black,
-      ),
-    ),
-  );
 }

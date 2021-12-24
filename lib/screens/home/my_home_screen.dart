@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _countInprocess =
         _api.readCountInprocessing('?isApproved=true&isCompleted=false');
     _countNotification = _notificationApi.readDataFromNotification();
-
     _chartData = getChartData();
   }
 
@@ -282,7 +281,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             '?isApproved=true&isCompleted=false');
                       },
                     );
-                    ;
                   },
                   subtitle: 'Edit account ,Logout',
                   title: 'Account',
@@ -355,7 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         shape: BoxShape.circle,
                       ),
                       child: Text(
-                        "$unRead",
+                        unRead,
                         style: TextStyle(
                           fontSize: 10,
                         ),
@@ -400,7 +398,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
-                    child: Text("1"),
+                    child: Text("0"),
                   ),
                 ),
               ],

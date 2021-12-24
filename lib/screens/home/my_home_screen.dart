@@ -1,7 +1,9 @@
 // ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print
 
+import 'package:feedback_application_flutter/data/archived_api/archived_message_api.dart';
 import 'package:feedback_application_flutter/data/getdata/home_api.dart';
 import 'package:feedback_application_flutter/data/notification/notification_api.dart';
+import 'package:feedback_application_flutter/model/archived_message_model.dart';
 import 'package:feedback_application_flutter/model/count_inprocessing_model.dart';
 import 'package:feedback_application_flutter/model/home_model.dart';
 import 'package:feedback_application_flutter/model/notification_model.dart';
@@ -30,14 +32,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<HomeModel>? _homemodel;
   Future<CountInprocessingModel>? _countInprocess;
   Future<NotificationModel>? _countNotification;
+  Future<ArchivedMessageModel>? _countArchived;
   final NotificationApi _notificationApi = NotificationApi();
   final HomeApi _api = HomeApi();
+  final ArchivedMessageApi _archivedMessageApi = ArchivedMessageApi();
   List<CounterData>? _chartData;
   DateTime? lastPressed;
 
   @override
   void initState() {
     super.initState();
+    _countArchived = _archivedMessageApi.readArchived();
     _homemodel = _api.readCountMessage('?isApproved=false&isRejected=false');
     _countInprocess =
         _api.readCountInprocessing('?isApproved=true&isCompleted=false');
@@ -151,6 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const ChartFlutter(),
                 ),
                 const SizedBox(height: 50),
+
+                //Count Message
                 FutureBuilder<HomeModel>(
                   future: _homemodel,
                   builder: (context, snapshot) {
@@ -192,6 +199,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                 ),
+
+                //Count Inprocess Message
                 FutureBuilder<CountInprocessingModel>(
                   future: _countInprocess,
                   builder: (context, snapshot) {
@@ -231,24 +240,59 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                 ),
-                FListTile(
-                  onTap: () {
-                    print("Archive");
-                    Get.to(
-                      () => ArchivedMessage(),
-                    )!
-                        .then(
-                      (value) {
-                        _homemodel = _api.readCountMessage(
-                            '?isApproved=false&isRejected=false');
-                        _countInprocess = _api.readCountInprocessing(
-                            '?isApproved=true&isCompleted=false');
+
+                FutureBuilder<ArchivedMessageModel>(
+                  future: _countArchived,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("Error ${snapshot.error}"),
+                      );
+                    }
+
+                    if (snapshot.hasData) {
+                      var countArchived = snapshot.data?.count;
+                      print("Archived Message $countArchived");
+                      return FListTile(
+                        onTap: () {
+                          print("Archive");
+                          Get.to(
+                            () => ArchivedMessage(),
+                          )!
+                              .then(
+                            (value) {
+                              _homemodel = _api.readCountMessage(
+                                  '?isApproved=false&isRejected=false');
+                              _countInprocess = _api.readCountInprocessing(
+                                  '?isApproved=true&isCompleted=false');
+                            },
+                          );
+                        },
+                        subtitle: 'Received: $countArchived',
+                        title: 'Archive Message',
+                        svgIcon: 'assets/icons/archive.svg',
+                      );
+                    }
+                    return FListTile(
+                      onTap: () {
+                        print("Archive");
+                        Get.to(
+                          () => ArchivedMessage(),
+                        )!
+                            .then(
+                          (value) {
+                            _homemodel = _api.readCountMessage(
+                                '?isApproved=false&isRejected=false');
+                            _countInprocess = _api.readCountInprocessing(
+                                '?isApproved=true&isCompleted=false');
+                          },
+                        );
                       },
+                      subtitle: 'Received: 0',
+                      title: 'Archive Message',
+                      svgIcon: 'assets/icons/archive.svg',
                     );
                   },
-                  subtitle: 'Received: 0',
-                  title: 'Archive Message',
-                  svgIcon: 'assets/icons/archive.svg',
                 ),
                 FListTile(
                   onTap: () {

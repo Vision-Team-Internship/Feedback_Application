@@ -4,7 +4,6 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/deletedata/delete_history_message.dart';
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
-import 'package:feedback_application_flutter/model/rejected_model.dart';
 import 'package:feedback_application_flutter/model/slidable_action.dart';
 import 'package:feedback_application_flutter/screens/history/detail_approve_message_screen.dart';
 import 'package:feedback_application_flutter/screens/history/detail_reject_message_screen.dart';

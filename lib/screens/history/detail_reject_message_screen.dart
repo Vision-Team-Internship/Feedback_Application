@@ -494,7 +494,7 @@ class _DetailRejectMessageScreenState extends State<DetailRejectMessageScreen> {
                           var rejectMessage = snapshot.data!.payload;
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            // ignore: prefer_const_literals_to_create_immutables
+                       
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

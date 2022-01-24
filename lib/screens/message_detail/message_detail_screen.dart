@@ -43,16 +43,19 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   final MessageApi _messageApi = MessageApi();
 
   bool isButtonActive = true;
+  bool navigate = false;
 
   @override
   void initState() {
     _detailMessage = _messageApi.readDetailMessage(widget.id.toString());
     _doneNotecontroller = TextEditingController();
     _rejectNotecontroller = TextEditingController();
+
     _doneNotecontroller.addListener(() {
       final isButtonActive = _doneNotecontroller.text.isNotEmpty;
       setState(() => this.isButtonActive = isButtonActive);
     });
+
     super.initState();
   }
 
@@ -303,7 +306,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    left: 18.0),
+                                                  left: 18.0,
+                                                ),
                                                 child: Text(
                                                   detail.feedbackLocation!
                                                       .room![index],
@@ -571,10 +575,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       Uri.parse(
         'https://feedback-project-api.herokuapp.com/api/v1/approveds',
       ),
-      headers:{
-        "auth-token": '$token',
-        "Content-Type": "application/json"
-      },
+      headers: {"auth-token": '$token', "Content-Type": "application/json"},
       body: jsonEncode(
         {
           'note': note,
@@ -594,16 +595,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   //Make Reject Message
   Future<RejectModel?> makeReject(String note, String id) async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString("login");
     http.Response response = await http.post(
       Uri.parse(
         'https://feedback-project-api.herokuapp.com/api/v1/rejecteds',
       ),
-       headers:{
-        "auth-token": '$token',
-        "Content-Type": "application/json"
-      },
+      headers: {"auth-token": '$token', "Content-Type": "application/json"},
       body: jsonEncode(
         {
           'note': note,
@@ -654,17 +652,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       actions: [
         OutlineButton(
           highlightedBorderColor: ThemeConstant.lightScheme.primary,
-          // onPressed: () async {
-          //   final String text = _doneNotecontroller.text;
-          //   final ApprovedModel? _approve = await makeApprove(text, widget.id);
-          //   Get.to(() => MessageScreen());
-          //   setState(() => isButtonActive = false);
-          // },
           onPressed: () async {
             print("Approve");
             final String text = _doneNotecontroller.text;
             final ApprovedModel? _approve = await makeApprove(text, widget.id);
-            Get.to(() => MessageScreen());
+            Get.off(() => MessageScreen());
           },
           textColor: ThemeConstant.lightScheme.primary,
           borderSide: BorderSide(

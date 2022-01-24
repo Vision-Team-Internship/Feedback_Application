@@ -4,8 +4,11 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:feedback_application_flutter/data/archived_api/archived_message_api.dart';
 
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
+import 'package:feedback_application_flutter/model/archived_message_model.dart'
+  ;
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/screens/empty_screen/empty_message_screen.dart';
 import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
@@ -26,7 +29,9 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   Future<FeedbackModel>? _messagemodel;
-  List<Payload>? _listmessage;
+  // List<Payload>? _listmessage;
+  Future<ArchivedMessageModel>? _archivedMessage;
+  ArchivedMessageApi _archivedMessageApi = ArchivedMessageApi();
   MessageApi _messageApi = MessageApi();
   StreamSubscription? sub;
   bool isConnected = false;
@@ -93,9 +98,9 @@ class _MessageScreenState extends State<MessageScreen> {
                   );
                 }
                 if (snapshot.hasData) {
-                  _listmessage = snapshot.data!.payload;
+               var _listmessage = snapshot.data!.payload;
                   return _listmessage!.isNotEmpty
-                      ? _buildBody(context)
+                      ? _buildBody(context,_listmessage)
                       : EmptyMessageScreen();
                 }
                 return Container(
@@ -116,7 +121,7 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  _buildBody(BuildContext context) {
+  _buildBody(BuildContext context,var _listmessage) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -152,6 +157,11 @@ class _MessageScreenState extends State<MessageScreen> {
                 _listmessage![index].isRejected == false &&
                 _listmessage![index].isCompleted == false) {
               return InkWell(
+                onLongPress: () {
+                  print(_listmessage![index].id.toString());
+                  // _archivedMessageApi
+                  //     .makeArchivedApi(_listmessage?[index].id.toString());
+                },
                 onTap: () {
                   Get.to(
                     () => MessageDetailScreen(

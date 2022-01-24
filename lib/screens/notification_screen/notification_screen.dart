@@ -117,6 +117,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
               if (snapshot.hasData) {
                 _listNotification = snapshot.data!.payload;
+                print(_listNotification!.length.toString());
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -194,7 +195,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
+                                        vertical: 10,
+                                      ),
                                       child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *

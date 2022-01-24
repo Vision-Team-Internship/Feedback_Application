@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:http/http.dart' as http;
 
 class ChartFlutter extends StatefulWidget {
   const ChartFlutter({Key? key}) : super(key: key);
@@ -48,7 +51,6 @@ class _ChartFlutterState extends State<ChartFlutter> {
     final List<CounterData> chartData = [
       CounterData(title: 'HIGH', count: 10),
       CounterData(title: 'MEDUIM', count: 3),
-      CounterData(title: 'LOW', count: 5),
     ];
     return chartData;
   }

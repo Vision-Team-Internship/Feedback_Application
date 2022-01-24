@@ -360,76 +360,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget CountNotification() {
     return FutureBuilder<NotificationModel>(
-        future: _countNotification,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error ${snapshot.error}"),
-            );
-          }
+      future: _countNotification,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error ${snapshot.error}"),
+          );
+        }
 
-          if (snapshot.hasData) {
-            String unRead = snapshot.data!.unRead.toString();
-            print(unRead);
-            return Container(
-              alignment: Alignment.center,
-              // padding: const EdgeInsets.symmetric(horizontal: 30),
-              margin: const EdgeInsets.only(right: 10),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: SvgPicture.asset(
-                      "assets/icons/notification_icons.svg",
-                      width: 26,
-                      cacheColorFilter: true,
-                      height: 26,
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      width: 15,
-                      height: 15,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        unRead,
-                        style: TextStyle(
-                          fontSize: 10,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+        if (snapshot.hasData) {
+          String unRead = snapshot.data!.unRead.toString();
+          print(unRead);
           return Container(
             alignment: Alignment.center,
             // padding: const EdgeInsets.symmetric(horizontal: 30),
             margin: const EdgeInsets.only(right: 10),
             child: Stack(
               children: [
-                InkWell(
-                  onTap: () async {
-                    print("Notification");
-
-                    Get.to(
-                      () => NotificationScreen(),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    child: SvgPicture.asset(
-                      "assets/icons/notification_icons.svg",
-                      width: 26,
-                      cacheColorFilter: true,
-                      height: 26,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: SvgPicture.asset(
+                    "assets/icons/notification_icons.svg",
+                    width: 26,
+                    cacheColorFilter: true,
+                    height: 26,
                   ),
                 ),
                 Positioned(
@@ -442,22 +396,67 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
-                    child: Text("0"),
+                    child: Text(
+                      unRead,
+                      style: TextStyle(
+                        fontSize: 10,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           );
-        });
+        }
+        return Container(
+          alignment: Alignment.center,
+          // padding: const EdgeInsets.symmetric(horizontal: 30),
+          margin: const EdgeInsets.only(right: 10),
+          child: Stack(
+            children: [
+              InkWell(
+                onTap: () async {
+                  print("Notification");
+
+                  Get.to(
+                    () => NotificationScreen(),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: SvgPicture.asset(
+                    "assets/icons/notification_icons.svg",
+                    width: 26,
+                    cacheColorFilter: true,
+                    height: 26,
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 0,
+                child: Container(
+                  width: 15,
+                  height: 15,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text("0"),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   List<CounterData> getChartData() {
     final List<CounterData> chartData = [
       CounterData(title: "High", count: 10),
       CounterData(title: "Meduim", count: 8),
-      CounterData(title: "Low", count: 8),
     ];
-
     return chartData;
   }
 }

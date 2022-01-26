@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print
+// ignore_for_file: unused_field, prefer_const_constructors, non_constant_identifier_names, deprecated_member_use, unused_local_variable, avoid_print, prefer_const_literals_to_create_immutables
 
 import 'package:feedback_application_flutter/data/archived_api/archived_message_api.dart';
 import 'package:feedback_application_flutter/data/getdata/home_api.dart';
@@ -18,7 +18,6 @@ import 'package:feedback_application_flutter/screens/setting/setting_screen.dart
 import 'package:feedback_application_flutter/screens/widgets/f_listtile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:get/get.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -74,9 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xffFFFFFF),
         appBar: AppBar(
-          backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           elevation: 0.0,
           title: Padding(
@@ -84,17 +81,17 @@ class _MyHomePageState extends State<MyHomePage> {
             child: RichText(
               text: TextSpan(
                 text: "Privacy ",
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
-                  color: Colors.black,
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
                 ),
                 children: [
                   TextSpan(
                     text: "Dashboard",
                     style: TextStyle(
-                      color: ThemeConstant.lightScheme.primary,
+                      color: Colors.blue,
                     ),
                   ),
                 ],
@@ -138,8 +135,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: MediaQuery.of(context).size.width - 80,
                   height: 300,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFBFAFA),
                     borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: Colors.white,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         offset: Offset(2, 2),
@@ -343,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   subtitle: 'Manage app Account, themes, permissions, etc..',
-                  title: 'Settings',
+                  title: 'Profile & Settings',
                   svgIcon: 'assets/icons/setting_icons.svg',
                 ),
 
@@ -364,7 +363,9 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: Text("Error ${snapshot.error}"),
+            child: Text(
+              "Error ${snapshot.error}",
+            ),
           );
         }
 

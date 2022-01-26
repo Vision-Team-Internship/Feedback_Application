@@ -7,8 +7,7 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/archived_api/archived_message_api.dart';
 
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
-import 'package:feedback_application_flutter/model/archived_message_model.dart'
-  ;
+import 'package:feedback_application_flutter/model/archived_message_model.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/screens/empty_screen/empty_message_screen.dart';
 import 'package:feedback_application_flutter/screens/home/my_home_screen.dart';
@@ -56,27 +55,25 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
             Get.to(() => MyHomePage());
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
             size: 24,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         title: Text(
           "Message",
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: "Poppins",
-            color: Color(0xff000000),
             fontSize: 18,
             fontWeight: FontWeight.w600,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
       ),
@@ -98,9 +95,9 @@ class _MessageScreenState extends State<MessageScreen> {
                   );
                 }
                 if (snapshot.hasData) {
-               var _listmessage = snapshot.data!.payload;
+                  var _listmessage = snapshot.data!.payload;
                   return _listmessage!.isNotEmpty
-                      ? _buildBody(context,_listmessage)
+                      ? _buildBody(context, _listmessage)
                       : EmptyMessageScreen();
                 }
                 return Container(
@@ -121,7 +118,7 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  _buildBody(BuildContext context,var _listmessage) {
+  _buildBody(BuildContext context, var _listmessage) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -130,13 +127,13 @@ class _MessageScreenState extends State<MessageScreen> {
           "assets/icon_background/message_icon.svg",
         ),
         const SizedBox(height: 23),
-        const Text(
+         Text(
           "Message Feedback",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins",
-            color: Colors.black,
+             color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         Text(

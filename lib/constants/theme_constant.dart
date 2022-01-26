@@ -3,26 +3,24 @@
 import 'package:flutter/material.dart';
 
 class ThemeConstant {
-  static ThemeData theme = ThemeData(
-    scaffoldBackgroundColor: Color(0xFF6B6767),
-    primarySwatch: Colors.blue,
-    primaryColor: Color(0xFF0070FF),
-    // ignore: deprecated_member_use
-    accentColor: Color(0xff0070FF),
-    backgroundColor: Color(0xFF6B6767),
-    indicatorColor: Color(0xFF0070FF),
-    // ignore: deprecated_member_use
-    buttonColor: Color(0xFF0070FF),
-    hintColor: Color(0xFF6B6767),
-    highlightColor: Color(0xFF0070FF),
-    hoverColor: Color(0xFFE5E5E5),
-    focusColor: Color(0xffE5E5E5),
-    disabledColor: Colors.grey,
-    canvasColor: Colors.grey[50],
+  static final light = ThemeData(
+    scaffoldBackgroundColor: Color(0xFFFFFFFF),
+    primaryColorLight: Colors.white,
+    brightness: Brightness.light,
     appBarTheme: AppBarTheme(
       elevation: 0.1,
+      backgroundColor: Colors.white,
     ),
-    textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.black),
+  );
+
+  static final dark = ThemeData(
+    scaffoldBackgroundColor: Color(0xFF000000),
+     primaryColorLight: Colors.black,
+    brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(
+      elevation: 0.1,
+      backgroundColor: Colors.black,
+    ), 
   );
 
   static const ColorScheme lightScheme = ColorScheme(

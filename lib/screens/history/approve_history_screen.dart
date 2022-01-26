@@ -4,7 +4,6 @@ import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/data/deletedata/delete_history_message.dart';
 import 'package:feedback_application_flutter/data/getdata/message_api.dart';
 import 'package:feedback_application_flutter/data/getdata/reject_api.dart';
-import 'package:feedback_application_flutter/model/detail_reject_model.dart';
 import 'package:feedback_application_flutter/model/message_model.dart';
 import 'package:feedback_application_flutter/model/slidable_action.dart';
 import 'package:feedback_application_flutter/screens/history/detail_approve_message_screen.dart';
@@ -52,25 +51,23 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
             size: 24,
           ),
         ),
         title: Text(
           "Messge History",
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: "Poppins",
-            color: Color(0xff000000),
+            color: Get.isDarkMode ? Colors.white : Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -91,13 +88,16 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
               child: TabBar(
                 controller: _tabController,
                 indicator: BoxDecoration(
-                  color: ThemeConstant.lightScheme.primary,
+                  color: Get.isDarkMode
+                      ? Colors.black
+                      : ThemeConstant.lightScheme.primary,
                 ),
                 physics: BouncingScrollPhysics(),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.black,
-                labelStyle: ThemeConstant.textTheme.subtitle1!
-                    .copyWith(color: Colors.white),
+                labelStyle: ThemeConstant.textTheme.subtitle1!.copyWith(
+                  color: Get.isDarkMode ? Colors.black : Colors.white,
+                ),
                 tabs: [
                   Tab(
                     text: 'Done',
@@ -346,7 +346,6 @@ class _ApproveHistoryScreenState extends State<ApproveHistoryScreen>
                 },
               );
             }
-         
           }
           return Center(
             child: SizedBox(

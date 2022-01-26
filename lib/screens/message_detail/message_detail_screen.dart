@@ -50,7 +50,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     _detailMessage = _messageApi.readDetailMessage(widget.id.toString());
     _doneNotecontroller = TextEditingController();
     _rejectNotecontroller = TextEditingController();
-
     _doneNotecontroller.addListener(() {
       final isButtonActive = _doneNotecontroller.text.isNotEmpty;
       setState(() => this.isButtonActive = isButtonActive);
@@ -69,24 +68,21 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            // Get.to(() => MessageScreen());
             Get.back();
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         title: Text(
           widget.title,
           style: ThemeConstant.textTheme.headline6!.copyWith(
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         actions: [
@@ -99,13 +95,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 Text(
                   "DateTime:",
                   style: ThemeConstant.textTheme.bodyText2!.copyWith(
-                    color: ThemeConstant.lightScheme.secondary,
+                    color: Get.isDarkMode ? Colors.white : Colors.grey.shade700,
                   ),
                 ),
                 Text(
                   widget.date,
                   style: ThemeConstant.textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
               ],
@@ -143,7 +139,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                            color: Get.isDarkMode ? Colors.white : Colors.black,
                             fontFamily: "Poppins",
                           ),
                         ),
@@ -214,8 +210,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                           fontFamily: "Poppins",
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
-                                          color: ThemeConstant
-                                              .lightScheme.onBackground,
+                                          color: Get.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                       ),
                                     ],
@@ -263,8 +260,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                                   fontFamily: "Poppins",
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
-                                                  color: ThemeConstant
-                                                      .lightScheme.onBackground,
+                                                  color: Get.isDarkMode
+                                                      ? Colors.white
+                                                      : Colors.black,
                                                 ),
                                               ),
                                             );
@@ -341,7 +339,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color: Get.isDarkMode ? Colors.white : Colors.black,
                         fontFamily: "Poppins",
                       ),
                     ),
@@ -386,8 +384,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                             fontFamily: "Poppins",
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
-                                            color: ThemeConstant
-                                                .lightScheme.onBackground,
+                                            color: Get.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         );
                                       }),
@@ -411,22 +410,24 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                 SizedBox(
                                   width: 100,
                                   child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: detail.managerContact!.length,
-                                      itemBuilder: (context, index) {
-                                        return Text(
-                                          detail.managerContact![index].username
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: ThemeConstant
-                                                .lightScheme.onBackground,
-                                          ),
-                                        );
-                                      }),
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: detail.managerContact!.length,
+                                    itemBuilder: (context, index) {
+                                      return Text(
+                                        detail.managerContact![index].username
+                                            .toString(),
+                                        style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: Get.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
@@ -491,7 +492,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color: Get.isDarkMode ? Colors.white : Colors.black,
                         fontFamily: "Poppins",
                       ),
                     ),
@@ -504,7 +505,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         fontFamily: "Poppins",
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: ThemeConstant.lightScheme.secondary,
+                        color: Get.isDarkMode
+                            ? Colors.white
+                            : ThemeConstant.lightScheme.secondary,
                       ),
                     ),
                     const SizedBox(

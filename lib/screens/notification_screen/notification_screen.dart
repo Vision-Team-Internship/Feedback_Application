@@ -47,17 +47,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         title: Text(
@@ -65,7 +63,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
             fontFamily: "Poppins",
           ),
         ),
@@ -180,7 +178,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           style: ThemeConstant
                                               .textTheme.headline6!
                                               .copyWith(
-                                            color: Colors.black,
+                                            color: Get.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         ),
                                         _listNotification![index].isClick ==

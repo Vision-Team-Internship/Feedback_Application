@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:feedback_application_flutter/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app_settings/app_settings.dart';
 import 'dart:async';
+
+import 'package:get/get.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -13,9 +15,6 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   Future<void> initPlatformState() async {
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
   }
 
@@ -28,14 +27,24 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+            )),
+      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: Colors.black,
         child: Column(
           children: [
             ElevatedButton(
               onPressed: () {
-                AppSettings.openDeviceSettings(
-                  asAnotherTask: true,
-                );
+                ThemeService().switchTheme();
               },
               child: Text("Nofiticatoin"),
             ),

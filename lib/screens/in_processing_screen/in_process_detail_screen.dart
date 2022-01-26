@@ -59,17 +59,15 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
             Get.to(() => InProcessingScreen());
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         title: Text(
@@ -77,7 +75,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
             fontFamily: "Poppins",
           ),
         ),
@@ -112,7 +110,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                              color:
+                                  Get.isDarkMode ? Colors.white : Colors.black,
                               fontFamily: "Poppins",
                             ),
                           ),
@@ -132,7 +131,9 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                              color: Get.isDarkMode
+                                  ? Colors.white
+                                  : ThemeConstant.lightScheme.secondary,
                               fontFamily: "Poppins",
                             ),
                           ),
@@ -163,7 +164,9 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Get.isDarkMode
+                              ? Colors.white
+                              : ThemeConstant.lightScheme.secondary,
                           fontFamily: "Poppins",
                         ),
                       ),
@@ -204,8 +207,9 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                             fontFamily: "Poppins",
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
-                                            color: ThemeConstant
-                                                .lightScheme.onBackground,
+                                            color: Get.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         ),
                                       ],
@@ -231,37 +235,40 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                           fontFamily: "Poppins",
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
-                                          color: ThemeConstant
-                                              .lightScheme.secondary,
+                                          color: Get.isDarkMode
+                                              ? Colors.white
+                                              : ThemeConstant
+                                                  .lightScheme.secondary,
                                         ),
                                       ),
                                       SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width,
                                         child: ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: detail.feedbackLocation!
-                                                .department!.length,
-                                            itemBuilder: (context, index) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 18.0),
-                                                child: Text(
-                                                  detail.feedbackLocation!
-                                                      .department![index],
-                                                  style: TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: ThemeConstant
-                                                        .lightScheme
-                                                        .onBackground,
-                                                  ),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: detail.feedbackLocation!
+                                              .department!.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0),
+                                              child: Text(
+                                                detail.feedbackLocation!
+                                                    .department![index],
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Get.isDarkMode
+                                                      ? Colors.white
+                                                      : Colors.black,
                                                 ),
-                                              );
-                                            }),
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ],
                                   )
@@ -331,7 +338,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Get.isDarkMode ? Colors.white : Colors.black,
                           fontFamily: "Poppins",
                         ),
                       ),
@@ -359,7 +366,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                       fontFamily: "Poppins",
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
-                                      color:
+                                      color:Get.isDarkMode?Colors.white:
                                           ThemeConstant.lightScheme.secondary,
                                     ),
                                   ),
@@ -378,8 +385,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                               fontFamily: "Poppins",
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
-                                              color: ThemeConstant
-                                                  .lightScheme.onBackground,
+                                              color: Get.isDarkMode?Colors.white:
+                                         Colors.black,
                                             ),
                                           );
                                         }),
@@ -397,7 +404,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                       fontFamily: "Poppins",
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
-                                      color:
+                                      color:Get.isDarkMode?Colors.white:
                                           ThemeConstant.lightScheme.secondary,
                                     ),
                                   ),
@@ -417,8 +424,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                               fontFamily: "Poppins",
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
-                                              color: ThemeConstant
-                                                  .lightScheme.onBackground,
+                                              color: Get.isDarkMode?Colors.white:
+                                          ThemeConstant.lightScheme.secondary
                                             ),
                                           );
                                         }),
@@ -436,7 +443,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                                       fontFamily: "Poppins",
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
-                                      color:
+                                      color:Get.isDarkMode?Colors.white:
                                           ThemeConstant.lightScheme.secondary,
                                     ),
                                   ),
@@ -488,7 +495,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Get.isDarkMode?Colors.white:
+                                          Colors.black,
                           fontFamily: "Poppins",
                         ),
                       ),
@@ -501,7 +509,7 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                           fontFamily: "Poppins",
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ThemeConstant.lightScheme.secondary,
+                          color:Get.isDarkMode?Colors.white: ThemeConstant.lightScheme.secondary,
                         ),
                       ),
                       SizedBox(
@@ -523,7 +531,8 @@ class _DetailMessageInProcessState extends State<DetailMessageInProcess> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                              color: Get.isDarkMode?Colors.white:
+                                          Colors.black,
                               fontFamily: "Poppins",
                             ),
                           ),
@@ -672,7 +681,7 @@ class ApproveMess extends StatelessWidget {
                   fontFamily: "Poppins",
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: ThemeConstant.lightScheme.secondary,
+                  color:Get.isDarkMode?Colors.white: ThemeConstant.lightScheme.secondary,
                 ),
               ),
             ),
@@ -711,10 +720,11 @@ class _dateApproved extends StatelessWidget {
               (index) => Text(
                 "${date[index].createdDate!.day}/${date[index].createdDate!.month}/${date[index].createdDate!.year}",
                 style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.red),
+                  fontFamily: "Poppins",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.red,
+                ),
               ),
             ),
           );

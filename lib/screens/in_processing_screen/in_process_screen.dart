@@ -35,7 +35,8 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
         isConnected = (event != ConnectivityResult.none);
       });
     });
-    _messagemodel = _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
+    _messagemodel =
+        _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
     super.initState();
   }
 
@@ -48,25 +49,23 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
             Get.to(() => MyHomePage());
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
             size: 24,
           ),
         ),
         title: Text(
           "In Process",
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: "Poppins",
-            color: Color(0xff000000),
+            color: Get.isDarkMode ? Colors.white : Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -80,10 +79,12 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
             sub = Connectivity().onConnectivityChanged.listen((event) {
               setState(() {
                 isConnected = (event != ConnectivityResult.none);
-                _messagemodel = _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
+                _messagemodel = _messageApi
+                    .readDataFromMessage('?isApproved=true&isCompleted=false');
               });
             });
-            _messagemodel = _messageApi.readDataFromMessage('?isApproved=true&isCompleted=false');
+            _messagemodel = _messageApi
+                .readDataFromMessage('?isApproved=true&isCompleted=false');
           });
         },
         child: SingleChildScrollView(
@@ -135,13 +136,13 @@ class _InProcessingScreenState extends State<InProcessingScreen> {
           "assets/icon_background/in_processing_icon.svg",
         ),
         const SizedBox(height: 23),
-        const Text(
+        Text(
           "In Processing Work",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins",
-            color: Colors.black,
+            color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         Text(

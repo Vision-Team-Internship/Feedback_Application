@@ -2,12 +2,16 @@
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
 import 'package:feedback_application_flutter/my_splash_screen.dart';
 import 'package:feedback_application_flutter/screens/message_detail/message_detail_screen.dart';
+import 'package:feedback_application_flutter/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -29,13 +33,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(
-            color: ThemeConstant.lightScheme.background, elevation: 0.0),
-        scaffoldBackgroundColor: ThemeConstant.lightScheme.background,
-      ),
+      theme: ThemeConstant.light,
+      themeMode: ThemeService().theme,
+      darkTheme: ThemeConstant.dark,
       home: const MySplashScreen(),
     );
   }

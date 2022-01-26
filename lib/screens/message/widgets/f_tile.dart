@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:feedback_application_flutter/constants/theme_constant.dart';
+import 'package:get/get.dart';
 
 class FTile extends StatelessWidget {
   final String title;
@@ -38,7 +39,7 @@ class FTile extends StatelessWidget {
                 Text(
                   title,
                   style: ThemeConstant.textTheme.headline6!.copyWith(
-                    color: ThemeConstant.lightScheme.onBackground,
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
                 Expanded(

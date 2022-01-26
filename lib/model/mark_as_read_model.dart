@@ -2,6 +2,8 @@
 //
 //     final markAsReadModel = markAsReadModelFromJson(jsonString);
 
+// ignore_for_file: unnecessary_question_mark
+
 import 'dart:convert';
 
 MarkAsReadModel markAsReadModelFromJson(String str) => MarkAsReadModel.fromJson(json.decode(str));

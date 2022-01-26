@@ -1,8 +1,8 @@
-import 'dart:convert';
+// ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:http/http.dart' as http;
 
 class ChartFlutter extends StatefulWidget {
   const ChartFlutter({Key? key}) : super(key: key);
@@ -25,7 +25,14 @@ class _ChartFlutterState extends State<ChartFlutter> {
   @override
   Widget build(BuildContext context) {
     return SfCircularChart(
-      title: ChartTitle(text: 'Top of Message Request'),
+      backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+      palette: [
+        const Color(0xff0E70C7),
+        const Color(0xffFF4181),
+      ],
+      title: ChartTitle(
+        text: 'Top of Message Request',
+      ),
       legend: Legend(
         position: LegendPosition.bottom,
         isVisible: true,

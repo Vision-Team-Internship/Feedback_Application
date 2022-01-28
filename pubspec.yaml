@@ -29,27 +29,38 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+
+  # animation gif json
   lottie: ^1.2.1
+  # state management
   get: ^4.3.8
+  # image svg
   flutter_svg: ^0.23.0+1
+  # chart
   syncfusion_flutter_charts: ^19.3.48
+  # slidable
   flutter_slidable: ^0.6.0
-
-  # Fetch data From API
+  # read data 
   http: ^0.13.4
-
   # Internet Connectivity
   connectivity: ^3.0.6
+  # Contact Redirect
   url_launcher: ^6.0.13
+  # local storage
   shared_preferences: ^2.0.9
+  # open app settings
   app_settings: ^4.1.1
+  # alert notification
   onesignal_flutter: ^3.0.0
+  # local notification
+  flutter_local_notifications: ^9.2.0
+  # date format
   intl: ^0.17.0
+  # pull to refresh
   pull_to_refresh: ^2.0.0
+  # timezone
+  flutter_native_timezone: ^2.0.0
   get_storage: ^2.0.3
 
 dev_dependencies:
